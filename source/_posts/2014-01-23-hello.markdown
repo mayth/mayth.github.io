@@ -1,0 +1,9 @@
+---
+layout: post
+title: "ハロウフォゴットンワールド"
+date: 2014-01-23 07:20:02 +0900
+comments: true
+categories: 
+---
+
+よく見たらHello, World!だった。
