@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Hello (forgotten) world]]></title>
-  <link href="http://mayth.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Ruby | Hello (forgotten) world]]></title>
+  <link href="http://mayth.github.io/blog/categories/ruby/atom.xml" rel="self"/>
   <link href="http://mayth.github.io/"/>
   <updated>2014-01-23T21:55:21+09:00</updated>
   <id>http://mayth.github.io/</id>
@@ -24,7 +24,7 @@
 
 <h1>原因</h1>
 
-<p>そもそも内部で使ってる<code>Date._parse</code>（これはRubyの標準ライブラリである&#8217;time&#8217;に含まれる）が日本語形式（<code>y年m月d日</code>）での日付のパースに対応していない。</p>
+<p>そもそも内部で使ってる<code>Date._parse</code>（これはRubyの標準ライブラリである'time'に含まれる）が日本語形式（<code>y年m月d日</code>）での日付のパースに対応していない。</p>
 
 <h1>対策</h1>
 
@@ -54,18 +54,9 @@
 
 <p>DateTimeに対応する<code>normalize</code>メソッドは、英語ロケール以外が選択されており、かつ月名（とその省略形）、曜日名（とのその省略形）、午前/午後のフォーマット文字列が含まれるときに、パース対象の文字列に含まれる英語以外のロケールのそれらを、英語ロケールに置換する。フォーマット文字列でいえば<code>%[AaBbp]</code>のいずれかが含まれる場合に該当する。つまり<code>2014年01月23日(木) 09:00</code>と<code>%Y年%m月%d日(%a) %H:%M</code>が渡ったときに、<code>2014年01月23日(Thu) 09:00</code>を返すはずである。</p>
 
-<p>前述のフォーマット文字列には<code>%a</code>（曜日）が含まれるのでこの置換が発生するが、このとき単純に全ての曜日の文字を置換してしまう。要は「月」→&#8221;Mon&#8221;、「火」→&#8221;Tue&#8221;、「水」→&#8221;Wed&#8221;、…という置換をパース対象文字列に行うわけだが、「月」と「日」が曜日以外に現れるせいでこれが巻き込まれて形式が狂う。その結果として最初に示した<code>2014年01Mon23Sun(Thu) 09:00</code>になってしまう。「01月」の「月」と「23日」の「日」が置換されてしまったわけだ。</p>
+<p>前述のフォーマット文字列には<code>%a</code>（曜日）が含まれるのでこの置換が発生するが、このとき単純に全ての曜日の文字を置換してしまう。要は「月」→"Mon"、「火」→"Tue"、「水」→"Wed"、…という置換をパース対象文字列に行うわけだが、「月」と「日」が曜日以外に現れるせいでこれが巻き込まれて形式が狂う。その結果として最初に示した<code>2014年01Mon23Sun(Thu) 09:00</code>になってしまう。「01月」の「月」と「23日」の「日」が置換されてしまったわけだ。</p>
 
 <p>で、ここで文字列が壊れてしまったのが原因なんじゃないかと思ったが、ふとそこでデバッガを使ってパース対象文字列を強引に元の正しい文字列に直しても同じエラーが発生する。別のコンソールでpryを立ち上げて同じ文字列を<code>Date._parse</code>に食わせたところ、同じ結果が返ってくる。今回の場合、月の値が20になってしまっている。こうして問題は前述の置換処理でもなんでもなく、そもそも冒頭に述べたように<code>Date._parse</code>が「2014年01月23日」というような日本語の形式に対応していないかららしい、ということになった。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ハロウフォゴットンワールド]]></title>
-    <link href="http://mayth.github.io/blog/2014/01/23/hello/"/>
-    <updated>2014-01-23T07:20:02+09:00</updated>
-    <id>http://mayth.github.io/blog/2014/01/23/hello</id>
-    <content type="html"><![CDATA[<p>よく見たらHello, World!だった。</p>
 ]]></content>
   </entry>
   
