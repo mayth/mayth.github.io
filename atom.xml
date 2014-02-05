@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Hello (forgotten) world]]></title>
-  <link href="http://mayth.github.io/atom.xml" rel="self"/>
-  <link href="http://mayth.github.io/"/>
-  <updated>2014-01-23T21:55:21+09:00</updated>
-  <id>http://mayth.github.io/</id>
+  <link href="http://tech.aquarite.info/atom.xml" rel="self"/>
+  <link href="http://tech.aquarite.info/"/>
+  <updated>2014-02-06T08:35:58+09:00</updated>
+  <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[RailsAdminの日時選択が日本語でバグる]]></title>
-    <link href="http://mayth.github.io/blog/2014/01/23/rails-admin-jp-problem/"/>
+    <link href="http://tech.aquarite.info/blog/2014/01/23/rails-admin-jp-problem/"/>
     <updated>2014-01-23T20:08:42+09:00</updated>
-    <id>http://mayth.github.io/blog/2014/01/23/rails-admin-jp-problem</id>
+    <id>http://tech.aquarite.info/blog/2014/01/23/rails-admin-jp-problem</id>
     <content type="html"><![CDATA[<h1>概略</h1>
 
 <p>Rails Adminでdatetime型（日時）のカラムを含むモデルを操作する際、ロケールが日本語で、かつ<a href="https://github.com/svenfuchs/rails-i18n">svenfuchs/rails-i18n</a>のファイルをそのまま使っていると例外<code>ArgumentError</code>(argument out of range)で死ぬ。</p>
@@ -62,9 +62,9 @@
   
   <entry>
     <title type="html"><![CDATA[ハロウフォゴットンワールド]]></title>
-    <link href="http://mayth.github.io/blog/2014/01/23/hello/"/>
+    <link href="http://tech.aquarite.info/blog/2014/01/23/hello/"/>
     <updated>2014-01-23T07:20:02+09:00</updated>
-    <id>http://mayth.github.io/blog/2014/01/23/hello</id>
+    <id>http://tech.aquarite.info/blog/2014/01/23/hello</id>
     <content type="html"><![CDATA[<p>よく見たらHello, World!だった。</p>
 ]]></content>
   </entry>

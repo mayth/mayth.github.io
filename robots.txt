@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://mayth.github.io/sitemap.xml 
+Sitemap: http://tech.aquarite.info/sitemap.xml 
