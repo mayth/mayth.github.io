@@ -4,7 +4,7 @@
   <title><![CDATA[Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-03-04T03:02:50+09:00</updated>
+  <updated>2014-03-04T03:43:51+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2013 全国大会 フラグワード取得]]></title>
+    <link href="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-auto-flagword/"/>
+    <updated>2014-03-04T03:12:27+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-auto-flagword</id>
+    <content type="html"><![CDATA[<p>特定の問題ではなくてフラグワードの自動取得について。</p>
+
+<p>スコアサーバーのフラグワードのページには、HTMLとしては外枠の、いわゆる<code>layout</code>の部分しかほとんど書いてない。アクセスするとJavaScriptが動いて、<a href="http://socket.io">Socket.IO</a>（中身はWebSocket）で配信サーバーに接続し、フラグワードが降ってきたらHTMLとして表示する、という処理が動いている。</p>
+
+<p>そんなわけでスコアサーバーのフラグワードのページをGETで叩いても何も起きないのでWebSocketを使うことになる。あいにくと私自身がさっぱりJS書けないのとnode.jsの環境がチーム内のマシンにあるとも限らないのでRubyで書いた。</p>
+
+<p>やることとしては<a href="https://rubygems.org/gems/socket.io-client-simple">socket.io-client-simple</a>を使ってサーバーに接続して、接続出来たら<code>flagwords</code>を送信する。すると<code>flagword</code>イベントが飛んでくるので、それを捕まえて自分のチームのフラグを取り出す。シンプル。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'socket.io-client-simple'
+</span><span class='line'>
+</span><span class='line'>module FlagWord
+</span><span class='line'>  SOCKET_URL = 'http://10.0.1.1:8000'
+</span><span class='line'>  TEAM_NAME = 'urandom'
+</span><span class='line'>
+</span><span class='line'>  def self.get_flag
+</span><span class='line'>    flags = nil
+</span><span class='line'>    socket = SocketIO::Client::Simple.connect SOCKET_URL
+</span><span class='line'>    # handler
+</span><span class='line'>    socket.on :connect do
+</span><span class='line'>      socket.emit :flagwords
+</span><span class='line'>    end
+</span><span class='line'>    socket.on :disconnect do
+</span><span class='line'>    end
+</span><span class='line'>    socket.on :flagword do |data|
+</span><span class='line'>      flags = data['flagwords']
+</span><span class='line'>    end
+</span><span class='line'>    # waiting for flags
+</span><span class='line'>    until flags
+</span><span class='line'>      sleep 1
+</span><span class='line'>    end
+</span><span class='line'>    # return flag
+</span><span class='line'>    idx = flags.find_index {|h| h['team_name'] == TEAM_NAME}
+</span><span class='line'>    flags[idx]['flagword'].strip
+</span><span class='line'>  end
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>if __FILE__ == $0
+</span><span class='line'>  puts FlagWord.get_flag
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SECCON 2013 全国大会 'Pisa']]></title>

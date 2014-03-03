@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ctf | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/ctf/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-03-04T03:02:50+09:00</updated>
+  <updated>2014-03-04T03:43:51+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2013 全国大会 フラグワード取得]]></title>
+    <link href="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-auto-flagword/"/>
+    <updated>2014-03-04T03:12:27+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-auto-flagword</id>
+    <content type="html"><![CDATA[<p>特定の問題ではなくてフラグワードの自動取得について。</p>
+
+<p>スコアサーバーのフラグワードのページには、HTMLとしては外枠の、いわゆる<code>layout</code>の部分しかほとんど書いてない。アクセスするとJavaScriptが動いて、<a href="http://socket.io">Socket.IO</a>（中身はWebSocket）で配信サーバーに接続し、フラグワードが降ってきたらHTMLとして表示する、という処理が動いている。</p>
+
+<p>そんなわけでスコアサーバーのフラグワードのページをGETで叩いても何も起きないのでWebSocketを使うことになる。あいにくと私自身がさっぱりJS書けないのとnode.jsの環境がチーム内のマシンにあるとも限らないのでRubyで書いた。</p>
+
+<p>やることとしては<a href="https://rubygems.org/gems/socket.io-client-simple">socket.io-client-simple</a>を使ってサーバーに接続して、接続出来たら<code>flagwords</code>を送信する。すると<code>flagword</code>イベントが飛んでくるので、それを捕まえて自分のチームのフラグを取り出す。シンプル。</p>
+
+<p>```
+require &lsquo;socket.io-client-simple&rsquo;</p>
+
+<p>module FlagWord
+  SOCKET_URL = &lsquo;<a href="http://10.0.1.1:8000">http://10.0.1.1:8000</a>&rsquo;
+  TEAM_NAME = &lsquo;urandom&rsquo;</p>
+
+<p>  def self.get_flag</p>
+
+<pre><code>flags = nil
+socket = SocketIO::Client::Simple.connect SOCKET_URL
+# handler
+socket.on :connect do
+  socket.emit :flagwords
+end
+socket.on :disconnect do
+end
+socket.on :flagword do |data|
+  flags = data['flagwords']
+end
+# waiting for flags
+until flags
+  sleep 1
+end
+# return flag
+idx = flags.find_index {|h| h['team_name'] == TEAM_NAME}
+flags[idx]['flagword'].strip
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>if <strong>FILE</strong> == $0
+  puts FlagWord.get_flag
+end
+```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SECCON 2013 全国大会 'Pisa']]></title>
