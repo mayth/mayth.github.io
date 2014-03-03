@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: seccon_2013, - Hello (forgotten) world</title>
+  <title>SECCON 2013 全国大会 'Druaga' - Hello (forgotten) world</title>
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="Category: seccon_2013,">
+  <meta name="description" content="解いたのはop（真顔） 公開直後、提示されたアドレスにアクセスしにいくと、crypted file(password is seccon)とだけ書かれたページが見える。crypted fileのリンクはファイルに向いていて、yuko_oshima.binという80MBのファイルが落ちてくる。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.aquarite.infoblog/categories/seccon-2013/">
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -66,35 +66,108 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Seccon_2013,</h1>
+    
+      <h1 class="entry-title">SECCON 2013 全国大会 'Druaga'</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-04T03:47:27+09:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>解いたのはop（真顔）</p>
 
-  
-  <h2>2014</h2>
+<p>公開直後、提示されたアドレスにアクセスしにいくと、<code>crypted file(password is seccon)</code>とだけ書かれたページが見える。<code>crypted file</code>のリンクはファイルに向いていて、<code>yuko_oshima.bin</code>という80MBのファイルが落ちてくる。</p>
 
-<article>
-  
-<h1><a href="/blog/2014/03/04/seccon-2013-final-pisa/">SECCON 2013 全国大会 'Pisa'</a></h1>
-<time datetime="2014-03-04T02:16:24+09:00" pubdate><span class='month'>Mar</span> <span class='day'>04</span> <span class='year'>2014</span></time>
+<p>アクセス集中からかダウンロードがめっちゃ遅くて、私がこのファイルをダウンロードできたのは運営が</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/seccon/'>seccon,</a>, <a class='category' href='/blog/categories/seccon-2013/'>seccon_2013,</a></span>
-</footer>
+<p>「じゃあ適当なところでかけ声で終了しましょうか」「じゃあ……<strong>終了</strong>！」</p>
 
+<p>とかいうギャグみたいなやりとりをしている頃だった。マジでギリギリ。</p>
 
-</article>
+<p>それはともかく、夜にお持ち帰りしたファイルを見てみてもヘッダ的なものは全くなくエントロピーも十分高い。opも調べてみるもさっぱりわからず他の問題に手を付け始めた。</p>
 
+<p>そして2日目。別の問題を見るつもりで間違えてDruagaのページに飛んだところ、なんかTrueCryptとか書いてあった。昨日見たときにはなかったはずなのに……。</p>
+
+<p>TrueCryptでマウントして中身を見るとキーと大量の画像ファイルが入っていた。ファイル名がキーになっているテキストファイルを開くと次の問題が書かれていた。その画像ファイルにはアセンブラ短歌が書かれていて、<code>0609</code>を出力するものを探せ、とのこと。</p>
+
+<p>OCRしか、ないんじゃないかな。</p>
+
+<p><a href="/blog/2014/03/04/seccon-2013-final-pisa">ちょうど別の問題で（役に立たなかった）OCRを使っていた</a>ので、これを流用した。eが:になったりbがhになったりしたけど、その辺は置換して対応。というのもそういう認識ミスをしても、元の文字と認識ミスした文字がほぼ1対1で対応していたから。下手にホワイトリストで文字種を制限するよりこの方がいいんじゃないかと（その役に立てなかったOCRをいじくり回した経験から）思ったのでこの方法にした。認識出来た十六進数の文字列を<code>pack</code>コマンドでバイナリにしてファイルに吐き出した。</p>
+
+<p>ちなみにその大量の画像ファイル、拡張子は<code>.jpg</code>なのに中身はPNGだったらしい。その辺はtesseract側でよしなにしてくれたようなので全然気にしてなかった。</p>
+
+<p>私のマシン（MBP Retina Mid 2013, Core i7 2.3GHz, 16GB memory）で全ファイルの読み取りに3,40分くらいかかっていた。</p>
+
+<p>読み取ってできたバイナリファイルをopに渡して私の任務は終わった。終わったのだ。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Mei Akizuru</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-04T03:47:27+09:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/seccon/'>seccon</a>, <a class='category' href='/blog/categories/seccon-2013/'>seccon_2013</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/04/seccon-2013-final-auto-flagword/" title="Previous Post: SECCON 2013 全国大会 フラグワード取得">&laquo; SECCON 2013 全国大会 フラグワード取得</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>

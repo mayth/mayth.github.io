@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ctf | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/ctf/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-03-04T03:43:51+09:00</updated>
+  <updated>2014-03-04T04:04:04+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2013 全国大会 'Druaga']]></title>
+    <link href="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/"/>
+    <updated>2014-03-04T03:47:27+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga</id>
+    <content type="html"><![CDATA[<p>解いたのはop（真顔）</p>
+
+<p>公開直後、提示されたアドレスにアクセスしにいくと、<code>crypted file(password is seccon)</code>とだけ書かれたページが見える。<code>crypted file</code>のリンクはファイルに向いていて、<code>yuko_oshima.bin</code>という80MBのファイルが落ちてくる。</p>
+
+<p>アクセス集中からかダウンロードがめっちゃ遅くて、私がこのファイルをダウンロードできたのは運営が</p>
+
+<p>「じゃあ適当なところでかけ声で終了しましょうか」「じゃあ……<strong>終了</strong>！」</p>
+
+<p>とかいうギャグみたいなやりとりをしている頃だった。マジでギリギリ。</p>
+
+<p>それはともかく、夜にお持ち帰りしたファイルを見てみてもヘッダ的なものは全くなくエントロピーも十分高い。opも調べてみるもさっぱりわからず他の問題に手を付け始めた。</p>
+
+<p>そして2日目。別の問題を見るつもりで間違えてDruagaのページに飛んだところ、なんかTrueCryptとか書いてあった。昨日見たときにはなかったはずなのに……。</p>
+
+<p>TrueCryptでマウントして中身を見るとキーと大量の画像ファイルが入っていた。ファイル名がキーになっているテキストファイルを開くと次の問題が書かれていた。その画像ファイルにはアセンブラ短歌が書かれていて、<code>0609</code>を出力するものを探せ、とのこと。</p>
+
+<p>OCRしか、ないんじゃないかな。</p>
+
+<p><a href="/blog/2014/03/04/seccon-2013-final-pisa">ちょうど別の問題で（役に立たなかった）OCRを使っていた</a>ので、これを流用した。eが:になったりbがhになったりしたけど、その辺は置換して対応。というのもそういう認識ミスをしても、元の文字と認識ミスした文字がほぼ1対1で対応していたから。下手にホワイトリストで文字種を制限するよりこの方がいいんじゃないかと（その役に立てなかったOCRをいじくり回した経験から）思ったのでこの方法にした。認識出来た十六進数の文字列を<code>pack</code>コマンドでバイナリにしてファイルに吐き出した。</p>
+
+<p>ちなみにその大量の画像ファイル、拡張子は<code>.jpg</code>なのに中身はPNGだったらしい。その辺はtesseract側でよしなにしてくれたようなので全然気にしてなかった。</p>
+
+<p>私のマシン（MBP Retina Mid 2013, Core i7 2.3GHz, 16GB memory）で全ファイルの読み取りに3,40分くらいかかっていた。</p>
+
+<p>読み取ってできたバイナリファイルをopに渡して私の任務は終わった。終わったのだ。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SECCON 2013 全国大会 フラグワード取得]]></title>
