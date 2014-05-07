@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tkbctf3 | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/tkbctf3/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-05-07T15:39:16+09:00</updated>
+  <updated>2014-05-07T15:49:56+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -46,7 +46,7 @@
 
 <p>というわけでその場合はどのようにするかと言いますと、<code>hoge://../../../etc/passwd</code>とかなんとかすると<code>/etc/passwd</code>が読めるので後は上記と同じです。<code>file://</code>と同じように<code>http:///etc/passwd</code>とかすると<code>/home/miocat/http:/etc/passwd</code>を読みにいくんですが、この辺りの仕様は正直私もわかってません。WebClientとかUriの実装読めというお告げなんですかねコレ。（この辺は別の記事でやりたいと思います）</p>
 
-<p>スキーマの部分切り落としてカレントディレクトリを基点にしてファイルを読みに行くのが個人的に結構ヤバイ挙動だと思ってるんですがどうなんでしょう……。</p>
+<p><del>スキーマの部分切り落として</del><strong>訂正: 切り落としてるのではなく、単にディレクトリとして認識されていた模様（つまり<code>abc://etc...</code>は<code>/home/miocat/abc://etc...</code>）</strong>カレントディレクトリを基点にしてファイルを読みに行くのが個人的に結構ヤバイ挙動だと思ってるんですがどうなんでしょう……。</p>
 
 <h2>エラー処理</h2>
 
