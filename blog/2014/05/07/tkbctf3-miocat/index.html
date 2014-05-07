@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>tkbctf3 miocat - Hello (forgotten) world</title>
+  <meta name="author" content="Mei Akizuru">
+
+  
+  <meta name="description" content="miocat（みお・きゃっと）はとある伝説の脱ヲタエンジニアが書き上げた伝説のプログラムに着想を得てっていうのはどうでもいいとして、実際のところは.NET Frameworkのとある仕様に関する問題です。でした。以下本来の意図の説明です。 ソースコード と、その前に。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hello (forgotten) world" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tech.aquarite.info" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Tkbctf3 Miocat</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-07T13:26:00+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>miocat（みお・きゃっと）はとある伝説の脱ヲタエンジニアが書き上げた伝説のプログラムに着想を得てっていうのはどうでもいいとして、実際のところは.NET Frameworkのとある仕様に関する問題です。<strong>でした</strong>。以下本来の意図の説明です。</p>
+
+<h1>ソースコード</h1>
+
+<p>と、その前に。今回のソースコードは<a href="https://github.com/tkbctf/archive">tkbctf/archive</a>に上げておきます。結構問題の核心以外の部分で苦労してたりしますがそれはそれということで。</p>
+
+<h1>問題の説明</h1>
+
+<p>指示されたアドレスにWebブラウザからアクセスすると、タイトルとフォーム（入力フィールド1つとボタン1つ + <code>hidden</code>のフィールド）のやる気の無いWebページが表示されます。</p>
+
+<p>このフォームに適当なURLを入力して（このURLを<strong>ターゲットURL</strong>と言うこととします）<code>nya!</code>ボタンを押すと、ターゲットURLに対してmiocatサーバーがリクエストを行い、その結果をそっくりそのままレスポンスとして返します（<code>title</code>の中身だけ少し変わっていますが）。</p>
+
+<p>実際には<code>http://</code>や<code>file://</code>など、スキーマ（らしき文字列）が先頭にないと<code>not acceptable</code>が表示されます。それらしき文字列であればなんでもいいので、<code>abc://</code>でも通ります。また、サーバーは外部へのアクセスが遮断された状態で稼働していたので、<code>http://www.google.com</code>などをターゲットに指定しても失敗します。</p>
+
+<p>さて、miocatはターゲットURLを上述の「スキーマらしき文字列があるかどうか」のチェックをした後で、それが<code>file://</code>であるか否かのチェックをします。ここで<code>file://</code>であった場合も<code>not acceptable</code>のエラーになります。ところがこれをすり抜ける方法があります。それはMSDNの<a href="http://msdn.microsoft.com/ja-jp/library/dd465121(v=vs.110">.NET Framework で文字列を使用するためのベスト プラクティス</a>.aspx)にも記載されているまさにそのままの方法です。つまり、フォームのhiddenになっていた<code>locale</code>の値、およびクエリパラメータに含まれる<code>locale</code>の値がそのスレッドのカルチャになっているので、<code>locale=tr-TR</code>なんて値を指定すると見事にトルコ語ロケールに切り替わり、<code>FILE://</code>で始まっているかのどうかの比較をカレントスレッドのロケールで行うためにチェックをすり抜けてしまいます。</p>
+
+<p>ということは、トルコ語ロケールに切り替えてしまえば<code>file://...</code>であるようなURLでもmiocatがリクエストを出します。これはmiocatが動作するユーザーが読めるファイルは全て読めることを意味しています。なので<code>/etc/passwd</code>を読んでみたり（`/etc/passwdにはヒントというか、「これを読め」という指示が書かれていました）適当に推測してみたりして、結果的にflagファイルを読めればおしまいです。</p>
+
+<p>miocatの仕組みというか中身は以上です。まぁ、.NETのその仕様を知っていれば一瞬で解けてしまうような問題でした。過去2回F#とILを読ませる問題だったので、少し捻った.NET系の問題を出してみようと思った結果コレになりました。</p>
+
+<h2>ディレクトリトラバーサル</h2>
+
+<p>しかしながら現実とは非情な物でして、ディレクトリトラバーサルの脆弱性を素で作り込んでいました。というか、内部的には上記のURLチェックをした後に<code>WebClient</code>の<code>DownloadString(string)</code>を呼んでるだけなんですが、まさかそいつが普通にカレントディレクトリを読みに行くとは全く予想しておらずチェックもしていなかったというのが実際のところです。いやまぁ、普通与えられたURLをそのまま読みに行くなんて無茶苦茶なことはしないと思うので問題にはならないんでしょうけど。</p>
+
+<p>というわけでその場合はどのようにするかと言いますと、<code>hoge://../../../etc/passwd</code>とかなんとかすると<code>/etc/passwd</code>が読めるので後は上記と同じです。<code>file://</code>と同じように<code>http:///etc/passwd</code>とかすると<code>/home/miocat/http:/etc/passwd</code>を読みにいくんですが、この辺りの仕様は正直私もわかってません。WebClientとかUriの実装読めというお告げなんですかねコレ。（この辺は別の記事でやりたいと思います）</p>
+
+<p>スキーマの部分切り落としてカレントディレクトリを基点にしてファイルを読みに行くのが個人的に結構ヤバイ挙動だと思ってるんですがどうなんでしょう……。</p>
+
+<h2>エラー処理</h2>
+
+<p>あとこれも完全な手落ちでしたがエラーメッセージにフルパスぶち込まれてるのも良くなかったですね。はい。すっごい初歩的なところですが……。</p>
+
+<h1>まとめ</h1>
+
+<p>普通に安全なプログラムを書いてから穴を開けるべきだったんだろうなぁと思ってます。今までバイナリ（というかC#/IL）を読ませるような問題しか書いてなくて、こういうタイプの問題は初めてだったわけですけど、難しいですね。（ていうかなぜド素人が問題書いてるのか）</p>
+
+<p>それ以外にも、この方針で行こうと決めてから難易度低すぎなのでアレやコレやと思索してみてやっぱり没になったとか、grepが高速化した云々でちょうどトルコ語らへんが話題になって「あっこれヤバくね」とか思ったりとかいろいろありました。</p>
+
+<p>次のtkbctfはどうなるのかわかりませんが、そろそろ筑波大学期待の新人達が私たちよりよっぽど上手くやってくれるんじゃないかなと期待しております。それでは。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Mei Akizuru</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-07T13:26:00+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ctf/'>CTF</a>, <a class='category' href='/blog/categories/tkbctf/'>tkbctf</a>, <a class='category' href='/blog/categories/tkbctf3/'>tkbctf3</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/06/clang-format-on-mac/" title="Previous Post: MacのSublime Text 3でもclang使って整形とか補完とかしたい">&laquo; MacのSublime Text 3でもclang使って整形とか補完とかしたい</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/05/07/uri-parsing-in-webclient/" title="Next Post: WebClientにおけるURI">WebClientにおけるURI &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <h1 id="site_title"><a href="http://tech.aquarite.info" title="Hello (forgotten) world">Hello (forgotten) world</a></h1>
+  <h3 id="site_subtitle">Kogasa-chan is kawaii.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://tech.aquarite.info"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/mayth" title="mayth"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+    <a href="https://twitter.com/mayth" title="mayth"><i class="fa fa-twitter fa-2x"></i></a>
+  
+</section>
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/05/07/uri-parsing-in-webclient/">WebClientにおけるURI</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/07/tkbctf3-miocat/">tkbctf3 miocat</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/06/clang-format-on-mac/">MacのSublime Text 3でもclang使って整形とか補完とかしたい</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/23/rails-admin-jp-problem/">RailsAdminの日時選択が日本語でバグる</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/23/hello/">ハロウフォゴットンワールド</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mayth">@mayth</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mayth',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Mei Akizuru -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

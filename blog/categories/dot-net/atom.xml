@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: .NET | Hello (forgotten) world]]></title>
+  <link href="http://tech.aquarite.info/blog/categories/dot-net/atom.xml" rel="self"/>
+  <link href="http://tech.aquarite.info/"/>
+  <updated>2014-05-07T14:34:15+09:00</updated>
+  <id>http://tech.aquarite.info/</id>
+  <author>
+    <name><![CDATA[Mei Akizuru]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[WebClientにおけるURI]]></title>
+    <link href="http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient/"/>
+    <updated>2014-05-07T13:33:03+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient</id>
+    <content type="html"><![CDATA[<h1>発端</h1>
+
+<p>発端は<a href="/blog/2014/05/07/tkbctf3-miocat/">前の記事</a>にあるように、tkbctf3の問題としてmiocatなるものを出してみたのはいいものの、意図とは異なる脆弱性を作り込んで250点問題が超絶ボーナス問題になりましたよ、というお話しです。</p>
+
+<h1>調査</h1>
+
+<p>miocatはC#で書かれており、実際の運用ではMonoランタイムで動いていました。というわけでMonoのソースコードを読めば解決です。やったね。</p>
+
+<h1>結果</h1>
+
+<p>そういうわけでまずは<code>WebClient</code>の実装を読んでみたのですが、怪しい箇所が一発で見つかりました。<a href="https://github.com/mono/mono/blob/2d573ae1ceac1656f0293cca3736dcb10c28be38/mcs/class/System/System.Net/WebClient.cs#L798">WebClient.cs#798</a>、privateメソッドである<code>CreateUri(string)</code>なるメソッドです。<code>DownloadString(string)</code>は、その引数をこのメソッドに渡して<code>DownloadData(Uri)</code>を呼び出します。</p>
+
+<p><code>try-catch</code>の中で渡されたアドレス（と、<code>baseAddress</code>）を元に<code>Uri</code>のインスタンスを作って<code>CreateUri(Uri)</code>に渡していますが、ここで例外が発生すると<code>return new Uri(Path.GetFullPath(address))</code>という恐怖のコードが走ります。</p>
+]]></content>
+  </entry>
+  
+</feed>

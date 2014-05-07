@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SECCON 2013 全国大会 'Druaga' - Hello (forgotten) world</title>
+  <title>WebClientにおけるURI - Hello (forgotten) world</title>
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="解いたのはop（真顔） 公開直後、提示されたアドレスにアクセスしにいくと、crypted file(password is seccon)とだけ書かれたページが見える。crypted fileのリンクはファイルに向いていて、yuko_oshima.binという80MBのファイルが落ちてくる。 &hellip;">
+  <meta name="description" content="発端 発端は前の記事にあるように、tkbctf3の問題としてmiocatなるものを出してみたのはいいものの、意図とは異なる脆弱性を作り込んで250点問題が超絶ボーナス問題になりましたよ、というお話しです。 調査 miocatはC#で書かれており、実際の運用ではMonoランタイムで動いていました。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/">
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -70,7 +70,7 @@
   
   <header>
     
-      <h1 class="entry-title">SECCON 2013 全国大会 'Druaga'</h1>
+      <h1 class="entry-title">WebClientにおけるURI</h1>
     
     
       <p class="meta">
@@ -86,38 +86,26 @@
   
 
 
-<time datetime="2014-03-04T03:47:27+09:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time>
+<time datetime="2014-05-07T13:33:03+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>解いたのはop（真顔）</p>
+<div class="entry-content"><h1>発端</h1>
 
-<p>公開直後、提示されたアドレスにアクセスしにいくと、<code>crypted file(password is seccon)</code>とだけ書かれたページが見える。<code>crypted file</code>のリンクはファイルに向いていて、<code>yuko_oshima.bin</code>という80MBのファイルが落ちてくる。</p>
+<p>発端は<a href="/blog/2014/05/07/tkbctf3-miocat/">前の記事</a>にあるように、tkbctf3の問題としてmiocatなるものを出してみたのはいいものの、意図とは異なる脆弱性を作り込んで250点問題が超絶ボーナス問題になりましたよ、というお話しです。</p>
 
-<p>アクセス集中からかダウンロードがめっちゃ遅くて、私がこのファイルをダウンロードできたのは運営が</p>
+<h1>調査</h1>
 
-<p>「じゃあ適当なところでかけ声で終了しましょうか」「じゃあ……<strong>終了</strong>！」</p>
+<p>miocatはC#で書かれており、実際の運用ではMonoランタイムで動いていました。というわけでMonoのソースコードを読めば解決です。やったね。</p>
 
-<p>とかいうギャグみたいなやりとりをしている頃だった。マジでギリギリ。</p>
+<h1>結果</h1>
 
-<p>それはともかく、夜にお持ち帰りしたファイルを見てみてもヘッダ的なものは全くなくエントロピーも十分高い。opも調べてみるもさっぱりわからず他の問題に手を付け始めた。</p>
+<p>そういうわけでまずは<code>WebClient</code>の実装を読んでみたのですが、怪しい箇所が一発で見つかりました。<a href="https://github.com/mono/mono/blob/2d573ae1ceac1656f0293cca3736dcb10c28be38/mcs/class/System/System.Net/WebClient.cs#L798">WebClient.cs#798</a>、privateメソッドである<code>CreateUri(string)</code>なるメソッドです。<code>DownloadString(string)</code>は、その引数をこのメソッドに渡して<code>DownloadData(Uri)</code>を呼び出します。</p>
 
-<p>そして2日目。別の問題を見るつもりで間違えてDruagaのページに飛んだところ、なんかTrueCryptとか書いてあった。昨日見たときにはなかったはずなのに……。</p>
-
-<p>TrueCryptでマウントして中身を見るとキーと大量の画像ファイルが入っていた。ファイル名がキーになっているテキストファイルを開くと次の問題が書かれていた。その画像ファイルにはアセンブラ短歌が書かれていて、<code>0609</code>を出力するものを探せ、とのこと。</p>
-
-<p>OCRしか、ないんじゃないかな。</p>
-
-<p><a href="/blog/2014/03/04/seccon-2013-final-pisa">ちょうど別の問題で（役に立たなかった）OCRを使っていた</a>ので、これを流用した。eが:になったりbがhになったりしたけど、その辺は置換して対応。というのもそういう認識ミスをしても、元の文字と認識ミスした文字がほぼ1対1で対応していたから。下手にホワイトリストで文字種を制限するよりこの方がいいんじゃないかと（その役に立てなかったOCRをいじくり回した経験から）思ったのでこの方法にした。認識出来た十六進数の文字列を<code>Array#pack</code>でバイナリにしてファイルに吐き出した。</p>
-
-<p>ちなみにその大量の画像ファイル、拡張子は<code>.jpg</code>なのに中身はPNGだったらしい。その辺はtesseract側でよしなにしてくれたようなので全然気にしてなかった。</p>
-
-<p>私のマシン（MBP Retina Mid 2013, Core i7 2.3GHz, 16GB memory）で全ファイルの読み取りに3,40分くらいかかっていた。</p>
-
-<p>読み取ってできたバイナリファイルをopに渡して私の任務は終わった。終わったのだ。</p>
+<p><code>try-catch</code>の中で渡されたアドレス（と、<code>baseAddress</code>）を元に<code>Uri</code>のインスタンスを作って<code>CreateUri(Uri)</code>に渡していますが、ここで例外が発生すると<code>return new Uri(Path.GetFullPath(address))</code>という恐怖のコードが走ります。</p>
 </div>
 
 
@@ -140,12 +128,12 @@
   
 
 
-<time datetime="2014-03-04T03:47:27+09:00" pubdate data-updated="true">Mar 4<span>th</span>, 2014</time>
+<time datetime="2014-05-07T13:33:03+09:00" pubdate data-updated="true">May 7<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/seccon/'>seccon</a>, <a class='category' href='/blog/categories/seccon-2013/'>seccon_2013</a>
+    <a class='category' href='/blog/categories/dot-net/'>.NET</a>, <a class='category' href='/blog/categories/c-number/'>C#</a>, <a class='category' href='/blog/categories/mono/'>Mono</a>
   
 </span>
 
@@ -154,7 +142,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/03/04/seccon-2013-final-druaga/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient/" >Tweet</a>
   
   
   
@@ -163,7 +151,7 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/03/04/seccon-2013-final-auto-flagword/" title="Previous Post: SECCON 2013 全国大会 フラグワード取得">&laquo; SECCON 2013 全国大会 フラグワード取得</a>
+        <a class="basic-alignment left" href="/blog/2014/05/07/tkbctf3-miocat/" title="Previous Post: tkbctf3 miocat">&laquo; tkbctf3 miocat</a>
       
       
     </p>
@@ -211,15 +199,11 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/03/04/seccon-2013-final-druaga/">SECCON 2013 全国大会 'Druaga'</a>
+        <a href="/blog/2014/05/07/uri-parsing-in-webclient/">WebClientにおけるURI</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/03/04/seccon-2013-final-auto-flagword/">SECCON 2013 全国大会 フラグワード取得</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/04/seccon-2013-final-pisa/">SECCON 2013 全国大会 'Pisa'</a>
+        <a href="/blog/2014/05/07/tkbctf3-miocat/">tkbctf3 miocat</a>
       </li>
     
       <li class="post">
@@ -228,6 +212,10 @@
     
       <li class="post">
         <a href="/blog/2014/01/23/rails-admin-jp-problem/">RailsAdminの日時選択が日本語でバグる</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/23/hello/">ハロウフォゴットンワールド</a>
       </li>
     
   </ul>
