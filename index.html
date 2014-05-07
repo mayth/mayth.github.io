@@ -73,7 +73,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/05/07/uri-parsing-in-webclient/">WebClientにおけるURI</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/05/07/uri-parsing-in-webclient/">MonoのWebClientにおけるURI</a></h1>
     
     
       <p class="meta">
@@ -104,11 +104,27 @@
 
 <p>miocatはC#で書かれており、実際の運用ではMonoランタイムで動いていました。というわけでMonoのソースコードを読めば解決です。やったね。</p>
 
-<h1>結果</h1>
-
 <p>そういうわけでまずは<code>WebClient</code>の実装を読んでみたのですが、怪しい箇所が一発で見つかりました。<a href="https://github.com/mono/mono/blob/2d573ae1ceac1656f0293cca3736dcb10c28be38/mcs/class/System/System.Net/WebClient.cs#L798">WebClient.cs#798</a>、privateメソッドである<code>CreateUri(string)</code>なるメソッドです。<code>DownloadString(string)</code>は、その引数をこのメソッドに渡して<code>DownloadData(Uri)</code>を呼び出します。</p>
 
 <p><code>try-catch</code>の中で渡されたアドレス（と、<code>baseAddress</code>）を元に<code>Uri</code>のインスタンスを作って<code>CreateUri(Uri)</code>に渡していますが、ここで例外が発生すると<code>return new Uri(Path.GetFullPath(address))</code>という恐怖のコードが走ります。</p>
+
+<p>まず例外を発生させる方法ですが、これは簡単でURIとして不正なものを渡してあげればおしまいです。例えば<code>abc://;/etc/passwd</code>はhostname部がパース不能なので例外を吐きます。</p>
+
+<p><code>System.IO.Path.GetFullPath(string)</code>というのは名前からお察しの通り、与えられたパスをカレントディレクトリからの相対パスと見なして絶対パスに変換します。ここで、例えばカレントディレクトリが<code>/home/kogasa</code>、引数が<code>http://etc/passwd</code>だとすると、結果は<code>/home/kogasa/http://etc/passwd</code>になります。要するに<code>http:</code>というディレクトリの下に<code>etc</code>ディレクトリがあって云々、という形になります。つまるところ連続する<code>/</code>はひとつにまとめられてしまうわけです。先ほどの例外を吐く例でいけば、<code>/home/kogasa/abc://;/etc/passwd</code>になります。</p>
+
+<p>ところでWindowsだとパスに<code>:</code>が入ってると厄介なことになりそうというか、<a href="http://msdn.microsoft.com/ja-jp/library/system.io.path.getfullpath%28v=vs.110%29.aspx">MSDN的には</a><code>NotSupportedException</code>が投げられるべきところだと思うのですが、コレ大丈夫なんでしょうか。ぱっと見ただけだとそれらしいコード見当たらなかったんですが……。</p>
+
+<p>※Windowsで<code>GetFullPath</code>に<code>http://etc/passwd</code>を与えてみたら、<code>ArgumentException</code>で「URLフォーマットには対応していません」みたいなことを言われました。で、<code>abc://;/etc/passwd</code>を与えると<code>NotSupportedException</code>で「指定されたパスのフォーマットはサポートされていません」と言われました。ちゃんとスキーム見てるんですね。</p>
+
+<p>それはそれとして、そんな感じでフルパスを<code>Uri</code>のコンストラクタに与えると、<code>file:</code>スキームのURLになって返ってきます。こうなるとただのローカルに対するディレクトリ操作なので、例えば<code>abc://;/../etc/passwd</code>にするとフルパスは<code>/home/kogasa/abc:/etc/passwd</code>になりますし、もういっこ<code>../</code>を足せば<code>/home/kogasa/etc/passwd</code>——といった感じで<code>../</code>をつけていけば無事に<code>/etc/passwd</code>に辿り着けますね、やったね、ということでした。</p>
+
+<p>Monoの実装自体がヤバいのか、それともWindows以外で動かした結果ああなったのかまでは知りませんが、ひとまずそんな感じになりました。Windowsで動かしてたらあの解法は通らなかったのかなぁとかぼんやり思いながらそもそももっとマシな実装しておけばよかったと反省しきり。</p>
+
+<p>それにしても繰り返しになりますが結構このURLとしてのパース失敗時の回復の仕方がヤバい気がするんですが、これは意図的に.NET Frameworkと異なる実装にしているのか特に理由はないけどこうなってるのか、はてさて。</p>
+
+<h1>まとめ</h1>
+
+<p><strong>もっと恐ろしいMonoの片鱗を味わったぜ…</strong></p>
 </div>
   
   
@@ -504,7 +520,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014/05/07/uri-parsing-in-webclient/">WebClientにおけるURI</a>
+        <a href="/blog/2014/05/07/uri-parsing-in-webclient/">MonoのWebClientにおけるURI</a>
       </li>
     
       <li class="post">
