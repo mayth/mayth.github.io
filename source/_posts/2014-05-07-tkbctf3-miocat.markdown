@@ -15,6 +15,8 @@ miocat（みお・きゃっと）はとある伝説の脱ヲタエンジニア�
 
 と、その前に。今回のソースコードは[tkbctf/archive](https://github.com/tkbctf/archive)に上げておきます。結構問題の核心以外の部分で苦労してたりしますがそれはそれということで。
 
+追記: 上げました -> [tkbctf/archive/tkbctf3/web250_miocat](https://github.com/tkbctf/archive/tree/master/tkbctf3/web250_miocat)
+
 # 問題の説明
 
 指示されたアドレスにWebブラウザからアクセスすると、タイトルとフォーム（入力フィールド1つとボタン1つ + `hidden`のフィールド）のやる気の無いWebページが表示されます。
