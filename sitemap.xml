@@ -27,16 +27,22 @@
         <lastmod>2014-05-08T07:33:47+09:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://tech.aquarite.info/blog/2014/05/08/different-behaviors-of-downloadstring-and-uri-between-net-and-mono/
+        </loc>
+        <lastmod>2014-05-08T09:01:21+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://tech.aquarite.info/about/</loc>
         <lastmod>2014-04-03T15:30:30+09:00</lastmod>
     </url>
     <url>
         <loc>http://tech.aquarite.info/blog/archives/</loc>
-        <lastmod>2014-05-08T07:33:47+09:00</lastmod>
+        <lastmod>2014-05-08T09:01:21+09:00</lastmod>
     </url>
     <url>
         <loc>http://tech.aquarite.info/</loc>
-        <lastmod>2014-05-08T07:33:47+09:00</lastmod>
+        <lastmod>2014-05-08T09:01:21+09:00</lastmod>
     </url>
     <url>
         <loc>http://tech.aquarite.info/robots.txt</loc>
