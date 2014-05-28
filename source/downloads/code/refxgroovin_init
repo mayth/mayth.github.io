@@ -1,0 +1,99 @@
+#!/sbin/runscript
+# Distributed under the terms of the MIT License
+# $Header: $
+
+extra_started_commands="reload"
+
+description_graceful="Reexecutes the running binary and stops the old master after the old workers finish their current request."
+description_gracefulstop="Stops the server after the workers finish their current request."
+description_reload="Reexecutes the running binary and stops the old master immediately."
+
+CONF="${RC_SVCNAME#*.}"
+
+[ "${CONF}" == "refxgroovin" ] && CONF='production'
+
+if [ "${CONF}" == "production" ]; then
+	REFXGROOVIN_BASE="/home/refxgroovin/refixative"
+else
+	REFXGROOVIN_BASE="/home/refxgroovin/refixative-${CONF}"
+fi
+PIDFILE="${REFXGROOVIN_BASE}/shared/pids/unicorn.pid"
+
+RBENV_DIR="/home/${REFXGROOVIN_USER}/.rbenv"
+PATH="${RBENV_DIR}/bin:$PATH"
+
+depend() {
+	need net postgresql
+}
+
+start() {
+	ebegin "Starting Refixative groovin'!! ${CONF} server"
+	start-stop-daemon --start \
+		--name unicorn_rails \
+		--chdir ${REFXGROOVIN_BASE}/current \
+		--user ${REFXGROOVIN_USER} \
+		--pidfile ${PIDFILE} \
+		--exec rbenv -- exec bundle exec unicorn_rails -c "${REFXGROOVIN_BASE}/current/config/unicorn.rb" -E production -D
+	eend $?
+}
+
+stop() {
+	local seconds=$(( ${GRACEFUL_TIMEOUT} + ${FORCE_TIMEOUT} ))
+	ebegin "Stopping Refixative groovin'!! ${CONF} server gracefully (this can take up to ${seconds} seconds)"
+	local retries="SIGQUIT/${GRACEFUL_TIMEOUT}"
+
+	if [ "${FORCE_QUIT}" = "YES" ] ; then
+		einfo "FORCE_QUIT enabled."
+		retries="${retries}/SIGTERM/${FORCE_TIMEOUT}"
+	fi
+
+	start-stop-daemon --stop \
+		--pidfile ${PIDFILE} \
+		--retry "${retries}"
+	eend $?
+}
+
+restart() {
+	stop
+
+	local timeout=${RESTART_TIMEOUT:-10}
+	local i=0 retval=0
+	while [ -e ${PIDFILE} ] && [ $i -lt ${timeout} ] ; do
+		sleep 1 && i=$(expr $i + 1)
+	done
+	[ -e ${PIDFILE} ] && retval=1
+	eend ${retval} "Unable to confirm whether the server stopped or not."
+	[ ${retval} -ne 0 ] && return ${retval}
+
+	sleep 2 # waiting a little for COMPLETELY stopped the old master
+
+	start
+}
+
+reload() {
+	local retval=0
+
+	ebegin "Reloading Refixative groovin'!! ${CONF} server"
+	kill -USR2 `cat ${PIDFILE}`
+	retval=$?
+	eend ${retval} "Unable to reload the server."
+	[ ${retval} -ne 0 ] && return ${retval}
+
+	local timeout=${RELOAD_TIMEOUT:-10}
+	local oldbin="${PIDFILE}.oldbin"
+	ebegin "Waiting for restarting (this can take up to ${timeout} seconds)"
+	local i=0
+	retval=0
+	while [ ! -e ${oldbin} ] && [ $i -lt ${timeout} ] ; do
+		sleep 1 && i=$(expr $i + 1)
+	done
+	[ ! -e ${oldbin} ] && retval=1
+	eend ${retval} "Unable to found the old pidfile at ${oldbin}"
+	[ ${retval} -ne 0 ] && return ${retval}
+
+	ebegin "Stopping old Refixative groovin'!! ${CONF} server"
+	kill -QUIT `cat ${oldbin}`
+	eend $?
+}
+
+# vim: ts=4 filetype=gentoo-init-d
