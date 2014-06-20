@@ -4,7 +4,7 @@
   <title><![CDATA[Category: .NET | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/dot-net/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-05-28T03:20:46+09:00</updated>
+  <updated>2014-06-20T11:23:07+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[miocatのその後、あるいはcoinsLT #0で発表した話]]></title>
+    <link href="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/"/>
+    <updated>2014-06-20T11:09:26+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0</id>
+    <content type="html"><![CDATA[<p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
+
+<iframe src="http://www.slideshare.net/slideshow/embed_code/35913754" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+
+
+<p> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/masatokunita/coins-lt0-miocatshortpublic" title="tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜" target="_blank">tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜</a> </strong> from <strong><a href="http://www.slideshare.net/masatokunita" target="_blank">Masato Kunita</a></strong> </div></p>
+
+<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
+
+<iframe width="560" height="315" src="http://tech.aquarite.info//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
+
+
+<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
+
+<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
+
+<p>曰く、「"<a href="http://test.com">http://test.com</a>" はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
+
+<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
+
+<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Different Behaviors of DownloadString and Uri between .NET and Mono]]></title>
