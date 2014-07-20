@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: .net - Hello (forgotten) world</title>
+  <title>SECCON 2014 オンライン予選 その他諸々 - Hello (forgotten) world</title>
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="Category: .net">
+  <meta name="description" content="2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。 decode me ダウンロードしたencoded.txtを見ると盛大に文字化けしてるんだけど、FRPPBA 2014という文字を見た瞬間にここがSECCON &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.aquarite.info/blog/categories/dot-net/">
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-preliminary/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -66,63 +66,120 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: .net</h1>
+    
+      <h1 class="entry-title">SECCON 2014 オンライン予選 その他諸々</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-20T19:24:34+09:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。</p>
 
-  
-  <h2>2014</h2>
+<h2>decode me</h2>
 
-<article>
-  
-<h1><a href="/blog/2014/06/20/miocat-at-coinslt0/">miocatのその後、あるいはcoinsLT #0で発表した話</a></h1>
-<time datetime="2014-06-20T11:09:26+09:00" pubdate><span class='month'>Jun</span> <span class='day'>20</span> <span class='year'>2014</span></time>
+<p>ダウンロードした<code>encoded.txt</code>を見ると盛大に文字化けしてるんだけど、<code>FRPPBA 2014</code>という文字を見た瞬間にここが<code>SECCON 2014</code>であることを確信。ということは換字式暗号か何かなんだろうけど、<code>ebg13/47</code>という文字が気になる。とここで@re_Ordが「rot13/47というのがあるらしい」。なんじゃそりゃと思って調べてみると、rot13を拡張したそういう暗号があるらしかった。</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/coinslt/'>coinslt</a>, <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/miocat/'>miocat</a>, <a class='category' href='/blog/categories/mono/'>mono</a>, <a class='category' href='/blog/categories/tkbctf3/'>tkbctf3</a></span>
-</footer>
+<p>rot13/47はnkfコマンドで簡単に変換出来るので、それを実行しておしまい。</p>
 
+<h2>ソーシャルハック？</h2>
 
-</article>
+<p>私はページを開いて「天安門事件」って入力したら即座に退出されてしまったのであんまり遊んでません。</p>
 
+<h2>捏造された契約書を暴け</h2>
 
+<p>降ってきたファイルを展開すると<code>Timestamp.dd</code>というファイルが得られる。ここから特定の日付以降になってるようなファイルを探す。日付だから年が入ってるだろうと思って、マウントして云々とかは一切せずに<code>strings Timestamp.dd | grep 2012</code>とかやると1つだけ結果が出てくる。</p>
 
-<article>
-  
-<h1><a href="/blog/2014/05/08/different-behaviors-of-downloadstring-and-uri-between-net-and-mono/">Different Behaviors of DownloadString and Uri between .NET and Mono</a></h1>
-<time datetime="2014-05-08T07:43:38+09:00" pubdate><span class='month'>May</span> <span class='day'>08</span> <span class='year'>2014</span></time>
+<p>……で、300点問題だし、まさかそんなわけないよねー、と思ってそれをスルーしてマウントして探し始めたところ、隣で@yuscarletがこの問題を通していた。正解はまさかの先ほど<code>strings</code>やって出てきた日付だったらしい。</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/mono/'>mono</a></span>
-</footer>
+<p>よくわかんなくてもとりあえず送信しておくべきですね（白目）</p>
 
+<h2>重ねてみよう</h2>
 
-</article>
+<p>チーム複数人でまずImageMagickでgif画像を分解して合成云々で粘っていた。これ合成したらQRコードとか出てくるんだろとか思っていたら実際に出てきたのはQRコードでした。</p>
 
+<p>ちなみに、ImageMagickでgif画像を分解、色を反転、透過色を設定……ってやったけどどうにも合成が上手く行ってなかったらしい。で、最終的に取った手段は透過色の設定までやった画像ファイルを全部GIMPに突っ込んでレイヤーとして開き、一番下に白一色のレイヤーを追加するという方法でした。GIMP最強じゃん（</p>
 
+<h2>詰将棋</h2>
 
-<article>
-  
-<h1><a href="/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/">結局Monoと.NETの挙動の違いはなんだったのか</a></h1>
-<time datetime="2014-05-08T06:49:41+09:00" pubdate><span class='month'>May</span> <span class='day'>08</span> <span class='year'>2014</span></time>
+<p>突然のurandom将棋部発足。私は何もしてません（</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/mono/'>mono</a></span>
-</footer>
+<p>盤面をにらめっこして頭の中で考えるよりも、適当な紙を用意して駒と盤面作った方がよかったようです。</p>
 
+<h2>諸々</h2>
 
-</article>
+<p>チーム内連携で解けた割と問題があって、今回は結構みんな神が降りていた気がします。ググれる文鎮とは私のことだ！（迫真）</p>
 
+<p>最後の1時間くらい、他のメンバーがDecrypt it!を解いている間に祈っていたら、どうやら全国行けるようです。最後の瞬間のランキングを確認してないんですがひょっとしたらチーム1位かもしれません。やったね。</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Mei Akizuru</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-20T19:24:34+09:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/seccon/'>seccon</a>, <a class='category' href='/blog/categories/seccon2014/'>seccon2014</a>, <a class='category' href='/blog/categories/write-up/'>write-up</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-preliminary/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-preliminary/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/07/20/seccon2014-online-printit/" title="Previous Post: SECCON 2014 オンライン予選 【Print it!】">&laquo; SECCON 2014 オンライン予選 【Print it!】</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>

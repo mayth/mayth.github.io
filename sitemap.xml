@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-preliminary/</loc>
+    <lastmod>2014-07-20T19:24:34+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-printit/</loc>
     <lastmod>2014-07-20T18:53:55+09:00</lastmod>
     <priority>0.8</priority>
@@ -71,21 +77,21 @@
   
   <url>
     <loc>http://tech.aquarite.info/blog/archives/</loc>
-    <lastmod>2014-07-20T19:20:00+09:00</lastmod>
+    <lastmod>2014-07-20T19:42:33+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://tech.aquarite.info/</loc>
-    <lastmod>2014-07-20T19:20:00+09:00</lastmod>
+    <lastmod>2014-07-20T19:42:33+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://tech.aquarite.info/about/</loc>
-    <lastmod>2014-07-20T19:20:00+09:00</lastmod>
+    <lastmod>2014-07-20T19:42:33+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

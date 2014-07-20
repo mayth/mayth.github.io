@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。 問題概要 謎のファイルが降ってきます。以上。 解法 降ってきたファイルの正体は&#8221;Standard Triangulated &hellip;">
+  <meta name="description" content="2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。 decode me ダウンロードしたencoded.txtを見ると盛大に文字化けしてるんだけど、FRPPBA 2014という文字を見た瞬間にここがSECCON &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,78 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/20/seccon2014-online-preliminary/">SECCON 2014 オンライン予選 その他諸々</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-20T19:24:34+09:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。</p>
+
+<h2>decode me</h2>
+
+<p>ダウンロードした<code>encoded.txt</code>を見ると盛大に文字化けしてるんだけど、<code>FRPPBA 2014</code>という文字を見た瞬間にここが<code>SECCON 2014</code>であることを確信。ということは換字式暗号か何かなんだろうけど、<code>ebg13/47</code>という文字が気になる。とここで@re_Ordが「rot13/47というのがあるらしい」。なんじゃそりゃと思って調べてみると、rot13を拡張したそういう暗号があるらしかった。</p>
+
+<p>rot13/47はnkfコマンドで簡単に変換出来るので、それを実行しておしまい。</p>
+
+<h2>ソーシャルハック？</h2>
+
+<p>私はページを開いて「天安門事件」って入力したら即座に退出されてしまったのであんまり遊んでません。</p>
+
+<h2>捏造された契約書を暴け</h2>
+
+<p>降ってきたファイルを展開すると<code>Timestamp.dd</code>というファイルが得られる。ここから特定の日付以降になってるようなファイルを探す。日付だから年が入ってるだろうと思って、マウントして云々とかは一切せずに<code>strings Timestamp.dd | grep 2012</code>とかやると1つだけ結果が出てくる。</p>
+
+<p>……で、300点問題だし、まさかそんなわけないよねー、と思ってそれをスルーしてマウントして探し始めたところ、隣で@yuscarletがこの問題を通していた。正解はまさかの先ほど<code>strings</code>やって出てきた日付だったらしい。</p>
+
+<p>よくわかんなくてもとりあえず送信しておくべきですね（白目）</p>
+
+<h2>重ねてみよう</h2>
+
+<p>チーム複数人でまずImageMagickでgif画像を分解して合成云々で粘っていた。これ合成したらQRコードとか出てくるんだろとか思っていたら実際に出てきたのはQRコードでした。</p>
+
+<p>ちなみに、ImageMagickでgif画像を分解、色を反転、透過色を設定……ってやったけどどうにも合成が上手く行ってなかったらしい。で、最終的に取った手段は透過色の設定までやった画像ファイルを全部GIMPに突っ込んでレイヤーとして開き、一番下に白一色のレイヤーを追加するという方法でした。GIMP最強じゃん（</p>
+
+<h2>詰将棋</h2>
+
+<p>突然のurandom将棋部発足。私は何もしてません（</p>
+
+<p>盤面をにらめっこして頭の中で考えるよりも、適当な紙を用意して駒と盤面作った方がよかったようです。</p>
+
+<h2>諸々</h2>
+
+<p>チーム内連携で解けた割と問題があって、今回は結構みんな神が降りていた気がします。ググれる文鎮とは私のことだ！（迫真）</p>
+
+<p>最後の1時間くらい、他のメンバーがDecrypt it!を解いている間に祈っていたら、どうやら全国行けるようです。最後の瞬間のランキングを確認してないんですがひょっとしたらチーム1位かもしれません。やったね。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1886,80 +1958,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/23/rails-admin-jp-problem/">RailsAdminの日時選択が日本語でバグる</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-23T20:08:42+09:00" pubdate data-updated="true">Jan 23<sup>rd</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>概略</h1>
-
-<p>Rails Adminでdatetime型（日時）のカラムを含むモデルを操作する際、ロケールが日本語で、かつ<a href="https://github.com/svenfuchs/rails-i18n">svenfuchs/rails-i18n</a>のファイルをそのまま使っていると例外<code>ArgumentError</code>(argument out of range)で死ぬ。</p>
-
-<h1>原因</h1>
-
-<p>そもそも内部で使ってる<code>Date._parse</code>（これはRubyの標準ライブラリである&#8217;time&#8217;に含まれる）が日本語形式（<code>y年m月d日</code>）での日付のパースに対応していない。</p>
-
-<h1>対策</h1>
-
-<p><strong>「日本語を使わなければいいんじゃないかな」</strong></p>
-
-<p>Rails AdminではjQuery UIのdatepicker/timepickerを使っています。<code>input</code>要素の<code>data-options</code>属性にオプションをJSON形式で渡していて、このオプションの中に月名や曜日名、日付または時刻のフォーマットが含まれています。なのでこのオプションを変更して、フォーマットを<code>Date._parse</code>が対応している形式に変更すれば対策出来ます。このオプションは使用しているロケールに依存します（JavaScriptの実行時点ではなくてビューのテンプレートがレンダリングされた時点でオプションの中身が決定されて引き渡されます）。</p>
-
-<p>が、もはや一体どこを弄ったらjQueryの(date|time)pickerに日本語が渡らないように出来るか調べる気力もなくなってしまったので、ロケール側を弄ることで対処しました。</p>
-
-<p>具体的には<code>config/locales/ja.yml</code>の<code>date.formats</code>、および<code>time.formats</code>以下に存在する各種日付や時刻の形式を<code>Date._parse</code>がパース出来、日本語を含まないような形式に変更します。<code>%Y-%m-%d</code>とか<code>%Y-%m-%d %H:%M:%S</code>とか、数値と記号だけで表記するように変更すると幸せになれると思います。</p>
-
-<p>これはロケール単位で変更出来るので、日本語のみ月名・曜日を含むような形式を避ければ問題ないと思います。英語のロケールの方では<code>%B %d, %Y</code>(&lsquo;January 23, 2014&rsquo;)とかが標準ですが、<code>Date._parse</code>はこの辺の形式には対応しているので問題ないです。</p>
-
-<p>または、日本語ロケールの月名・曜日名の定義をそのまま英語に差し替えてしまうという手もあります。日本語ロケールにおいてもフォーマットは英語ロケールと統一したいという場合にはこの方がいいと思います。</p>
-
-<p>欠点としては、影響がRails Adminに限らずアプリ全体に及んでしまう点が挙げられます。</p>
-
-<p>試してはいませんが、他にはRails Adminのビューを弄れば出来そうな予感はします。要は<code>input</code>要素の<code>data-options</code>属性の中身を変更出来ればいいわけなので、ビューをカスタマイズして適切な形式のフォーマットを渡すとか、あるいは単純にJavaScriptで実行時に書き換えてやるとか、いろいろやりようはありそうです。が、そもそもビューのカスタマイズが面倒そうだったのでやってません。</p>
-
-<h1>おまけ: 調査の経過</h1>
-
-<p>エラーを吐いたときのスタックトレースを見ながら各メソッドに渡っている引数を見ると、引数に渡っている文字列が<code>2014年01Mon23Sun(Thu) 09:00</code>になっていたのでこの辺を調べた。</p>
-
-<p>日本語ロケールで使用する場合、管理画面上のdatetime pickerを使うとコントローラへは<code>2014年01月23日(木) 09:00</code>といった形式で選択した日時が渡る。RailsAdminはこれを<code>RailsAdmin::Config::Fields::Types::Datetime.parse_input</code>メソッドを使ってパースしようとする。</p>
-
-<p>ここでパースするとき、<code>normalize</code>メソッドを通す。<code>normalize</code>メソッドはパースしようとする文字列と、フォーマット文字列を渡す（フォーマット文字列については<a href="http://docs.ruby-lang.org/ja/2.1.0/class/Time.html#I_STRFTIME">Time.strftime</a>の説明を見るとよさげ）。日時に関しては、概略で示した日本語ロケールのファイルの場合、これは<code>%Y年%m月%d日(%a) %H:%M</code>である。<code>normalize</code>メソッドからさらにメソッド呼び出しを辿ると最終的に<code>Date._parse</code>メソッドに文字列を渡してパースすることがわかった。</p>
-
-<p>DateTimeに対応する<code>normalize</code>メソッドは、英語ロケール以外が選択されており、かつ月名（とその省略形）、曜日名（とのその省略形）、午前/午後のフォーマット文字列が含まれるときに、パース対象の文字列に含まれる英語以外のロケールのそれらを、英語ロケールに置換する。フォーマット文字列でいえば<code>%[AaBbp]</code>のいずれかが含まれる場合に該当する。つまり<code>2014年01月23日(木) 09:00</code>と<code>%Y年%m月%d日(%a) %H:%M</code>が渡ったときに、<code>2014年01月23日(Thu) 09:00</code>を返すはずである。</p>
-
-<p>前述のフォーマット文字列には<code>%a</code>（曜日）が含まれるのでこの置換が発生するが、このとき単純に全ての曜日の文字を置換してしまう。要は「月」→&#8221;Mon&#8221;、「火」→&#8221;Tue&#8221;、「水」→&#8221;Wed&#8221;、…という置換をパース対象文字列に行うわけだが、「月」と「日」が曜日以外に現れるせいでこれが巻き込まれて形式が狂う。その結果として最初に示した<code>2014年01Mon23Sun(Thu) 09:00</code>になってしまう。「01月」の「月」と「23日」の「日」が置換されてしまったわけだ。</p>
-
-<p>で、ここで文字列が壊れてしまったのが原因なんじゃないかと思ったが、ふとそこでデバッガを使ってパース対象文字列を強引に元の正しい文字列に直しても同じエラーが発生する。別のコンソールでpryを立ち上げて同じ文字列を<code>Date._parse</code>に食わせたところ、同じ結果が返ってくる。今回の場合、月の値が20になってしまっている。こうして問題は前述の置換処理でもなんでもなく、そもそも冒頭に述べたように<code>Date._parse</code>が「2014年01月23日」というような日本語の形式に対応していないかららしい、ということになった。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="2">&larr; Older</a>
@@ -2008,6 +2006,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-preliminary/">SECCON 2014 オンライン予選 その他諸々</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/20/seccon2014-online-printit/">SECCON 2014 オンライン予選 【Print it!】</a>
       </li>
     
@@ -2021,10 +2023,6 @@
     
       <li class="post">
         <a href="/blog/2014/05/28/rails-app-with-mina/">Railsアプリ with Mina and OpenRC</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/08/different-behaviors-of-downloadstring-and-uri-between-net-and-mono/">Different Behaviors of DownloadString and Uri between .NET and Mono</a>
       </li>
     
   </ul>
