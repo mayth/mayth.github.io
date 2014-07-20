@@ -40,6 +40,12 @@ aside.sidebar {
       margin-bottom: 0;
     }
   }
+  #menu {
+    ul > li > i.fa {
+      width: 16px;
+      text-align: center;
+    }
+  }
   a {
     color: inherit;
     @include transition(color .5s);
