@@ -31,7 +31,7 @@ MonoのWebClientにおけるURI
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
 
@@ -88,7 +88,7 @@ MonoのWebClientにおけるURI
   
 
 
-<time datetime="2014-05-08T07:43:38+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time>
+<time datetime="2014-05-08T07:43:38+09:00" pubdate data-updated="true">May 8<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -114,7 +114,7 @@ MonoのWebClientにおけるURI
 
 <h1>DownloadString</h1>
 
-<p><code>DownloadString(String)</code> and some methods (e.g. <code>DownloadFile(String)</code>, <code>OpenRead(String)</code>, etc.) calls <code>CreateUri(String)</code>, a private method of <code>WebClient</code>. (&ndash;> <a href="https://github.com/mono/mono/blob/master/mcs/class/System/System.Net/WebClient.cs#L798">source code on github</a>)</p>
+<p><code>DownloadString(String)</code> and some methods (e.g. <code>DownloadFile(String)</code>, <code>OpenRead(String)</code>, etc.) calls <code>CreateUri(String)</code>, a private method of <code>WebClient</code>. (-> <a href="https://github.com/mono/mono/blob/master/mcs/class/System/System.Net/WebClient.cs#L798">source code on github</a>)</p>
 
 <h2>CreateUri and GetUri</h2>
 
@@ -246,12 +246,12 @@ MonoのWebClientにおけるURI
   
 
 
-<time datetime="2014-05-08T07:43:38+09:00" pubdate data-updated="true">May 8<span>th</span>, 2014</time>
+<time datetime="2014-05-08T07:43:38+09:00" pubdate data-updated="true">May 8<sup>th</sup>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dot-net/'>.NET</a>, <a class='category' href='/blog/categories/mono/'>Mono</a>
+    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/mono/'>mono</a>
   
 </span>
 
@@ -290,9 +290,9 @@ MonoのWebClientにおけるURI
 <section id="menu">
   <ul>
     <li><i class="fa fa-home fa-lg"></i><a href="http://tech.aquarite.info"> Home </a></li>
-    <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
-    <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
-    <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://tech.aquarite.info/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://tech.aquarite.info/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://tech.aquarite.info/atom.xml"> Feed </a></li>
   </ul>
 </section>
 
@@ -314,9 +314,14 @@ MonoのWebClientにおけるURI
   
 </section>
 
+
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-amida/">SECCON 2014 オンライン予選 【あみだくじ】</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/20/miocat-at-coinslt0/">miocatのその後、あるいはcoinsLT #0で発表した話</a>
@@ -332,10 +337,6 @@ MonoのWebClientにおけるURI
     
       <li class="post">
         <a href="/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/">結局Monoと.NETの挙動の違いはなんだったのか</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/07/uri-parsing-in-webclient/">MonoのWebClientにおけるURI</a>
       </li>
     
   </ul>
@@ -399,7 +400,7 @@ MonoのWebClientにおけるURI
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>

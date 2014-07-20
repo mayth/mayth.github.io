@@ -29,7 +29,7 @@
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
 
@@ -86,7 +86,7 @@
   
 
 
-<time datetime="2014-02-06T08:56:44+09:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
+<time datetime="2014-02-06T08:56:44+09:00" pubdate data-updated="true">Feb 6<sup>th</sup>, 2014</time>
         
       </p>
     
@@ -116,9 +116,9 @@
 
 <p>Sublime Textとの連携については公式からプラグインが提供されている（なぜか<a href="http://clang.llvm.org/docs/ClangFormat.html">ドキュメント</a>には言及がないが……）。</p>
 
-<p>まずはツリーから当該のプラグインを落としてくる。 &ndash;> <a href="https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py">https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py</a></p>
+<p>まずはツリーから当該のプラグインを落としてくる。 -> <a href="https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py">https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py</a></p>
 
-<p>ソースコード冒頭に簡単な説明があるのでそれに従う。まずはこのファイルを<code>~/Library/Application Support/Sublime Text 3/Packages/User</code>以下に入れる。次にSublime TextのPreferences &ndash;> Key Bindings &ndash; Userを選んでキーバインドの設定ファイルを開き次の一行を追加する（説明ではCtrl+Shift+Cになっているのでそのようにしたが適宜変える）。</p>
+<p>ソースコード冒頭に簡単な説明があるのでそれに従う。まずはこのファイルを<code>~/Library/Application Support/Sublime Text 3/Packages/User</code>以下に入れる。次にSublime TextのPreferences -> Key Bindings - Userを選んでキーバインドの設定ファイルを開き次の一行を追加する（説明ではCtrl+Shift+Cになっているのでそのようにしたが適宜変える）。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>{ "keys": ["ctrl+shift+c"], "command": "clang_format" }</span></code></pre></td></tr></table></div></figure>
@@ -196,7 +196,7 @@
 
 <p>（ちなみにこれ、gccでは通ったりするのだろうか。少なくとも大学のLinuxマシンに入っていたgcc 4.1.2でもエラーを吐いたが）</p>
 
-<p>次、<code>-soname</code>なんてオプションは知らないと言い始める。これは単純に<code>-soname</code>を<code>-install_name</code>に置換してしまえばよい。 参考: <a href="http://stackoverflow.com/questions/4580789/cmake-mac-os-x-ld-unknown-option-soname">osx &ndash; CMake: Mac OS X: ld: unknown option: -soname &ndash; Stack Overflow</a></p>
+<p>次、<code>-soname</code>なんてオプションは知らないと言い始める。これは単純に<code>-soname</code>を<code>-install_name</code>に置換してしまえばよい。 参考: <a href="http://stackoverflow.com/questions/4580789/cmake-mac-os-x-ld-unknown-option-soname">osx - CMake: Mac OS X: ld: unknown option: -soname - Stack Overflow</a></p>
 
 <p>次、<code>-rpath</code>なんてオプションも知らないと言い出す。これは一旦<code>-rpath</code>を削除してしまう（<code>-Wl,-rpath...</code>でひとつのオプションなのでこのかたまりを消す。<code>-Wl</code>はリンカーに渡すオプションを指定するオプション）。いろいろ探し回った挙げ句、どうもこれを代替する手段はなさそうだった。</p>
 
@@ -239,7 +239,7 @@
   
 
 
-<time datetime="2014-02-06T08:56:44+09:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
+<time datetime="2014-02-06T08:56:44+09:00" pubdate data-updated="true">Feb 6<sup>th</sup>, 2014</time>
       
 
 
@@ -277,9 +277,9 @@
 <section id="menu">
   <ul>
     <li><i class="fa fa-home fa-lg"></i><a href="http://tech.aquarite.info"> Home </a></li>
-    <li><i class="fa fa-calendar fa-lg"></i><a href="/blog/archives/"> Archives </a></li>
-    <li><i class="fa fa-user fa-lg"></i><a href="/about/"> About </a></li>
-    <li><i class="fa fa-rss fa-lg"></i><a href="/atom.xml"> Feed </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://tech.aquarite.info/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://tech.aquarite.info/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://tech.aquarite.info/atom.xml"> Feed </a></li>
   </ul>
 </section>
 
@@ -301,9 +301,14 @@
   
 </section>
 
+
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-amida/">SECCON 2014 オンライン予選 【あみだくじ】</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/20/miocat-at-coinslt0/">miocatのその後、あるいはcoinsLT #0で発表した話</a>
@@ -319,10 +324,6 @@
     
       <li class="post">
         <a href="/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/">結局Monoと.NETの挙動の違いはなんだったのか</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/07/uri-parsing-in-webclient/">MonoのWebClientにおけるURI</a>
       </li>
     
   </ul>
@@ -386,7 +387,7 @@
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>

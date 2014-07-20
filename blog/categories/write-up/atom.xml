@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: ctf | Hello (forgotten) world]]></title>
-  <link href="http://tech.aquarite.info/blog/categories/ctf/atom.xml" rel="self"/>
+  <title><![CDATA[Category: write-up | Hello (forgotten) world]]></title>
+  <link href="http://tech.aquarite.info/blog/categories/write-up/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
   <updated>2014-07-20T18:49:36+09:00</updated>
   <id>http://tech.aquarite.info/</id>
@@ -467,84 +467,6 @@
 </span><span class='line'> |     | |  |  |   &lt;br/>
 </span><span class='line'> |     | |  |  |   &lt;br/>
 </span><span class='line'> &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-8</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[miocatのその後、あるいはcoinsLT #0で発表した話]]></title>
-    <link href="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/"/>
-    <updated>2014-06-20T11:09:26+09:00</updated>
-    <id>http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0</id>
-    <content type="html"><![CDATA[<p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
-
-<iframe src="http://www.slideshare.net/slideshow/embed_code/35913754" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-
-
-<p> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/masatokunita/coins-lt0-miocatshortpublic" title="tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜" target="_blank">tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜</a> </strong> from <strong><a href="http://www.slideshare.net/masatokunita" target="_blank">Masato Kunita</a></strong> </div></p>
-
-<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
-
-<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
-
-
-<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
-
-<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
-
-<p>曰く、「"<a href="http://test.com">http://test.com</a>" はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
-
-<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
-
-<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[tkbctf3 miocat]]></title>
-    <link href="http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat/"/>
-    <updated>2014-05-07T13:26:00+09:00</updated>
-    <id>http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat</id>
-    <content type="html"><![CDATA[<p>miocat（みお・きゃっと）はとある伝説の脱ヲタエンジニアが書き上げた伝説のプログラムに着想を得てっていうのはどうでもいいとして、実際のところは.NET Frameworkのとある仕様に関する問題です。<strong>でした</strong>。以下本来の意図の説明です。</p>
-
-<h1>ソースコード</h1>
-
-<p>と、その前に。今回のソースコードは<a href="https://github.com/tkbctf/archive">tkbctf/archive</a>に上げておきます。結構問題の核心以外の部分で苦労してたりしますがそれはそれということで。</p>
-
-<p>追記: 上げました -> <a href="https://github.com/tkbctf/archive/tree/master/tkbctf3/web250_miocat">tkbctf/archive/tkbctf3/web250_miocat</a></p>
-
-<h1>問題の説明</h1>
-
-<p>指示されたアドレスにWebブラウザからアクセスすると、タイトルとフォーム（入力フィールド1つとボタン1つ + <code>hidden</code>のフィールド）のやる気の無いWebページが表示されます。</p>
-
-<p>このフォームに適当なURLを入力して（このURLを<strong>ターゲットURL</strong>と言うこととします）<code>nya!</code>ボタンを押すと、ターゲットURLに対してmiocatサーバーがリクエストを行い、その結果をそっくりそのままレスポンスとして返します（<code>title</code>の中身だけ少し変わっていますが）。</p>
-
-<p>実際には<code>http://</code>や<code>file://</code>など、スキーマ（らしき文字列）が先頭にないと<code>not acceptable</code>が表示されます。それらしき文字列であればなんでもいいので、<code>abc://</code>でも通ります。また、サーバーは外部へのアクセスが遮断された状態で稼働していたので、<code>http://www.google.com</code>などをターゲットに指定しても失敗します。</p>
-
-<p>さて、miocatはターゲットURLを上述の「スキーマらしき文字列があるかどうか」のチェックをした後で、それが<code>file://</code>であるか否かのチェックをします。ここで<code>file://</code>であった場合も<code>not acceptable</code>のエラーになります。ところがこれをすり抜ける方法があります。それはMSDNの<a href="http://msdn.microsoft.com/ja-jp/library/dd465121(v=vs.110">.NET Framework で文字列を使用するためのベスト プラクティス</a>.aspx)にも記載されているまさにそのままの方法です。つまり、フォームのhiddenになっていた<code>locale</code>の値、およびクエリパラメータに含まれる<code>locale</code>の値がそのスレッドのカルチャになっているので、<code>locale=tr-TR</code>なんて値を指定すると見事にトルコ語ロケールに切り替わり、<code>FILE://</code>で始まっているかのどうかの比較をカレントスレッドのロケールで行うためにチェックをすり抜けてしまいます。</p>
-
-<p>ということは、トルコ語ロケールに切り替えてしまえば<code>file://...</code>であるようなURLでもmiocatがリクエストを出します。これはmiocatが動作するユーザーが読めるファイルは全て読めることを意味しています。なので<code>/etc/passwd</code>を読んでみたり（`/etc/passwdにはヒントというか、「これを読め」という指示が書かれていました）適当に推測してみたりして、結果的にflagファイルを読めればおしまいです。</p>
-
-<p>miocatの仕組みというか中身は以上です。まぁ、.NETのその仕様を知っていれば一瞬で解けてしまうような問題でした。過去2回F#とILを読ませる問題だったので、少し捻った.NET系の問題を出してみようと思った結果コレになりました。</p>
-
-<h2>ディレクトリトラバーサル</h2>
-
-<p>しかしながら現実とは非情な物でして、ディレクトリトラバーサルの脆弱性を素で作り込んでいました。というか、内部的には上記のURLチェックをした後に<code>WebClient</code>の<code>DownloadString(string)</code>を呼んでるだけなんですが、まさかそいつが普通にカレントディレクトリを読みに行くとは全く予想しておらずチェックもしていなかったというのが実際のところです。いやまぁ、普通与えられたURLをそのまま読みに行くなんて無茶苦茶なことはしないと思うので問題にはならないんでしょうけど。</p>
-
-<p>というわけでその場合はどのようにするかと言いますと、<code>hoge://../../../etc/passwd</code>とかなんとかすると<code>/etc/passwd</code>が読めるので後は上記と同じです。<code>file://</code>と同じように<code>http:///etc/passwd</code>とかすると<code>/home/miocat/http:/etc/passwd</code>を読みにいくんですが、この辺りの仕様は正直私もわかってません。WebClientとかUriの実装読めというお告げなんですかねコレ。（この辺は別の記事でやりたいと思います）</p>
-
-<p><del>スキーマの部分切り落として</del><strong>訂正: 切り落としてるのではなく、単にディレクトリとして認識されていた模様（つまり<code>abc://etc...</code>は<code>/home/miocat/abc://etc...</code>）</strong>カレントディレクトリを基点にしてファイルを読みに行くのが個人的に結構ヤバイ挙動だと思ってるんですがどうなんでしょう……。</p>
-
-<h2>エラー処理</h2>
-
-<p>あとこれも完全な手落ちでしたがエラーメッセージにフルパスぶち込まれてるのも良くなかったですね。はい。すっごい初歩的なところですが……。</p>
-
-<h1>まとめ</h1>
-
-<p>普通に安全なプログラムを書いてから穴を開けるべきだったんだろうなぁと思ってます。今までバイナリ（というかC#/IL）を読ませるような問題しか書いてなくて、こういうタイプの問題は初めてだったわけですけど、難しいですね。（ていうかなぜド素人が問題書いてるのか）</p>
-
-<p>それ以外にも、この方針で行こうと決めてから難易度低すぎなのでアレやコレやと思索してみてやっぱり没になったとか、grepが高速化した云々でちょうどトルコ語らへんが話題になって「あっこれヤバくね」とか思ったりとかいろいろありました。</p>
-
-<p>次のtkbctfはどうなるのかわかりませんが、そろそろ筑波大学期待の新人達が私たちよりよっぽど上手くやってくれるんじゃないかなと期待しております。それでは。</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-06-20T11:23:07+09:00</updated>
+  <updated>2014-07-20T18:49:36+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -12,6 +12,457 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2014 オンライン予選 【あみだくじ】]]></title>
+    <link href="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-amida/"/>
+    <updated>2014-07-20T00:29:19+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-amida</id>
+    <content type="html"><![CDATA[<p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。今回は「あみだくじ」。</p>
+
+<h2>問題概要</h2>
+
+<p>問題は64bit ELF形式の実行ファイル<code>amida</code>。これを実行すると「No.i」(i = 1, 2, &hellip;)と書かれた行に続けて1から順に番号が振られたあみだくじが表示され、いずれかの終端の1箇所に*印がついている。……が、後になると</p>
+
+<ul>
+<li>番号の振り方が逆 (左から1, 2, &hellip;ではなく8, 7, &hellip;になっている)</li>
+<li>そもそもくじの上下が逆</li>
+<li>各行の先頭にnull文字が突っ込まれている</li>
+<li>くじの縦線の間が広がる</li>
+<li>くじが横向きになる</li>
+</ul>
+
+
+<p>……といった面白形式で表示されるようになります。具体例は最後に書いてあるのでそちらを。</p>
+
+<h2>解法</h2>
+
+<p>問題を確認せずに1から順に解答してみる。</p>
+
+<p>やることとしては、次の手順をフラグが得られるまで繰り返します。</p>
+
+<ol>
+<li><code>amida</code>は問題を出力した後<code>?</code>という文字を出力して入力待ちに入るのでそれが見つかるまで読み捨てる</li>
+<li>次の解答を試す</li>
+<li>正解ならその番号を記録して、試行する番号を1にリセット。次の問題へ。</li>
+<li>不正解なら<code>amida</code>は<code>Wrong</code>を出力して終了するので、<code>amida</code>を再び立ち上げて、これまでの正解番号を次々に入力して、失敗したところまで進める。</li>
+</ol>
+
+
+<p>なお、実際には問題の記録のために問題は読み捨てるのではなく、読んだものをファイルに保存しました。</p>
+
+<p>この方針の提案と、この後に行うソルバの実装は@yuscarletがC++で、amidaとソルバの間を適当に受け持つ部分をRubyで私が実装しました。最終的に使用した総当たり方式はRubyのみで実装しました。</p>
+
+<p>ところでamidaの実行ファイルなんですが、異様に問題出力が遅いんですね。私と@yuscarletが順当（？）にプログラム書いてる一方で@6f70が<code>amida</code>のプログラムを解析していて、それによって「問題数は1000問であること」、「問題を出力する際に<code>sleep</code>が噛まされている」ということがわかりました。そこで彼が問題を出力するときに挟まっている<code>sleep</code>を潰したバイナリを用意して、それを用いて総当たり法を実行。結果としてプログラムを動かしてから5分かそこらくらいでフラグを得ました。</p>
+
+<p>ans: <code>c4693af1761200417d5645bd084e28f0f2b426bf</code></p>
+
+<h2>その他諸々</h2>
+
+<p>一旦この総当たり方式で実装してみたんですが、どうにも上手く行かなかった（問題の終了判定が上下が逆転しているケースに対応していなかったり諸々）のとさすがにあまりにも遅かったので（この原因は上述の<code>sleep</code>）ソルバで真っ正面から解いてみようということになりました。</p>
+
+<p>（※最初は1行ずつ読んで判定していたので上手く行きませんでした。ソルバによる解答を諦めた後に1文字ずつ読めばいいことに気がついて上述の解答となりました）</p>
+
+<p>番号やらくじの向きやら幅やらが変わっていることに気がつく度にソルバやらRubyのプログラムやらを修正していたんですが、51番目でくじが横向きになっているのがわかると「こんな調子でいろんなパターン対応してたらキリがない」として、ソルバによる解答を放棄して、最初の総当たり方式に戻しました（ちなみに他の方のwrite-upを読むとどうやら100問目までで全パターンが出ていた模様）。</p>
+
+<p>あと番号が逆とかくじの上下が逆とかはともかくとして、null文字突っ込まれてるのは最高にタチが悪いと思いました（小並感）。これ、ソルバによる解答をしているときに遭遇してめちゃくちゃ悩んでて、最終的に問題をファイルに保存してvimで眺めるまでわかりませんでした。</p>
+
+<p>それと1000問あるらしいということと<code>sleep</code>が入っていることがわかったのは結構大きかったですね。前者がわかっていたことでソルバによる対応を諦める判断をすぐに下せましたし、後者が判明していたこと、かつそれを潰せたことで、解答にかかる時間をかなり短縮出来ました。</p>
+
+<h2>コード</h2>
+
+<p><a href="https://gist.github.com/mayth/f162efa8dc06cd05e5e3">gist</a></p>
+
+<figure class='code'><figcaption><span> (amida.rb)</span> <a href='http://tech.aquarite.info/downloads/code/amida.rb'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="k">def</span> <span class="nf">read_problem</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">problem</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span><span class='line'>  <span class="kp">loop</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">ch</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">getc</span>
+</span><span class='line'>    <span class="k">break</span> <span class="k">if</span> <span class="o">!</span><span class="n">ch</span> <span class="o">||</span> <span class="n">ch</span> <span class="o">==</span> <span class="s1">&#39;?&#39;</span>
+</span><span class='line'>    <span class="n">problem</span> <span class="o">&lt;&lt;</span> <span class="n">ch</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">io</span><span class="o">.</span><span class="n">getc</span>
+</span><span class='line'>  <span class="n">problem</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">answers</span> <span class="o">=</span> <span class="o">[]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">playback</span><span class="p">(</span><span class="n">answers</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">answers</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">ans</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">read_problem</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">io</span><span class="o">.</span><span class="n">puts</span> <span class="n">ans</span>
+</span><span class='line'>    <span class="n">io</span><span class="o">.</span><span class="n">flush</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'><span class="n">pnum</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'><span class="kp">loop</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;|./amida_mod&#39;</span><span class="p">,</span> <span class="s1">&#39;a+&#39;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">io</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">playback</span><span class="p">(</span><span class="n">answers</span><span class="p">,</span> <span class="n">io</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kp">loop</span> <span class="k">do</span>
+</span><span class='line'>      <span class="n">problem</span> <span class="o">=</span> <span class="n">read_problem</span><span class="p">(</span><span class="n">io</span><span class="p">)</span>
+</span><span class='line'>      <span class="no">IO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;amida2_problem_</span><span class="si">#{</span><span class="n">pnum</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">problem</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">io</span><span class="o">.</span><span class="n">puts</span> <span class="n">n</span>
+</span><span class='line'>      <span class="n">io</span><span class="o">.</span><span class="n">flush</span>
+</span><span class='line'>      <span class="n">result</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gets</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s1">&#39;Wrong&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="k">break</span>
+</span><span class='line'>      <span class="k">elsif</span> <span class="o">!</span><span class="n">result</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="s1">&#39;No.&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="nb">puts</span> <span class="s2">&quot;&gt;&gt;&gt; </span><span class="si">#{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>      <span class="n">answers</span> <span class="o">&lt;&lt;</span> <span class="n">n</span>
+</span><span class='line'>      <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span class='line'>      <span class="nb">puts</span>
+</span><span class='line'>      <span class="nb">warn</span> <span class="s2">&quot;solved: </span><span class="si">#{</span><span class="n">pnum</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>      <span class="n">pnum</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>問題例</h2>
+
+<p><a href="https://gist.github.com/mayth/56bde157140dd52e260c">gist</a></p>
+
+<figure class='code'><figcaption><span>Problem Samples </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1 2 3 4 5 6 7 8
+</span><span class='line'>|-| |-| | | |-|
+</span><span class='line'>| | | | | |-| |
+</span><span class='line'>| | | | | | |-|
+</span><span class='line'>|-| | |-| | | |
+</span><span class='line'>| | |-| |-| |-|
+</span><span class='line'>|-| | |-| | | |
+</span><span class='line'>| |-| | |-| |-|
+</span><span class='line'>|-| |-| | | | |
+</span><span class='line'>| | | | |-| | |
+</span><span class='line'>| | |-| | | |-|
+</span><span class='line'>|-| | | |-| | |
+</span><span class='line'>| | |-| | |-| |
+</span><span class='line'>| | | | |-| | |
+</span><span class='line'>| |-| | | |-| |
+</span><span class='line'>| | |-| | | |-|
+</span><span class='line'>| | | | | |-| |
+</span><span class='line'>| |-| | |-| |-|
+</span><span class='line'>|-| |-| | | | |
+</span><span class='line'>| | | | | |-| |
+</span><span class='line'>              *
+</span><span class='line'>
+</span><span class='line'>1 2 3 4 5 6 7 8
+</span><span class='line'>| |-| | | |-| |
+</span><span class='line'>|-| |-| |-| | |
+</span><span class='line'>| |-| | | | |-|
+</span><span class='line'>|-| |-| | |-| |
+</span><span class='line'>| |-| | |-| |-|
+</span><span class='line'>| | |-| | |-| |
+</span><span class='line'>| |-| | | | |-|
+</span><span class='line'>| | | | | | | |
+</span><span class='line'>| |-| | |-| |-|
+</span><span class='line'>|-| |-| | |-| |
+</span><span class='line'>| | | |-| | |-|
+</span><span class='line'>|-| | | | | | |
+</span><span class='line'>| |-| | |-| | |
+</span><span class='line'>|-| |-| | | |-|
+</span><span class='line'>| |-| | | |-| |
+</span><span class='line'>|-| |-| |-| | |
+</span><span class='line'>| |-| |-| |-| |
+</span><span class='line'>|-| | | | | | |
+</span><span class='line'>| | | | | |-| |
+</span><span class='line'>            *  
+</span><span class='line'>
+</span><span class='line'>        *      
+</span><span class='line'>|-| |-| | | | |
+</span><span class='line'>| |-| | | | |-|
+</span><span class='line'>|-| | |-| | | |
+</span><span class='line'>| |-| | |-| |-|
+</span><span class='line'>| | |-| | | | |
+</span><span class='line'>| |-| |-| |-| |
+</span><span class='line'>| | | | | | | |
+</span><span class='line'>| |-| | | |-| |
+</span><span class='line'>|-| |-| |-| | |
+</span><span class='line'>| |-| |-| | |-|
+</span><span class='line'>| | |-| | | | |
+</span><span class='line'>|-| | | |-| |-|
+</span><span class='line'>| | |-| | | | |
+</span><span class='line'>| | | | |-| | |
+</span><span class='line'>|-| |-| | |-| |
+</span><span class='line'>| | | | | | | |
+</span><span class='line'>| | | | | |-| |
+</span><span class='line'>|-| |-| | | |-|
+</span><span class='line'>| |-| | |-| | |
+</span><span class='line'>8 7 6 5 4 3 2 1
+</span><span class='line'>
+</span><span class='line'>                 *    
+</span><span class='line'>|-|  |  |  |  |--|   |
+</span><span class='line'>| |  |--|  |--|  |   |
+</span><span class='line'>| |--|  |  |  |  |   |
+</span><span class='line'>|-|  |  |  |  |  |---|
+</span><span class='line'>| |  |  |  |--|  |   |
+</span><span class='line'>|-|  |--|  |  |  |---|
+</span><span class='line'>| |  |  |--|  |  |   |
+</span><span class='line'>| |  |--|  |  |--|   |
+</span><span class='line'>| |--|  |  |--|  |   |
+</span><span class='line'>|-|  |  |--|  |  |---|
+</span><span class='line'>| |  |--|  |  |--|   |
+</span><span class='line'>| |--|  |--|  |  |---|
+</span><span class='line'>|-|  |--|  |  |--|   |
+</span><span class='line'>| |--|  |  |  |  |---|
+</span><span class='line'>| |  |  |--|  |--|   |
+</span><span class='line'>| |--|  |  |--|  |   |
+</span><span class='line'>| |  |  |--|  |  |---|
+</span><span class='line'>| |  |--|  |  |--|   |
+</span><span class='line'>| |--|  |--|  |  |---|
+</span><span class='line'>1 2  3  4  5  6  7   8
+</span><span class='line'>
+</span><span class='line'>1------------------- 
+</span><span class='line'>  | |  |  | | |  |   
+</span><span class='line'>2------------------- 
+</span><span class='line'> | | |   | | | |     
+</span><span class='line'>3------------------- 
+</span><span class='line'>  |   |   | | |      
+</span><span class='line'>4-------------------*
+</span><span class='line'>   |   | |      | |  
+</span><span class='line'>5------------------- 
+</span><span class='line'>     |      |  | |   
+</span><span class='line'>6------------------- 
+</span><span class='line'>    |     |  |     | 
+</span><span class='line'>7------------------- 
+</span><span class='line'>   |  | |  |   |  |  
+</span><span class='line'>8------------------- 
+</span><span class='line'>
+</span><span class='line'> -------------------1
+</span><span class='line'> | |   | | |  |  |   
+</span><span class='line'> -------------------2
+</span><span class='line'>  |  |  |    |  |  | 
+</span><span class='line'> -------------------3
+</span><span class='line'>   |          |   |  
+</span><span class='line'> -------------------4
+</span><span class='line'>  |  | |   | | | |   
+</span><span class='line'> -------------------5
+</span><span class='line'> |  | |   |   | |    
+</span><span class='line'>*-------------------6
+</span><span class='line'>        |   |  |     
+</span><span class='line'> -------------------7
+</span><span class='line'> | | | | | |  | | |  
+</span><span class='line'> -------------------8
+</span><span class='line'>
+</span><span class='line'> -------------------1
+</span><span class='line'>       |    |      | 
+</span><span class='line'>       |    |      | 
+</span><span class='line'>*-------------------2
+</span><span class='line'>   | |     | | | |   
+</span><span class='line'> -------------------3
+</span><span class='line'> |    |  |    |    | 
+</span><span class='line'> -------------------4
+</span><span class='line'>  | |  |  |  |  | |  
+</span><span class='line'>  | |  |  |  |  | |  
+</span><span class='line'>  | |  |  |  |  | |  
+</span><span class='line'>  | |  |  |  |  | |  
+</span><span class='line'> -------------------5
+</span><span class='line'> |       |  |  | | | 
+</span><span class='line'> |       |  |  | | | 
+</span><span class='line'> -------------------6
+</span><span class='line'>  | | | |  | |  |    
+</span><span class='line'> -------------------7
+</span><span class='line'> |     | |  |  |     
+</span><span class='line'> |     | |  |  |     
+</span><span class='line'> -------------------8</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[miocatのその後、あるいはcoinsLT #0で発表した話]]></title>
@@ -27,7 +478,7 @@
 
 <p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
 
-<iframe width="560" height="315" src="http://tech.aquarite.info//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
 
 
 <p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
@@ -99,7 +550,7 @@
 
 <p>とかやると動くようになる。</p>
 
-<p>ちなみにruby-buildを使っている場合はインストール後にそれを自動でやってくれるpluginがある。 &ndash;> <a href="https://github.com/Cofyc/rbenv-auto_gem">Cofyc/rbenv-auto_gem</a></p>
+<p>ちなみにruby-buildを使っている場合はインストール後にそれを自動でやってくれるpluginがある。 -> <a href="https://github.com/Cofyc/rbenv-auto_gem">Cofyc/rbenv-auto_gem</a></p>
 
 <p>これを<code>$HOME/.rbenv/plugins</code>の下にcloneして<code>rbenv install ...</code>とかやると適切な場所に空の<code>auto_gem.rb</code>を作ってくれる。</p>
 
@@ -380,7 +831,7 @@
 
 <h2>initスクリプトを書こう</h2>
 
-<p>Gentoo Linuxでは標準でOpenRCというinitシステムを採用している。それを踏まえた上で、unicornのデーモンを管理するためのinitスクリプトを書く。書き方は<a href="http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;chap=4">Gentoo Linux Documentation &mdash; Initscripts</a>辺りを見たり、他のinitスクリプトを参考にする。今回は特にapache2とpostgresql-9.3を参考にして書いてみた。</p>
+<p>Gentoo Linuxでは標準でOpenRCというinitシステムを採用している。それを踏まえた上で、unicornのデーモンを管理するためのinitスクリプトを書く。書き方は<a href="http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;chap=4">Gentoo Linux Documentation &ndash; Initscripts</a>辺りを見たり、他のinitスクリプトを参考にする。今回は特にapache2とpostgresql-9.3を参考にして書いてみた。</p>
 
 <figure class='code'><figcaption><span>&#8220;init script&#8221; (refxgroovin_init)</span> <a href='http://tech.aquarite.info/downloads/code/refxgroovin_init'>download</a></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -658,7 +1109,7 @@
 
 <h1>DownloadString</h1>
 
-<p><code>DownloadString(String)</code> and some methods (e.g. <code>DownloadFile(String)</code>, <code>OpenRead(String)</code>, etc.) calls <code>CreateUri(String)</code>, a private method of <code>WebClient</code>. (&ndash;> <a href="https://github.com/mono/mono/blob/master/mcs/class/System/System.Net/WebClient.cs#L798">source code on github</a>)</p>
+<p><code>DownloadString(String)</code> and some methods (e.g. <code>DownloadFile(String)</code>, <code>OpenRead(String)</code>, etc.) calls <code>CreateUri(String)</code>, a private method of <code>WebClient</code>. (-> <a href="https://github.com/mono/mono/blob/master/mcs/class/System/System.Net/WebClient.cs#L798">source code on github</a>)</p>
 
 <h2>CreateUri and GetUri</h2>
 
@@ -925,7 +1376,7 @@
 
 <p>と、その前に。今回のソースコードは<a href="https://github.com/tkbctf/archive">tkbctf/archive</a>に上げておきます。結構問題の核心以外の部分で苦労してたりしますがそれはそれということで。</p>
 
-<p>追記: 上げました &ndash;> <a href="https://github.com/tkbctf/archive/tree/master/tkbctf3/web250_miocat">tkbctf/archive/tkbctf3/web250_miocat</a></p>
+<p>追記: 上げました -> <a href="https://github.com/tkbctf/archive/tree/master/tkbctf3/web250_miocat">tkbctf/archive/tkbctf3/web250_miocat</a></p>
 
 <h1>問題の説明</h1>
 
@@ -991,9 +1442,9 @@
 
 <p>Sublime Textとの連携については公式からプラグインが提供されている（なぜか<a href="http://clang.llvm.org/docs/ClangFormat.html">ドキュメント</a>には言及がないが……）。</p>
 
-<p>まずはツリーから当該のプラグインを落としてくる。 &ndash;> <a href="https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py">https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py</a></p>
+<p>まずはツリーから当該のプラグインを落としてくる。 -> <a href="https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py">https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py</a></p>
 
-<p>ソースコード冒頭に簡単な説明があるのでそれに従う。まずはこのファイルを<code>~/Library/Application Support/Sublime Text 3/Packages/User</code>以下に入れる。次にSublime TextのPreferences &ndash;> Key Bindings &ndash; Userを選んでキーバインドの設定ファイルを開き次の一行を追加する（説明ではCtrl+Shift+Cになっているのでそのようにしたが適宜変える）。</p>
+<p>ソースコード冒頭に簡単な説明があるのでそれに従う。まずはこのファイルを<code>~/Library/Application Support/Sublime Text 3/Packages/User</code>以下に入れる。次にSublime TextのPreferences -> Key Bindings - Userを選んでキーバインドの設定ファイルを開き次の一行を追加する（説明ではCtrl+Shift+Cになっているのでそのようにしたが適宜変える）。</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>{ "keys": ["ctrl+shift+c"], "command": "clang_format" }</span></code></pre></td></tr></table></div></figure>
@@ -1071,7 +1522,7 @@
 
 <p>（ちなみにこれ、gccでは通ったりするのだろうか。少なくとも大学のLinuxマシンに入っていたgcc 4.1.2でもエラーを吐いたが）</p>
 
-<p>次、<code>-soname</code>なんてオプションは知らないと言い始める。これは単純に<code>-soname</code>を<code>-install_name</code>に置換してしまえばよい。 参考: <a href="http://stackoverflow.com/questions/4580789/cmake-mac-os-x-ld-unknown-option-soname">osx &ndash; CMake: Mac OS X: ld: unknown option: -soname &ndash; Stack Overflow</a></p>
+<p>次、<code>-soname</code>なんてオプションは知らないと言い始める。これは単純に<code>-soname</code>を<code>-install_name</code>に置換してしまえばよい。 参考: <a href="http://stackoverflow.com/questions/4580789/cmake-mac-os-x-ld-unknown-option-soname">osx - CMake: Mac OS X: ld: unknown option: -soname - Stack Overflow</a></p>
 
 <p>次、<code>-rpath</code>なんてオプションも知らないと言い出す。これは一旦<code>-rpath</code>を削除してしまう（<code>-Wl,-rpath...</code>でひとつのオプションなのでこのかたまりを消す。<code>-Wl</code>はリンカーに渡すオプションを指定するオプション）。いろいろ探し回った挙げ句、どうもこれを代替する手段はなさそうだった。</p>
 

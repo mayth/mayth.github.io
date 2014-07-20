@@ -4,7 +4,7 @@
   <title><![CDATA[Category: tkbctf | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/tkbctf/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-06-20T11:23:07+09:00</updated>
+  <updated>2014-07-20T18:49:36+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -24,7 +24,7 @@
 
 <p>と、その前に。今回のソースコードは<a href="https://github.com/tkbctf/archive">tkbctf/archive</a>に上げておきます。結構問題の核心以外の部分で苦労してたりしますがそれはそれということで。</p>
 
-<p>追記: 上げました &ndash;> <a href="https://github.com/tkbctf/archive/tree/master/tkbctf3/web250_miocat">tkbctf/archive/tkbctf3/web250_miocat</a></p>
+<p>追記: 上げました -> <a href="https://github.com/tkbctf/archive/tree/master/tkbctf3/web250_miocat">tkbctf/archive/tkbctf3/web250_miocat</a></p>
 
 <h1>問題の説明</h1>
 

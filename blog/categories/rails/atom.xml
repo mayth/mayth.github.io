@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Rails | Hello (forgotten) world]]></title>
+  <title><![CDATA[Category: rails | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-06-20T11:23:07+09:00</updated>
+  <updated>2014-07-20T18:49:36+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>

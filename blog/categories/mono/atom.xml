@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Mono | Hello (forgotten) world]]></title>
+  <title><![CDATA[Category: mono | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/mono/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-06-20T11:23:07+09:00</updated>
+  <updated>2014-07-20T18:49:36+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -27,7 +27,7 @@
 
 <p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
 
-<iframe width="560" height="315" src="http://tech.aquarite.info//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
 
 
 <p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
@@ -66,7 +66,7 @@
 
 <h1>DownloadString</h1>
 
-<p><code>DownloadString(String)</code> and some methods (e.g. <code>DownloadFile(String)</code>, <code>OpenRead(String)</code>, etc.) calls <code>CreateUri(String)</code>, a private method of <code>WebClient</code>. (&ndash;> <a href="https://github.com/mono/mono/blob/master/mcs/class/System/System.Net/WebClient.cs#L798">source code on github</a>)</p>
+<p><code>DownloadString(String)</code> and some methods (e.g. <code>DownloadFile(String)</code>, <code>OpenRead(String)</code>, etc.) calls <code>CreateUri(String)</code>, a private method of <code>WebClient</code>. (-> <a href="https://github.com/mono/mono/blob/master/mcs/class/System/System.Net/WebClient.cs#L798">source code on github</a>)</p>
 
 <h2>CreateUri and GetUri</h2>
 
@@ -159,9 +159,8 @@
 
 <p>If the program runs at /home/mayth, for example, the code below will returns the content of <code>/etc/passwd</code>.</p>
 
-<p><code>
-WebClient.DownloadString("http://../../../etc/passwd")
-</code></p>
+<pre><code>WebClient.DownloadString("http://../../../etc/passwd")
+</code></pre>
 
 <p>Of course, any files that is readable from the user who runs the program can be read. For example, the files in the home directory can be read.</p>
 
@@ -171,9 +170,8 @@ WebClient.DownloadString("http://../../../etc/passwd")
 
 <p>If the program runs at <code>/home/mayth</code>, the code below will fail because it won&rsquo;t be found.</p>
 
-<p><code>
-WebClient.DownloadString("http://../../etc/passwd")
-</code></p>
+<pre><code>WebClient.DownloadString("http://../../etc/passwd")
+</code></pre>
 
 <p>In this case, an exception&rsquo;s message is: &lsquo;Could not find a part of the path &ldquo;/home/etc/passwd&rdquo;&rsquo;. If you output this message somewhere (stdout, log file, etc.), the attackers may be possible to see the full path.</p>
 ]]></content>

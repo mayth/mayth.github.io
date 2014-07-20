@@ -1,59 +1,88 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/01/23/hello/</loc>
-        <lastmod>2014-04-03T15:30:30+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/01/23/rails-admin-jp-problem/</loc>
-        <lastmod>2014-04-03T15:30:30+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/02/06/clang-format-on-mac/</loc>
-        <lastmod>2014-04-03T15:30:30+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat/</loc>
-        <lastmod>2014-05-07T15:49:15+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient/</loc>
-        <lastmod>2014-05-07T15:22:56+09:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://tech.aquarite.info/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/
-        </loc>
-        <lastmod>2014-05-08T07:33:47+09:00</lastmod>
-    </url>
-    <url>
-        <loc>
-            http://tech.aquarite.info/blog/2014/05/08/different-behaviors-of-downloadstring-and-uri-between-net-and-mono/
-        </loc>
-        <lastmod>2014-05-08T09:01:21+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/05/28/rails-app-with-mina/</loc>
-        <lastmod>2014-05-28T02:32:43+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/</loc>
-        <lastmod>2014-06-20T11:22:13+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/about/</loc>
-        <lastmod>2014-04-03T15:30:30+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/blog/archives/</loc>
-        <lastmod>2014-06-20T11:22:13+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/</loc>
-        <lastmod>2014-06-20T11:22:13+09:00</lastmod>
-    </url>
-    <url>
-        <loc>http://tech.aquarite.info/robots.txt</loc>
-        <lastmod>2014-04-03T15:30:30+09:00</lastmod>
-    </url>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-amida/</loc>
+    <lastmod>2014-07-20T00:29:19+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/</loc>
+    <lastmod>2014-06-20T11:09:26+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/05/28/rails-app-with-mina/</loc>
+    <lastmod>2014-05-28T00:07:56+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/05/08/different-behaviors-of-downloadstring-and-uri-between-net-and-mono/</loc>
+    <lastmod>2014-05-08T07:43:38+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/</loc>
+    <lastmod>2014-05-08T06:49:41+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/05/07/uri-parsing-in-webclient/</loc>
+    <lastmod>2014-05-07T13:33:03+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/05/07/tkbctf3-miocat/</loc>
+    <lastmod>2014-05-07T13:26:00+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/02/06/clang-format-on-mac/</loc>
+    <lastmod>2014-02-06T08:56:44+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/01/23/rails-admin-jp-problem/</loc>
+    <lastmod>2014-01-23T20:08:42+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/2014/01/23/hello/</loc>
+    <lastmod>2014-01-23T07:20:02+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  
+  <url>
+    <loc>http://tech.aquarite.info/blog/archives/</loc>
+    <lastmod>2014-07-20T18:49:36+09:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/</loc>
+    <lastmod>2014-07-20T18:49:36+09:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
+    <loc>http://tech.aquarite.info/about/</loc>
+    <lastmod>2014-07-20T18:49:36+09:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  
 </urlset>
