@@ -4,7 +4,7 @@
   <title><![CDATA[Category: seccon | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/seccon/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-07-20T18:49:36+09:00</updated>
+  <updated>2014-07-20T19:20:00+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SECCON 2014 オンライン予選 【Print it!】]]></title>
+    <link href="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-printit/"/>
+    <updated>2014-07-20T18:53:55+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-printit</id>
+    <content type="html"><![CDATA[<p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。</p>
+
+<h2>問題概要</h2>
+
+<p>謎のファイルが降ってきます。以上。</p>
+
+<h2>解法</h2>
+
+<p>降ってきたファイルの正体は"Standard Triangulated Language"というフォーマットのファイル(参考: <a href="http://ja.wikipedia.org/wiki/Standard_Triangulated_Language">Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
+
+<p>ans: <code>Bar1kaTaLab.</code></p>
+
+<h2>経緯</h2>
+
+<p>とりあえずファイルをバイナリエディタに突っ込んでビットマップで見てみると、かなり規則性の高いらしいということはわかったのですが、それ以上のことはさっぱりわからず。nullが14個くらい続いてたりとか、それが繰り返されてたりとか、その辺の規則性が高いわりに、先頭には普通にテキストが入っているし、テキストの間にはまたもnullが入っていてよくわかんないなぁと思ってました。</p>
+
+<p>先頭のテキストには意味がないんじゃないかと思って削ってみても、削った後の先頭数バイトが何かのシグネチャになってるわけではありませんでした。あと、前述のnullが続いている箇所がかなり多いことから圧縮されているわけでもなさそうだということはわかりました。</p>
+
+<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に"Print"に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
+
+<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（"Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
+
+<p><img src="/images/seccon2014-printit-google.png"></p>
+
+<p>……なるほどね（白目）</p>
+
+<p>これほどまでに検索結果のスニペットが欲しい情報をピンポイントで持ってきたことはもはや感動的ですらあるので引用しておくと</p>
+
+<p><blockquote><p>米国のスリーディー・システムズ（英語版）によって開発された三次元CADソフト用の<strong>ファイルフォーマットシステム</strong>。多くのソフトにサポートされ &hellip; バイナリーSTLファイルは<strong>80バイト</strong>の任意の文字列で開始される（通常内容は無視される。ただし、 solid から記載を  &hellip;</p></blockquote></p>
+
+<p>そんなわけで、このファイルフォーマットのバイナリ形式では先頭80bytesは無視されること、このフォーマットはfloatの値がずらーっと並んでいることがわかりました。floatの値が並んでいるだけなら、確かにデータに規則性があって、nullが連続しているのも納得です。</p>
+
+<p>私のマシンにはこれを見られるものがなかったので、Wikipediaの記事の外部リンクにあった3DViewというChromeのアプリを入れてファイルを読むことで解答が得られました。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SECCON 2014 オンライン予選 【あみだくじ】]]></title>

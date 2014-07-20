@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。今回は「あみだくじ」。 問題概要 問題は64bit ELF形式の実行ファイルamida。これを実行すると「No.i」(i = 1, 2, &hellip;) &hellip;">
+  <meta name="description" content="2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。 問題概要 謎のファイルが降ってきます。以上。 解法 降ってきたファイルの正体は&#8221;Standard Triangulated &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,75 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/20/seccon2014-online-printit/">SECCON 2014 オンライン予選 【Print It!】</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-20T18:53:55+09:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。</p>
+
+<h2>問題概要</h2>
+
+<p>謎のファイルが降ってきます。以上。</p>
+
+<h2>解法</h2>
+
+<p>降ってきたファイルの正体は&#8221;Standard Triangulated Language&#8221;というフォーマットのファイル(参考: <a href="http://ja.wikipedia.org/wiki/Standard_Triangulated_Language">Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
+
+<p>ans: <code>Bar1kaTaLab.</code></p>
+
+<h2>経緯</h2>
+
+<p>とりあえずファイルをバイナリエディタに突っ込んでビットマップで見てみると、かなり規則性の高いらしいということはわかったのですが、それ以上のことはさっぱりわからず。nullが14個くらい続いてたりとか、それが繰り返されてたりとか、その辺の規則性が高いわりに、先頭には普通にテキストが入っているし、テキストの間にはまたもnullが入っていてよくわかんないなぁと思ってました。</p>
+
+<p>先頭のテキストには意味がないんじゃないかと思って削ってみても、削った後の先頭数バイトが何かのシグネチャになってるわけではありませんでした。あと、前述のnullが続いている箇所がかなり多いことから圧縮されているわけでもなさそうだということはわかりました。</p>
+
+<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に&#8221;Print&#8221;に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
+
+<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（&#8221;Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
+
+<p><img src="/images/seccon2014-printit-google.png"></p>
+
+<p>……なるほどね（白目）</p>
+
+<p>これほどまでに検索結果のスニペットが欲しい情報をピンポイントで持ってきたことはもはや感動的ですらあるので引用しておくと</p>
+
+<blockquote><p>米国のスリーディー・システムズ（英語版）によって開発された三次元CADソフト用の<strong>ファイルフォーマットシステム</strong>。多くのソフトにサポートされ &#8230; バイナリーSTLファイルは<strong>80バイト</strong>の任意の文字列で開始される（通常内容は無視される。ただし、 solid から記載を  &#8230;</p></blockquote>
+
+
+<p>そんなわけで、このファイルフォーマットのバイナリ形式では先頭80bytesは無視されること、このフォーマットはfloatの値がずらーっと並んでいることがわかりました。floatの値が並んでいるだけなら、確かにデータに規則性があって、nullが連続しているのも納得です。</p>
+
+<p>私のマシンにはこれを見られるものがなかったので、Wikipediaの記事の外部リンクにあった3DViewというChromeのアプリを入れてファイルを読むことで解答が得られました。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1891,43 +1960,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/23/hello/">ハロウフォゴットンワールド</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-23T07:20:02+09:00" pubdate data-updated="true">Jan 23<sup>rd</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>よく見たらHello, World!だった。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="2">&larr; Older</a>
     
     <a href="/blog/archives/"> Archives </a>
     
@@ -1973,6 +2008,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-printit/">SECCON 2014 オンライン予選 【Print it!】</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/20/seccon2014-online-amida/">SECCON 2014 オンライン予選 【あみだくじ】</a>
       </li>
     
@@ -1986,10 +2025,6 @@
     
       <li class="post">
         <a href="/blog/2014/05/08/different-behaviors-of-downloadstring-and-uri-between-net-and-mono/">Different Behaviors of DownloadString and Uri between .NET and Mono</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/">結局Monoと.NETの挙動の違いはなんだったのか</a>
       </li>
     
   </ul>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>miocatのその後、あるいはcoinsLT #0で発表した話 - Hello (forgotten) world</title>
+  <title>SECCON 2014 オンライン予選 【Print it!】 - Hello (forgotten) world</title>
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="情報科学類1年が企画したcoinsLT #0（ATNDの方が情報量が多いのだが、一応Webページも存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである &hellip;">
+  <meta name="description" content="2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。 問題概要 謎のファイルが降ってきます。以上。 解法 降ってきたファイルの正体は&#8221;Standard Triangulated &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/">
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-printit/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -70,7 +70,7 @@
   
   <header>
     
-      <h1 class="entry-title">miocatのその後、あるいはcoinsLT #0で発表した話</h1>
+      <h1 class="entry-title">SECCON 2014 オンライン予選 【Print It!】</h1>
     
     
       <p class="meta">
@@ -86,34 +86,47 @@
   
 
 
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true">Jun 20<sup>th</sup>, 2014</time>
+<time datetime="2014-07-20T18:53:55+09:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
+<div class="entry-content"><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。</p>
 
-<iframe src="http://www.slideshare.net/slideshow/embed_code/35913754" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+<h2>問題概要</h2>
+
+<p>謎のファイルが降ってきます。以上。</p>
+
+<h2>解法</h2>
+
+<p>降ってきたファイルの正体は&#8221;Standard Triangulated Language&#8221;というフォーマットのファイル(参考: <a href="http://ja.wikipedia.org/wiki/Standard_Triangulated_Language">Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
+
+<p>ans: <code>Bar1kaTaLab.</code></p>
+
+<h2>経緯</h2>
+
+<p>とりあえずファイルをバイナリエディタに突っ込んでビットマップで見てみると、かなり規則性の高いらしいということはわかったのですが、それ以上のことはさっぱりわからず。nullが14個くらい続いてたりとか、それが繰り返されてたりとか、その辺の規則性が高いわりに、先頭には普通にテキストが入っているし、テキストの間にはまたもnullが入っていてよくわかんないなぁと思ってました。</p>
+
+<p>先頭のテキストには意味がないんじゃないかと思って削ってみても、削った後の先頭数バイトが何かのシグネチャになってるわけではありませんでした。あと、前述のnullが続いている箇所がかなり多いことから圧縮されているわけでもなさそうだということはわかりました。</p>
+
+<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に&#8221;Print&#8221;に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
+
+<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（&#8221;Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
+
+<p><img src="/images/seccon2014-printit-google.png"></p>
+
+<p>……なるほどね（白目）</p>
+
+<p>これほどまでに検索結果のスニペットが欲しい情報をピンポイントで持ってきたことはもはや感動的ですらあるので引用しておくと</p>
+
+<blockquote><p>米国のスリーディー・システムズ（英語版）によって開発された三次元CADソフト用の<strong>ファイルフォーマットシステム</strong>。多くのソフトにサポートされ &#8230; バイナリーSTLファイルは<strong>80バイト</strong>の任意の文字列で開始される（通常内容は無視される。ただし、 solid から記載を  &#8230;</p></blockquote>
 
 
-<p> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/masatokunita/coins-lt0-miocatshortpublic" title="tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜" target="_blank">tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜</a> </strong> from <strong><a href="http://www.slideshare.net/masatokunita" target="_blank">Masato Kunita</a></strong> </div></p>
+<p>そんなわけで、このファイルフォーマットのバイナリ形式では先頭80bytesは無視されること、このフォーマットはfloatの値がずらーっと並んでいることがわかりました。floatの値が並んでいるだけなら、確かにデータに規則性があって、nullが連続しているのも納得です。</p>
 
-<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
-
-<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
-
-
-<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
-
-<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
-
-<p>曰く、「&#8221;<a href="http://test.com">http://test.com</a>&#8221; はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
-
-<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
-
-<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
+<p>私のマシンにはこれを見られるものがなかったので、Wikipediaの記事の外部リンクにあった3DViewというChromeのアプリを入れてファイルを読むことで解答が得られました。</p>
 </div>
 
 
@@ -136,12 +149,12 @@
   
 
 
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true">Jun 20<sup>th</sup>, 2014</time>
+<time datetime="2014-07-20T18:53:55+09:00" pubdate data-updated="true">Jul 20<sup>th</sup>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/coinslt/'>coinslt</a>, <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/miocat/'>miocat</a>, <a class='category' href='/blog/categories/mono/'>mono</a>, <a class='category' href='/blog/categories/tkbctf3/'>tkbctf3</a>
+    <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/seccon/'>seccon</a>, <a class='category' href='/blog/categories/seccon2014/'>seccon2014</a>, <a class='category' href='/blog/categories/write-up/'>write-up</a>
   
 </span>
 
@@ -150,7 +163,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-printit/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/07/20/seccon2014-online-printit/" >Tweet</a>
   
   
   
@@ -159,10 +172,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/28/rails-app-with-mina/" title="Previous Post: Railsアプリ with Mina and OpenRC">&laquo; Railsアプリ with Mina and OpenRC</a>
+        <a class="basic-alignment left" href="/blog/2014/07/20/seccon2014-online-amida/" title="Previous Post: SECCON 2014 オンライン予選 【あみだくじ】">&laquo; SECCON 2014 オンライン予選 【あみだくじ】</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/07/20/seccon2014-online-amida/" title="Next Post: SECCON 2014 オンライン予選 【あみだくじ】">SECCON 2014 オンライン予選 【あみだくじ】 &raquo;</a>
       
     </p>
   </footer>
