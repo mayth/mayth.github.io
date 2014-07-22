@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ctf | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/ctf/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-07-20T19:46:25+09:00</updated>
+  <updated>2014-07-22T10:23:03+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -123,7 +123,7 @@
 <ul>
 <li>番号の振り方が逆 (左から1, 2, &hellip;ではなく8, 7, &hellip;になっている)</li>
 <li>そもそもくじの上下が逆</li>
-<li>各行の先頭にnull文字が突っ込まれている</li>
+<li>各行の先頭にnull文字が突っ込まれている <ins datetime="2014-07-22T10:21:00+09:00">（追記: これは出題者の意図していない、問題プログラムのバグだった模様）</ins></li>
 <li>くじの縦線の間が広がる</li>
 <li>くじが横向きになる</li>
 </ul>
