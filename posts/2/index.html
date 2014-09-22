@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="概略 Rails Adminでdatetime型（日時）のカラムを含むモデルを操作する際、ロケールが日本語で、かつsvenfuchs/rails-i18nのファイルをそのまま使っていると例外ArgumentError(argument out of range)で死ぬ。 原因 &hellip;">
+  <meta name="description" content="clang-formatによるコード整形 MacのCommand Line Toolsにはclang-formatがない。clang-formatというのはその名前の通り、ソースコードをclangに静的解析させて自動で整形しようというツール。 対応しているコーディングスタイルは次の5つ。 LLVM &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,165 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/06/clang-format-on-mac/">MacのSublime Text 3でもclang使って整形とか補完とかしたい</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-06T08:56:44+09:00" pubdate data-updated="true">Feb 6<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>clang-formatによるコード整形</h1>
+
+<p>MacのCommand Line Toolsには<code>clang-format</code>がない。<code>clang-format</code>というのはその名前の通り、ソースコードをclangに静的解析させて自動で整形しようというツール。</p>
+
+<p>対応しているコーディングスタイルは次の5つ。</p>
+
+<ul>
+<li>LLVM</li>
+<li>Google</li>
+<li>Chromium</li>
+<li>Mozilla</li>
+<li>WebKit</li>
+</ul>
+
+
+<p>また、全く独自のコーディングスタイルを設定することもできるし、あるいはこれらのコーディングスタイルを元に一部を自分好みに変更した設定も可能である。かなり自由。</p>
+
+<p>さて、これ別に自分でコンパイルする必要もなく（LLVMとclang自体が）バイナリ形式で提供されていたりする。便利な世の中だ。<a href="http://llvm.org/releases/download.html">LLVM Download Page</a>から入手できる。Mac向けは&#8221;Clang for Darwin&#8221;。</p>
+
+<p>ダウンロードしたファイルを適当なフォルダに展開してパスを通せば<code>clang-format</code>が使えるはず。なお<code>clang-format</code>以外のものも全部パスが通った場所に置いた場合のシステムの挙動は確かめてない（別にどうってことはないかもしれないし、どっかで何かおこるかもしれない）。</p>
+
+<p>Sublime Textとの連携については公式からプラグインが提供されている（なぜか<a href="http://clang.llvm.org/docs/ClangFormat.html">ドキュメント</a>には言及がないが……）。</p>
+
+<p>まずはツリーから当該のプラグインを落としてくる。 -> <a href="https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py">https://llvm.org/svn/llvm-project/cfe/trunk/tools/clang-format/clang-format-sublime.py</a></p>
+
+<p>ソースコード冒頭に簡単な説明があるのでそれに従う。まずはこのファイルを<code>~/Library/Application Support/Sublime Text 3/Packages/User</code>以下に入れる。次にSublime TextのPreferences -> Key Bindings - Userを選んでキーバインドの設定ファイルを開き次の一行を追加する（説明ではCtrl+Shift+Cになっているのでそのようにしたが適宜変える）。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{ "keys": ["ctrl+shift+c"], "command": "clang_format" }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これで<code>clang-format</code>にパスを通してあれば動くはずなのだがなぜか動かなかった。<code>clang-format</code>がないというエラーメッセージが出ていたので、説明から少し下にある<code>binary</code>の値をフルパスに変更して無事に動作した。</p>
+
+<p>なお、このとき使われるコーディングスタイルは<code>.clang-format</code>を参照する設定になっている（<code>binary</code>のもう少し下に<code>style</code>の設定があり、これが&#8217;file&#8217;となっている）。<code>style=file</code>となっているのに<code>.clang-format</code>ファイルが存在しない場合、LLVMスタイルが選択される。<code>clang-format</code>の<code>-dump-config</code>オプションで設定を出力できるのでこれを<code>.clang-format</code>として出力させつつ適宜スタイルを修正すると幸せになれる予感がする。</p>
+
+<h1>コード補完</h1>
+
+<p>（コードを読み書きする人間を除いて）コードの解釈を一番よく知っているのはコンパイラなんだから、コンパイラにコード補完のバックエンド的な役割をさせようという話。Haxeのコンパイラはこの仕組みを持っていて、コンパイラがサーバーとして動作して、そこにリクエストを投げると型情報やら何やらを返してくれる、という機能がある。あったはず。</p>
+
+<p>同じ事をclangでやろうというお話なのだが、ググると主に紹介されている<a href="https://github.com/quarnster/SublimeClang">quarnster/SublimeClang</a>はREADMEの初っ端に<strong>Plugin discontinued</strong>と書かれている。オワコン。</p>
+
+<p>そんなわけで同じ作者の後継作たる<a href="https://github.com/quarnster/completion">quarnster/completion</a>を試す。</p>
+
+<p>まず大前提としてこれGoで書かれているのでGoの環境が必要である。<a href="http://golang.org/doc/install">公式のパッケージ</a>もあるし、Homebrewでもインストールできる。あと今回の場合はgitとMercurialも必要。</p>
+
+<p>普段Goを書いてないからかもしれないが、Goの開発環境の構築はちょっとクセがあるように見える。環境入れてコンパイラとかにパス通してはいおしまい、とはいかない。<a href="http://golang.org/doc/code.html">ドキュメント</a>に沿って進める。（Homebrewでインストールしたときもこれ読めというメッセージが出るはず）</p>
+
+<p>まずホームフォルダに<code>go</code>フォルダを作る。そして<code>GOPATH</code>という環境変数を設定する。ついでに<code>$GOPATH/bin</code>にもパスを通しておく。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ mkdir $HOME/go
+</span><span class='line'>$ export GOPATH=$HOME/go
+</span><span class='line'>$ export PATH=$PATH:$GOPATH/bin</span></code></pre></td></tr></table></div></figure>
+
+
+<p>環境変数の設定は<code>.bashrc</code>なり<code>.zshrc</code>なりに書いておいた方がよいと思う。ここまで済ませた上で</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ go get -d github.com/quarnster/completion</span></code></pre></td></tr></table></div></figure>
+
+
+<p>とするとお目当てのソースコードの他依存しているパッケージのソースコードもごそっと落としてくる（このときにMercurialとgitが必要になる）。</p>
+
+<p>さて、これで<code>$GOPATH/src/github.com/quarnster/completion</code>にcloneされている。ビルドするには<code>build</code>ディレクトリに入って<code>make</code>すればよい。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ cd $GOPATH/src/github.com/quarnster/completion/build
+</span><span class='line'>$ make</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ビルドに成功すると同じディレクトリに<code>completion</code>というバイナリが生成されている。Sublime Textにプラグインとしてインストールするにはそのまま</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ./completion install -st</span></code></pre></td></tr></table></div></figure>
+
+
+<p>とする。Sublime Textの場所を探し出していい感じにインストールしてくれる（2と3を共存させていても両方にインストールする）。</p>
+
+<p>あとはC/C++でのコーディングをお楽しみください。</p>
+
+<h1>余談</h1>
+
+<h2>ClangComplete</h2>
+
+<p>ちなみに別のclangを用いたプラグインに<a href="https://github.com/pfultz2/ClangComplete">pfultz2/ClangComplete</a>というのがあったが、どうにも動かなかったので諦めた。というのもこのプラグインおおよそLinuxの方しか向いていないようにしか思えない状態だった。一応ある程度のところまで作業したのでメモしておく。</p>
+
+<p>まずこのリポジトリ自体をそのままSublime Textのプラグインディレクトリにcloneする。その後<code>ClangComplete/complete</code>ディレクトリに移動して<code>make</code>すると見事に失敗する。</p>
+
+<p>Python3.3のヘッダーファイルが見つからないと言っているので<code>PKG_CONFIG_PATH</code>を設定する。HomebrewでPython3.3が入っていれば（なければ入れる）、<code>/usr/local/Cellar/python3/3.3.3/Frameworks/Python.framework/Versions/3.3/lib/pkgconfig</code>にある（3.3.3の辺りはバージョンによる。これ更新されたらどうなるんだ）。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>PKG_CONFIG_PATH=/usr/local/Cellar/python3/3.3.3/Frameworks/Python.framework/Versions/3.3/lib/pkgconfig</span></code></pre></td></tr></table></div></figure>
+
+
+<p>次、clangのヘッダファイルがないと言い出す。<code>Makefile</code>を編集する。<code>CLANG_PREFIX</code>を設定している箇所を消して、上で述べたclang+llvmのバイナリパッケージを展開したディレクトリを指定する。仮に<code>$HOME/clang</code>に置いたとすれば<code>CLANG_PREFIX=$HOME/clang</code>とする。</p>
+
+<p>次、<code>std::vector</code>なんてものはないというエラーが出まくる。そんなアホなと思って<code>complete.cpp</code>を見てみると<code>#include &lt;vector&gt;</code>がない。適当な場所に追加する。</p>
+
+<p>（ちなみにこれ、gccでは通ったりするのだろうか。少なくとも大学のLinuxマシンに入っていたgcc 4.1.2でもエラーを吐いたが）</p>
+
+<p>次、<code>-soname</code>なんてオプションは知らないと言い始める。これは単純に<code>-soname</code>を<code>-install_name</code>に置換してしまえばよい。 参考: <a href="http://stackoverflow.com/questions/4580789/cmake-mac-os-x-ld-unknown-option-soname">osx - CMake: Mac OS X: ld: unknown option: -soname - Stack Overflow</a></p>
+
+<p>次、<code>-rpath</code>なんてオプションも知らないと言い出す。これは一旦<code>-rpath</code>を削除してしまう（<code>-Wl,-rpath...</code>でひとつのオプションなのでこのかたまりを消す。<code>-Wl</code>はリンカーに渡すオプションを指定するオプション）。いろいろ探し回った挙げ句、どうもこれを代替する手段はなさそうだった。</p>
+
+<p>これでコンパイルが通る。だが実際にSublime Textを動かしてみると何も起きない。コンソールを確認すると<code>libclang.dylib</code>が見当たらずに<code>libcomplete.so</code>のロードが失敗している。前の段階で<code>-rpath</code>（ランタイムパスの指定）を消してるんだから当たり前だ。これを無理矢理にでも（今回の場合は）<code>$HOME/clang/lib</code>を見に行かせる必要がある。</p>
+
+<p>そうして見つかったのが<a href="https://blogs.oracle.com/dipol/entry/dynamic_libraries_rpath_and_mac">Dynamic Libraries, RPATH, and Mac OS (Joe Di Pol&rsquo;s Blog)</a>という記事だった。これを読んだところ、<code>install_name_tool</code>というツールが備わっているのでそれを使って<code>libcomplete.so</code>を弄ってしまえばよさそうという感触。ただまぁ使い方も何もさっぱりわからないのでいろいろ試したところ、</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ install_name_tool -add_rpath $HOME/clang/lib libcomplete.so</span></code></pre></td></tr></table></div></figure>
+
+
+<p>で<code>libcomplete.so</code>のロードに成功した。</p>
+
+<p>が、いざコードを編集しようとするとプラグインが即死する。やはり世の中そう上手くは行かなかった。</p>
+
+<p>もうよくわからなかったしこれ以上格闘してても無駄な気がしたので私はここでcompletionを使うことにした。のでプラグイン即死の理由とかその解決方法がわかったら@maytheplicまでリプください（真顔）。</p>
+
+<h2>clang+llvmのディレクトリ構造</h2>
+
+<p>clang+llvmのビルド自体はドキュメントを読めば割と簡単にできるのだけど、あのディレクトリ構造は永遠に理解できないかもしれない。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -226,6 +385,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/09/22/csawctf2014-trivia/">CSAW CTF 2014 Quals Trivia</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/20/seccon2014-online-preliminary/">SECCON 2014 オンライン予選 その他諸々</a>
       </li>
     
@@ -239,10 +402,6 @@
     
       <li class="post">
         <a href="/blog/2014/06/20/miocat-at-coinslt0/">miocatのその後、あるいはcoinsLT #0で発表した話</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/28/rails-app-with-mina/">Railsアプリ with Mina and OpenRC</a>
       </li>
     
   </ul>
