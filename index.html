@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3問です。 [100] dumpster diving 問題文 dumpsters are cool, but cores are &hellip;">
+  <meta name="description" content="覚え書き。 今日公開されたMac OS X Yosemite (10.10)に早速更新したところ、Sublime Text 3 + LaTeXToolsの環境でLaTeXをビルドしてもPDFが出力されなくなった。 この問題はYosemiteがbetaの時点でアップグレードして報告した猛者がいた。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,93 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/17/sublime-latex-yosemite/">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-17T17:56:46+09:00" pubdate data-updated="true">Oct 17<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>覚え書き。</p>
+
+<p>今日公開されたMac OS X Yosemite (10.10)に早速更新したところ、Sublime Text 3 + LaTeXToolsの環境でLaTeXをビルドしてもPDFが出力されなくなった。</p>
+
+<p>この問題はYosemiteがbetaの時点でアップグレードして報告した猛者がいた。<a href="https://github.com/SublimeText/LaTeXTools/issues/401">LaTeXTools on OS X 10.10 · Issue #401 · SublimeText/LaTeXTools</a></p>
+
+<blockquote><p>opened this issue on 5 Jun</p></blockquote>
+
+<p>（白目）</p>
+
+<p>症状としては上述の通り。ビルドを実行したときにコンソールへ吐き出されているログはこんな感じ。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Welcome to thread Thread-13
+</span><span class='line'>['latexmk', '-cd', '-e', "$latex = 'uplatex %O -interaction=nonstopmode -synctex=1 %S'", '-e', "$biber = 'biber %O --bblencoding=utf8 -u -U --output_safechars %B'", '-e', "$bibtex = 'upbibtex %O %B'", '-e', "$makeindex = 'makeindex %O -o %D %S'", '-e', "$dvipdf = 'dvipdfmx %O -o %D %S'", '-f', '-norc', '-gg', '-pdfdvi', 'report.tex']
+</span><span class='line'>Finished normally
+</span><span class='line'>12
+</span><span class='line'>Exception in thread Thread-13:
+</span><span class='line'>Traceback (most recent call last):
+</span><span class='line'>  File "./threading.py", line 901, in _bootstrap_inner
+</span><span class='line'>  File "/Users/mayth/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/makePDF.py", line 147, in run
+</span><span class='line'>    data = open(self.caller.tex_base + ".log", 'rb').read()
+</span><span class='line'>FileNotFoundError: [Errno 2] No such file or directory: '/Users/mayth/Documents/report.log'</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>report.{pdf,log}</code>。察して。</p>
+
+<p>それはともかく、どうやらこれは<a href="https://github.com/SublimeText/LaTeXTools/issues/401#issuecomment-59058434">YosemiteでデフォルトのPATHの値が変わっているのが原因</a>らしい。そこで、肝心のコマンドを呼んでいるところでPATHを追加してあげればよい。</p>
+
+<p><a href="https://github.com/SublimeText/LaTeXTools/issues/401#issuecomment-59080557">LaTeXTools on OS X 10.10 · Issue #401 · SublimeText/LaTeXTools</a>から引用すると</p>
+
+<blockquote><p>proc = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+env=os.environ)</p></blockquote>
+
+<p>これは<code>makePDF.py</code>の中に含まれている。Macでは<code>makePDF.py</code>は以下のパスにある。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$HOME/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>パス辿るのが面倒ならPreferences -> Browse Packagesを使えばPackagesフォルダがFinderで開かれるので、その中のLaTeXToolsを見ると存在するはず。</p>
+
+<p>現時点では当該の記述は95行目にある。その行に上記引用のように、<code>env=os.environ</code>を追記すると上手く動くようになった。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2048,70 +2135,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/07/uri-parsing-in-webclient/">MonoのWebClientにおけるURI</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-07T13:33:03+09:00" pubdate data-updated="true">May 7<sup>th</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>発端</h1>
-
-<p>発端は<a href="/blog/2014/05/07/tkbctf3-miocat/">前の記事</a>にあるように、tkbctf3の問題としてmiocatなるものを出してみたのはいいものの、意図とは異なる脆弱性を作り込んで250点問題が超絶ボーナス問題になりましたよ、というお話しです。</p>
-
-<h1>調査</h1>
-
-<p>miocatはC#で書かれており、実際の運用ではMonoランタイムで動いていました。というわけでMonoのソースコードを読めば解決です。やったね。</p>
-
-<p>そういうわけでまずは<code>WebClient</code>の実装を読んでみたのですが、怪しい箇所が一発で見つかりました。<a href="https://github.com/mono/mono/blob/2d573ae1ceac1656f0293cca3736dcb10c28be38/mcs/class/System/System.Net/WebClient.cs#L798">WebClient.cs#798</a>、privateメソッドである<code>CreateUri(string)</code>なるメソッドです。<code>DownloadString(string)</code>は、その引数をこのメソッドに渡して<code>DownloadData(Uri)</code>を呼び出します。</p>
-
-<p><code>try-catch</code>の中で渡されたアドレス（と、<code>baseAddress</code>）を元に<code>Uri</code>のインスタンスを作って<code>CreateUri(Uri)</code>に渡していますが、ここで例外が発生すると<code>return new Uri(Path.GetFullPath(address))</code>という恐怖のコードが走ります。</p>
-
-<p>まず例外を発生させる方法ですが、これは簡単でURIとして不正なものを渡してあげればおしまいです。例えば<code>abc://;/etc/passwd</code>はhostname部がパース不能なので例外を吐きます。</p>
-
-<p><code>System.IO.Path.GetFullPath(string)</code>というのは名前からお察しの通り、与えられたパスをカレントディレクトリからの相対パスと見なして絶対パスに変換します。ここで、例えばカレントディレクトリが<code>/home/kogasa</code>、引数が<code>http://etc/passwd</code>だとすると、結果は<code>/home/kogasa/http://etc/passwd</code>になります。要するに<code>http:</code>というディレクトリの下に<code>etc</code>ディレクトリがあって云々、という形になります。つまるところ連続する<code>/</code>はひとつにまとめられてしまうわけです。先ほどの例外を吐く例でいけば、<code>/home/kogasa/abc://;/etc/passwd</code>になります。</p>
-
-<p>ところでWindowsだとパスに<code>:</code>が入ってると厄介なことになりそうというか、<a href="http://msdn.microsoft.com/ja-jp/library/system.io.path.getfullpath%28v=vs.110%29.aspx">MSDN的には</a><code>NotSupportedException</code>が投げられるべきところだと思うのですが、コレ大丈夫なんでしょうか。ぱっと見ただけだとそれらしいコード見当たらなかったんですが……。</p>
-
-<p>※Windowsで<code>GetFullPath</code>に<code>http://etc/passwd</code>を与えてみたら、<code>ArgumentException</code>で「URLフォーマットには対応していません」みたいなことを言われました。で、<code>abc://;/etc/passwd</code>を与えると<code>NotSupportedException</code>で「指定されたパスのフォーマットはサポートされていません」と言われました。ちゃんとスキーム見てるんですね。</p>
-
-<p>それはそれとして、そんな感じでフルパスを<code>Uri</code>のコンストラクタに与えると、<code>file:</code>スキームのURLになって返ってきます。こうなるとただのローカルに対するディレクトリ操作なので、例えば<code>abc://;/../etc/passwd</code>にするとフルパスは<code>/home/kogasa/abc:/etc/passwd</code>になりますし、もういっこ<code>../</code>を足せば<code>/home/kogasa/etc/passwd</code>——といった感じで<code>../</code>をつけていけば無事に<code>/etc/passwd</code>に辿り着けますね、やったね、ということでした。</p>
-
-<p>Monoの実装自体がヤバいのか、それともWindows以外で動かした結果ああなったのかまでは知りませんが、ひとまずそんな感じになりました。Windowsで動かしてたらあの解法は通らなかったのかなぁとかぼんやり思いながらそもそももっとマシな実装しておけばよかったと反省しきり。</p>
-
-<p>それにしても繰り返しになりますが結構このURLとしてのパース失敗時の回復の仕方がヤバい気がするんですが、これは意図的に.NET Frameworkと異なる実装にしているのか特に理由はないけどこうなってるのか、はてさて。</p>
-
-<h1>まとめ</h1>
-
-<p><strong>もっと恐ろしいMonoの片鱗を味わったぜ…</strong></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="2">&larr; Older</a>
@@ -2160,6 +2183,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/10/17/sublime-latex-yosemite/">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/09/23/csawctf2014-forensics/">CSAW CTF 2014 Quals Forensics</a>
       </li>
     
@@ -2173,10 +2200,6 @@
     
       <li class="post">
         <a href="/blog/2014/07/20/seccon2014-online-printit/">SECCON 2014 オンライン予選 【Print it!】</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/20/seccon2014-online-amida/">SECCON 2014 オンライン予選 【あみだくじ】</a>
       </li>
     
   </ul>

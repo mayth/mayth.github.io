@@ -3,6 +3,12 @@
   
   
   <url>
+    <loc>http://tech.aquarite.info/blog/2014/10/17/sublime-latex-yosemite/</loc>
+    <lastmod>2014-10-17T17:56:46+09:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://tech.aquarite.info/blog/2014/09/23/csawctf2014-forensics/</loc>
     <lastmod>2014-09-23T03:07:38+09:00</lastmod>
     <priority>0.8</priority>
@@ -89,21 +95,21 @@
   
   <url>
     <loc>http://tech.aquarite.info/blog/archives/</loc>
-    <lastmod>2014-09-23T06:02:28+09:00</lastmod>
+    <lastmod>2014-10-17T18:27:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://tech.aquarite.info/</loc>
-    <lastmod>2014-09-23T06:02:28+09:00</lastmod>
+    <lastmod>2014-10-17T18:27:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://tech.aquarite.info/about/</loc>
-    <lastmod>2014-09-23T06:02:28+09:00</lastmod>
+    <lastmod>2014-10-17T18:27:31+09:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

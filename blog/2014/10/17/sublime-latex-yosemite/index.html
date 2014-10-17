@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>miocatのその後、あるいはcoinsLT #0で発表した話 - Hello (forgotten) world</title>
+  <title>YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話 - Hello (forgotten) world</title>
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="情報科学類1年が企画したcoinsLT #0（ATNDの方が情報量が多いのだが、一応Webページも存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである &hellip;">
+  <meta name="description" content="覚え書き。 今日公開されたMac OS X Yosemite (10.10)に早速更新したところ、Sublime Text 3 + LaTeXToolsの環境でLaTeXをビルドしてもPDFが出力されなくなった。 この問題はYosemiteがbetaの時点でアップグレードして報告した猛者がいた。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/">
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/10/17/sublime-latex-yosemite/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -70,7 +70,7 @@
   
   <header>
     
-      <h1 class="entry-title">miocatのその後、あるいはcoinsLT #0で発表した話</h1>
+      <h1 class="entry-title">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</h1>
     
     
       <p class="meta">
@@ -86,34 +86,65 @@
   
 
 
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true">Jun 20<sup>th</sup>, 2014</time>
+<time datetime="2014-10-17T17:56:46+09:00" pubdate data-updated="true">Oct 17<sup>th</sup>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
+<div class="entry-content"><p>覚え書き。</p>
 
-<iframe src="http://www.slideshare.net/slideshow/embed_code/35913754" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px 1px 0; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+<p>今日公開されたMac OS X Yosemite (10.10)に早速更新したところ、Sublime Text 3 + LaTeXToolsの環境でLaTeXをビルドしてもPDFが出力されなくなった。</p>
+
+<p>この問題はYosemiteがbetaの時点でアップグレードして報告した猛者がいた。<a href="https://github.com/SublimeText/LaTeXTools/issues/401">LaTeXTools on OS X 10.10 · Issue #401 · SublimeText/LaTeXTools</a></p>
+
+<blockquote><p>opened this issue on 5 Jun</p></blockquote>
+
+<p>（白目）</p>
+
+<p>症状としては上述の通り。ビルドを実行したときにコンソールへ吐き出されているログはこんな感じ。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Welcome to thread Thread-13
+</span><span class='line'>['latexmk', '-cd', '-e', "$latex = 'uplatex %O -interaction=nonstopmode -synctex=1 %S'", '-e', "$biber = 'biber %O --bblencoding=utf8 -u -U --output_safechars %B'", '-e', "$bibtex = 'upbibtex %O %B'", '-e', "$makeindex = 'makeindex %O -o %D %S'", '-e', "$dvipdf = 'dvipdfmx %O -o %D %S'", '-f', '-norc', '-gg', '-pdfdvi', 'report.tex']
+</span><span class='line'>Finished normally
+</span><span class='line'>12
+</span><span class='line'>Exception in thread Thread-13:
+</span><span class='line'>Traceback (most recent call last):
+</span><span class='line'>  File "./threading.py", line 901, in _bootstrap_inner
+</span><span class='line'>  File "/Users/mayth/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/makePDF.py", line 147, in run
+</span><span class='line'>    data = open(self.caller.tex_base + ".log", 'rb').read()
+</span><span class='line'>FileNotFoundError: [Errno 2] No such file or directory: '/Users/mayth/Documents/report.log'</span></code></pre></td></tr></table></div></figure>
 
 
-<p> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/masatokunita/coins-lt0-miocatshortpublic" title="tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜" target="_blank">tkbctf3 miocatができるまで 〜あるいは.NET FrameworkがWindows向けであることを（今更）確信するに至るまで〜</a> </strong> from <strong><a href="http://www.slideshare.net/masatokunita" target="_blank">Masato Kunita</a></strong> </div></p>
+<p><code>report.{pdf,log}</code>。察して。</p>
 
-<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
+<p>それはともかく、どうやらこれは<a href="https://github.com/SublimeText/LaTeXTools/issues/401#issuecomment-59058434">YosemiteでデフォルトのPATHの値が変わっているのが原因</a>らしい。そこで、肝心のコマンドを呼んでいるところでPATHを追加してあげればよい。</p>
 
-<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
+<p><a href="https://github.com/SublimeText/LaTeXTools/issues/401#issuecomment-59080557">LaTeXTools on OS X 10.10 · Issue #401 · SublimeText/LaTeXTools</a>から引用すると</p>
+
+<blockquote><p>proc = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+env=os.environ)</p></blockquote>
+
+<p>これは<code>makePDF.py</code>の中に含まれている。Macでは<code>makePDF.py</code>は以下のパスにある。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$HOME/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/</span></code></pre></td></tr></table></div></figure>
 
 
-<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
+<p>パス辿るのが面倒ならPreferences -> Browse Packagesを使えばPackagesフォルダがFinderで開かれるので、その中のLaTeXToolsを見ると存在するはず。</p>
 
-<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
-
-<p>曰く、「&#8221;<a href="http://test.com">http://test.com</a>&#8221; はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
-
-<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
-
-<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
+<p>現時点では当該の記述は95行目にある。その行に上記引用のように、<code>env=os.environ</code>を追記すると上手く動くようになった。</p>
 </div>
 
 
@@ -136,12 +167,12 @@
   
 
 
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true">Jun 20<sup>th</sup>, 2014</time>
+<time datetime="2014-10-17T17:56:46+09:00" pubdate data-updated="true">Oct 17<sup>th</sup>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/coinslt/'>coinslt</a>, <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/miocat/'>miocat</a>, <a class='category' href='/blog/categories/mono/'>mono</a>, <a class='category' href='/blog/categories/tkbctf3/'>tkbctf3</a>
+    <a class='category' href='/blog/categories/latex/'>latex</a>, <a class='category' href='/blog/categories/sublime-text/'>sublime text</a>, <a class='category' href='/blog/categories/yosemite/'>yosemite</a>
   
 </span>
 
@@ -150,7 +181,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/10/17/sublime-latex-yosemite/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/10/17/sublime-latex-yosemite/" >Tweet</a>
   
   
   
@@ -159,10 +190,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/28/rails-app-with-mina/" title="Previous Post: Railsアプリ with Mina and OpenRC">&laquo; Railsアプリ with Mina and OpenRC</a>
+        <a class="basic-alignment left" href="/blog/2014/09/23/csawctf2014-forensics/" title="Previous Post: CSAW CTF 2014 Quals Forensics">&laquo; CSAW CTF 2014 Quals Forensics</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/07/20/seccon2014-online-amida/" title="Next Post: SECCON 2014 オンライン予選 【あみだくじ】">SECCON 2014 オンライン予選 【あみだくじ】 &raquo;</a>
       
     </p>
   </footer>
