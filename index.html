@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="覚え書き。 今日公開されたMac OS X Yosemite (10.10)に早速更新したところ、Sublime Text 3 + LaTeXToolsの環境でLaTeXをビルドしてもPDFが出力されなくなった。 この問題はYosemiteがbetaの時点でアップグレードして報告した猛者がいた。 &hellip;">
+  <meta name="description" content="tkbctf4が終了してからずいぶんと時間が経ちましたが皆様いかがお過ごしでしょうか。今更ではありますが[bin300] Cheer of CPUの解説というか、そんなようなものを書いてみようかと。 なお、問題のソースコードと配布されたバイナリはtkbctfのgithubリポジトリにあるので、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,106 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/11/24/tkbctf4-cheerofcpu/">Tkbctf4 [Bin300] Cheer of CPU</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-24T04:16:38+09:00" pubdate data-updated="true">Nov 24<sup>th</sup>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>tkbctf4が終了してからずいぶんと時間が経ちましたが皆様いかがお過ごしでしょうか。今更ではありますが[bin300] Cheer of CPUの解説というか、そんなようなものを書いてみようかと。</p>
+
+<p>なお、問題のソースコードと配布されたバイナリはtkbctfのgithubリポジトリにあるので、そちらもどうぞ。 <a href="https://github.com/tkbctf/tkbctf4/tree/master/bin300_CheerOfCPU">tkbctf4/bin300_CheerOfCPU at master · tkbctf/tkbctf4</a></p>
+
+<h1>問題</h1>
+
+<blockquote><p>Did you hear a cheer of CPU?</p>
+
+<p>The flag is the SHA-256 checksum of the program&rsquo;s output.</p>
+
+<p>sample: <code>ruby -rdigest/sha2 -e 'puts Digest::SHA256.hexdigest("OUTPUT HERE".strip).downcase'</code></p>
+
+<p><a href="https://s3-ap-northeast-1.amazonaws.com/tkbctf4/cheerofcpu">https://s3-ap-northeast-1.amazonaws.com/tkbctf4/cheerofcpu</a></p></blockquote>
+
+<h1>概要</h1>
+
+<p>問題の内容としてはあるプログラムが渡されるのでそれを調べる、というものです。プログラムは何かしら入力するとそれが所定の文字列と一致するかを調べ、一致していたら何らかのテキストを出力します。そのテキストのSHA256値を取って送りつければ得点となります。これだけ聞くととっても簡単ですが問題はコイツが<strong>64bit Mach-Oバイナリ</strong>ということでした。</p>
+
+<h1>経緯</h1>
+
+<p>元々は「なんか怪しげな言語でバイナリ吐いて読ませるような問題を作ろうぜ」というのが出発点です。様々な言語が候補に現れては消えていきましたが、私がちょうどMacを持ってるということでSwiftに白羽の矢が立ちました。（ちなみにこの発想から作られたもうひとつの問題は&#8221;rakuda&#8221;です。あの問題、なんか別ゲーになってる気がしますけど）</p>
+
+<p>たださすがに当初はx86_64 Mach-Oで出すという想定はしていませんでした。が、コマンドラインアプリケーションとして作ってしまったのでiOSアプリにすることもできず、かといってSwiftコンパイラがそもそもx86環境向けのバイナリを吐けるようにできていないので、まぁそういう問題もありかなみたいな判断で結局x86_64 64bit Mach-Oで出題しました。</p>
+
+<p>たださすがにMac OS X 10.10 (Yosemite) SDK使ったのはやりすぎだったかなと反省しております（とはいえ、私の環境には1つ前のバージョン、すなわち10.9 MavericksのSDKまでしか入ってなかったわけですが）。</p>
+
+<h1>プログラムに関して</h1>
+
+<p>というわけではじめてのSwiftかいはつ、となったんですがなんかSwiftの記法が結構キモくて大変でした（※個人の感想です）。</p>
+
+<p>内容について触れておきます。内部でテキストデータは基本的に<code>Byte</code>(<code>UInt8</code>)の配列と<code>Int</code>の配列のタプルで保持されています。<code>strings</code>対策ですね。タプルの1つ目の要素がシャッフルされ、暗号化された状態のテキストのバイト列、2つ目の要素がシャッフル順です。シャッフルと書きましたが、テキストのバイト列はシャッフルされた後に暗号化された状態で保持されており、元の順番に復元するための情報が2つ目の要素にある配列、ということになります。暗号化は単純なxorですが、1要素暗号化する度にキーが変化するようになっています。その辺はソースコードを見て頂ければ。なお、最終的に出力されるテキストデータだけは、正解のキーを元にして生成された暗号化鍵と初期化ベクタを用いて、ChaCha20で暗号化された状態で保持しています。ちなみにChaCha20採用の理由ですが、CryptoSwiftに入っていたから以外に特に理由はないです。</p>
+
+<p>動作としては概要で述べたもので、起動すると入力待ちになるので「キー」を入力します。これを内部で保持しているデータと比較し、一致していればそのキーを用いて鍵と初期化ベクタを生成し、テキストデータを復号化して出力します。</p>
+
+<h1>作ってみた・出してみた感想とか諸々</h1>
+
+<p>問題の難易度的には明らかに「プログラムが動く（または解析出来る）環境を用意出来るか否か」がハードルという感じでしたね。動かせる環境(Yosemite)があれば総当たりで行ける問題だなぁとか元々思ってたので事実上CTFプレイヤーにおけるMac普及率調査みたいになっていた感じもあります。別にApple信者でもなんでもないのでMac買ってくださいとは言いませんが。あるいはIDA Pro（無料版でない）があれば解析可能だったかと思います。私は持ってませんがopがやってたのでたぶん大丈夫だったんでしょう、たぶん（ていうかtkbctf4のバイナリ問はIDA Pro Freeで解析可能な問題の方が少なかったという異常事態でしたね）。</p>
+
+<p>皆さんはこの無駄に高いハードルを超えて（Macを買うにしろIDA Proを買うにしろ『素人が購入するとは考えにくい』お値段故、素人ではないであろう皆さんでも難しいでしょう）「CPUの歓声」を聞くことは出来たでしょうか。</p>
+
+<p>ちなみに、これ出題してから&#8221;tkbctf&#8221;とか色々なワードでTwitterで検索かけてまして、64bit Mach-Oバイナリに思わず「歓声」を上げる皆さんを見て爆笑してたりしました（こういうのを性格が悪いと言います）。</p>
+
+<p>あとタイトルの元ネタの鮮度がちと古かった気がするなぁという感もあります。ソースコード上げたリポジトリのREADMEにも書きましたが、皆さん覚えているでしょうか。時は5ヶ月前、2014年6月。WWDC 2014で世にSwiftが発表され、The Swift Programming Languageが公開された後にTwitterを席巻した、あの衝撃の発言を。</p>
+
+<blockquote class="twitter-tweet" data-cards="hidden" lang="ja"><p>Swiftの関数はHaskell風。これはいい。マシン語が透けて見える。CPUの歓声が聞こえてきそうだ <a href="http://t.co/tfWwKe5e03">pic.twitter.com/tfWwKe5e03</a></p>&mdash; Ryo Shimizu (@shi3z) <a href="https://twitter.com/shi3z/status/473627881055485952">2014, 6月 3</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<p>（もちろんこの前後にも<strong>とても素晴らしい発言</strong>があるわけですが）</p>
+
+<p>Swiftの関数はHaskell風、マシン語が透けて見える、CPUの歓声が聞こえてきそう——もう見るだけで頭がクラクラしてきそうな圧倒的で革新的で先進的で最も優れた表現力を持ったこのツイートに感銘を受け、今回の問題はSwiftで書かれているということで、このツイートをリスペクトして問題名にしました。このような素晴らしいツイートを世に送り出してくださったRyo Shimizu(@shi3z)氏にはこの場を借りて感謝の意を述べさせて頂きます。</p>
+
+<p>しかしながら、個人的に「マシン語が透けて見える」というとこちらの方を推しておきます。</p>
+
+<blockquote class="twitter-tweet" lang="ja"><p>マシン語が透けて見える。CPUの歓声が聞こえてきそうだ <a href="http://t.co/drJMSTIdFQ">pic.twitter.com/drJMSTIdFQ</a></p>&mdash; 秋弦めい☂小傘ちゃんかわいい (@maytheplic) <a href="https://twitter.com/maytheplic/status/473701724574605313">2014, 6月 3</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<h1>最後に</h1>
+
+<p><strong>小傘ちゃんかわいい。</strong></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2002,139 +2102,6 @@ env=os.environ)</p></blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/08/download-string-in-mono-and-dotnet-framework/">結局Monoと.NETの挙動の違いはなんだったのか</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-08T06:49:41+09:00" pubdate data-updated="true">May 8<sup>th</sup>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>続・アレな文字を<code>WebClient.DownloadString(String)</code>に渡すとローカルのファイルが読める</p>
-
-<p>ここ2つの記事でMonoの<code>WebClient.DownloadString(string)</code>にアレな文字列渡すとローカルファイルを落としてきてしまうという挙動について調べてたわけですが、よくよくスタックトレースを見てみると、.NET Frameworkでも<code>GetUri</code>というメソッドを経由して<code>Path.GetFullPath</code>が呼ばれていたことがわかりました。</p>
-
-<p>そんなわけで<code>Path.GetFullPath</code>の挙動を見てみると、<code>http://../../../../etc/passwd</code>といったような文字列を与えたときに.NETとMonoで次のような挙動の違いが見られました。</p>
-
-<ul>
-<li>.NET Frameworkは「URIフォーマットはサポートしていない」というメッセージと共にArgumentExceptionが投げられる</li>
-<li>Monoはそのままフルパスに変換する</li>
-</ul>
-
-
-<p>.NET上で同じことをしても<code>DownloadString(string)</code>がここまで問題にしてきた挙動をしなかったのは、ここで例外を吐いて止まっていたから、というだけのことだったわけです。</p>
-
-<h1>スキーム</h1>
-
-<p>ところでスキームをhttpじゃなくて適当な何かに変えたらどうなるんだろうと思って試してみました。</p>
-
-<p>与える文字列を<code>abc://../../../../etc/passwd</code>といったように、実在しないような適当なスキームに変えて同じプログラムを動かしたところ、.NETではUriとしてのパースに成功しました。httpスキームのときは最初の部分をhostnameとして認識していたので、恐らくスキームを見てフォーマットを認識してるんでしょう。</p>
-
-<p>さて、.NETにおいてはパースの結果<code>abc://../etc/passwd</code>になりました。なぜか<code>../</code>の部分がひとつにまとめられていましたがこれは一体どういう挙動なんでしょう。それはともかく、この結果を踏まえた上で同じ文字列を<code>WebClient.DownloadString(string)</code>に渡すと、今度は「そんなURIプリフィックスは知らん」とNotSupportedExceptionを投げられました。<code>WebRequest.Create</code>の中から呼ばれているようなので、前述の<code>GetUri</code>などは成功しているようです（というか、new Uriが成功するんだからそら成功するだろう）。で、<a href="http://msdn.microsoft.com/ja-jp/library/bw00b1dc%28v=vs.110%29.aspx">System.Net.WebRequest.Create(String)</a>を見ると、やはり渡されたURIのスキームに対応するものがない、という例外でよさそうです。どんなURIが渡されてもこれが呼ばれるとするなら、<code>http(s)://</code>、<code>ftp://</code>、<code>file://</code>のいずれにも該当しないURIは常に弾かれることになります。</p>
-
-<p>Monoの場合、まず<code>new Uri(String)</code>が<code>UriFormatException</code>で失敗します。ということは前の記事で述べた通り<code>Path.GetFullPath</code>が呼ばれることになり、やはりこの場合でもローカルのファイルが読めてしまいます。</p>
-
-<h1>まとめ</h1>
-
-<p>結局何がこの挙動の違いを生み出していたのかというと以下の2点だと考えられます。</p>
-
-<ul>
-<li>Monoの<code>new Uri(String)</code>が未知のスキームを持つURIに対して失敗する（.NETは成功する）</li>
-<li>Monoの<code>Path.GetFullPath(String)</code>がURIであるような文字列に対して成功する（.NETは失敗する）</li>
-</ul>
-
-
-<p>とりあえずバグレポートも書いたのでこの件は一段落ということでいいんじゃないんでしょうか……（遠い目）</p>
-
-<p>（バグレポート、type=&ldquo;text&#8221;なフィールドでEnter叩いちゃって途中送信されて慌てて削除する方法を探してみるも見当も付かず、結局コメントで「途中送信しちゃった許してくださいお願いします何でもしますから」って言いながらレポート書き直したのは内緒だぞっ）</p>
-
-<p>あと、整理のために<code>DownloadString(String)</code>の処理の流れを書いておきます。</p>
-
-<h2>.NET</h2>
-
-<h3>既知のスキームを持つ不正なURI</h3>
-
-<p>given: <code>http://../../etc/passwd</code></p>
-
-<ol>
-<li><code>GetUri</code>が呼ばれる</li>
-<li>たぶん内部的に<code>new Uri(String)</code>して失敗する</li>
-<li>たぶんその結果<code>Path.GetFullPath(String)</code>が呼ばれる</li>
-<li><code>Path.GetFullPath(String)</code>がArgumentExceptionを投げる (&ldquo;URI formats are not supported.&rdquo;)</li>
-</ol>
-
-
-<h3>未知のスキームを持つ不正なURI</h3>
-
-<p>given: <code>abc://../../etc/passwd</code></p>
-
-<ol>
-<li><code>GetUri</code>が呼ばれる</li>
-<li>たぶん内部的に<code>new Uri(String)</code>して成功する</li>
-<li>成功したのでその結果をそのまま返す</li>
-<li><code>WebRequest.Create</code>が呼ばれる</li>
-<li><code>WebRequest.Create</code>が未知のスキームに対応できずNotSupportedExceptionを投げる</li>
-</ol>
-
-
-<h2>Mono</h2>
-
-<h3>既知のスキームを持つ不正なURI</h3>
-
-<p>given: <code>http://../../etc/passwd</code></p>
-
-<ol>
-<li><code>CreateUri</code>が呼ばれる</li>
-<li><code>new Uri(String)</code>して失敗する</li>
-<li><code>Path.GetFullPath(String)</code>が呼ばれる</li>
-<li><code>Path.GetFullPath(String)</code>が成功し、結果を返す (e.g. <code>/home/etc/passwd</code>)</li>
-<li>その結果を<code>new Uri(String)</code>に渡す (結果<code>file:///home/etc/passwd</code>なUriが返る)</li>
-<li>それを取得する (この場合は（たぶん）そのファイルがないので例外を吐く）</li>
-</ol>
-
-
-<h3>未知のスキームを持つ不正なURI</h3>
-
-<p>given: <code>abc://../../etc/passwd</code></p>
-
-<ol>
-<li><code>CreateUri</code>が呼ばれる</li>
-<li><code>new Uri(String)</code>して失敗する</li>
-<li><code>Path.GetFullPath(String)</code>が呼ばれる</li>
-<li><code>Path.GetFullPath(String)</code>が成功し、結果を返す (e.g. <code>/home/etc/passwd</code>)</li>
-<li>その結果を<code>new Uri(String)</code>に渡す (結果<code>file:///home/etc/passwd</code>なUriが返る)</li>
-<li>それを取得する (この場合は（たぶん）そのファイルがないので例外を吐く）</li>
-</ol>
-
-
-<p>※.NETとの対比で両方書いたが、Monoの場合いずれも処理の流れは全く同じ</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="2">&larr; Older</a>
@@ -2183,6 +2150,10 @@ env=os.environ)</p></blockquote>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/11/24/tkbctf4-cheerofcpu/">tkbctf4 [bin300] Cheer of CPU</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/10/17/sublime-latex-yosemite/">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</a>
       </li>
     
@@ -2196,10 +2167,6 @@ env=os.environ)</p></blockquote>
     
       <li class="post">
         <a href="/blog/2014/07/20/seccon2014-online-preliminary/">SECCON 2014 オンライン予選 その他諸々</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/20/seccon2014-online-printit/">SECCON 2014 オンライン予選 【Print it!】</a>
       </li>
     
   </ul>
