@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="Cheer of CPUに続きましてmisc 400、amidaでございます。 この問題は私と@yuscarletによる作成です。 問題 203.178.132.117:42719 Ghost Leg - Wikipedia, the free encyclopedia &hellip;">
+  <meta name="description" content="Welcome to SECCON (Start 100) The answer is &ldquo;SECCON{20141206}&rdquo;. 答えは、「SECCON{20141206}」です。 驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。 Answer: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -51,6 +51,448 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/07/seccon2014-online-winter/">SECCON 2014 Online Qualification (December) Write-up</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-07T22:11:39+09:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>Welcome to SECCON (Start 100)</h1>
+
+<blockquote><p>The answer is &ldquo;SECCON{20141206}&rdquo;.</p>
+
+<p>答えは、「SECCON{20141206}」です。</p></blockquote>
+
+<p>驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。</p>
+
+<p>Answer: <code>SECCON{20141206}</code></p>
+
+<h1>jspuzzle (Web 100)</h1>
+
+<blockquote><p>jspuzzle.zip</p>
+
+<p>You need to fill in all blanks!</p></blockquote>
+
+<p><code>jspuzzle.zip</code>を展開すると<code>q.html</code>と<code>sha1.js</code>がある。<code>sha1.js</code>はJavaScriptでSHA-1のハッシュ値を計算するライブラリの模様。本体は<code>q.html</code>。</p>
+
+<p>HTMLファイルを開くと穴あきになったJavaScriptのコードと、空いている箇所に埋めるピースとなる語が表示されている。目標はピースをはめていって、<code>alert(1)</code>を実行するコードにすること。フラグの値は埋めたピースから計算されたSHA-1ハッシュ値。問題文には「全ての空欄を埋めよ」とあるので、ちゃんと全部埋める。当然ながら一度使ったピースは二度使えない。</p>
+
+<p>コードは次の通り(<code>"???"</code>が空欄の箇所)。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>"use strict";
+</span><span class='line'>
+</span><span class='line'>({"???" :function(){
+</span><span class='line'>    this[ "???" ] = (new Function( "???" + "???" + "???" ))();
+</span><span class='line'>    var pattern = "???";
+</span><span class='line'>    var r = new RegExp( pattern );
+</span><span class='line'>    this[ r[ "???" ]( pattern ) ][ "???" ]( 1 );
+</span><span class='line'>}})[ "???"[ "???" ]() ]();</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ピースは次の通り。</p>
+
+<ul>
+<li>fromCharCode</li>
+<li>indexOf</li>
+<li>match</li>
+<li>this</li>
+<li>new</li>
+<li>null</li>
+<li>charAt</li>
+<li>alert</li>
+<li>constructor</li>
+<li>/<em>^_^</em>/</li>
+<li>return</li>
+<li>pattern</li>
+<li>toLowerCase</li>
+<li>exec</li>
+<li>eval</li>
+<li>debugger</li>
+<li>function</li>
+<li>^[w]$</li>
+</ul>
+
+
+<p>外側から見ていく。連想配列を生成して、その連想配列のある要素を関数として呼び出すコードがある。値は<code>function () { ... }</code>で固定で、キーの方が抜けている。また要素を取り出すときに<code>"???"["???"]()</code>をキーにしている。書き換えれば<code>"???".someMethod()</code>なので、後者の方は<code>String</code>に対するメソッドだと推測出来る。また、最初の空欄とこのメソッド呼び出しの結果が一致しなければならないから、最初の空欄が<code>function</code>、最後の2つの空欄が<code>Function</code>と<code>toLowerCase</code>となる。</p>
+
+<p>本題の内側の方。4行目は何かしらの関数を生成してそれを実行した結果をこの連想配列に代入している。ということは、<code>new Function("...")</code>の中身は何かを返さねばならないので、3つの空欄のうち最初は<code>return</code>である。また7行目を見ると最終的にここで返した何かに対してメソッド呼び出しを行っている。引数が<code>1</code>なので<code>alert</code>が来ることは明らかである。よってここは<code>window</code>を返したい。だが3つの空欄は単純な文字列連結なので空白がない。これでしばらく悩んだが、よく見ると<code>/*^_^*/</code>はコメントである。まさかと思って2番目にこれを入れて、3番目に<code>this</code>を入れたところ、見事に<code>window</code>が返ってきた。ちなみに<code>this</code>を入れたのは他に選択肢がなかったからで、JavaScriptの<code>this</code>の仕様はさっぱり理解してない、というか出来る気がしない。なんで左辺の<code>this</code>は連想配列自身なのに右辺の関数内の<code>this</code>は<code>window</code>（たぶん外側で関数呼び出しを実行してる時点での<code>this</code>）なんだ…。ここまで固まったついでに5行目の2番目の空欄が<code>alert</code>であることも確定。</p>
+
+<p>さて、7行目の最初の空欄だが、<code>r</code>はRegExpのインスタンスなのでここに入れられるのは<code>exec</code>か<code>constructor</code>くらいしかない。<code>constructor</code>入れたところで<code>this[/pattern/][alert](1)</code>になって意味不明なので<code>exec</code>を入れる。そうすると、4行目に先ほどの関数を代入した先のキーと<code>r.exec(pattern)</code>の結果が一致しなければならない。だが先ほど使ったような<code>function</code>と<code>"Function".toLowerCase()</code>の手は使えない。ところで、このとき調べて初めて知ったのだが、<code>test["null"] = "hoge"; console.log(test[null])</code>は<code>hoge</code>を出力する。マジかよと思って実行して唖然とした。JavaScriptヤバすぎるのでゎ。……でなんでそんな話をしたかというとちょうどピースに<code>null</code>が入っていて、かつ<code>pattern = "^[w]$"</code>とすると<code>r.exec(pattern)</code>は<code>null</code>を返すのである。</p>
+
+<p>——というわけで空欄に<code>null</code>、<code>^[w]$</code>を埋めて完了。<code>alert(1)</code>が実行されるのを確認してフラグを送信して終了。</p>
+
+<p><code>this["null"] = ...</code>の部分は@yyuがいなければ無限に悩んで死亡していた。連想配列のキーの比較どうなってるんだよマジ。</p>
+
+<p>Answer: <code>SECCON{3678cbe0171c8517abeab9d20786a7390ffb602d}</code></p>
+
+<h1>Easy Cipher (Crypto 100)</h1>
+
+<blockquote><p>87 101 108 1100011 0157 6d 0145 040 116 0157 100000 0164 104 1100101 32 0123 69 67 0103 1001111 1001110 040 062 060 49 064 100000 0157 110 6c 0151 1101110 101 040 0103 1010100 70 101110 0124 1101000 101 100000 1010011 1000101 67 0103 4f 4e 100000 105 1110011 040 116 1101000 0145 040 1100010 0151 103 103 0145 1110011 0164 100000 1101000 0141 99 6b 1100101 0162 32 0143 111 1101110 1110100 101 0163 0164 040 0151 0156 040 74 0141 1110000 1100001 0156 056 4f 0157 0160 115 44 040 0171 1101111 117 100000 1110111 0141 0156 1110100 32 0164 6f 32 6b 1101110 1101111 1110111 100000 0164 1101000 0145 040 0146 6c 97 1100111 2c 100000 0144 111 110 100111 116 100000 1111001 6f 117 63 0110 1100101 0162 0145 100000 1111001 111 117 100000 97 114 0145 46 1010011 0105 0103 67 79 1001110 123 87 110011 110001 67 110000 1001101 32 55 060 100000 110111 0110 110011 32 53 51 0103 0103 060 0116 040 5a 0117 73 0101 7d 1001000 0141 1110110 1100101 100000 102 0165 0156 33</p></blockquote>
+
+<p>十進法の値と二進法の値と八進法の値と十六進法の値が入り乱れている気がするテキスト。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class String
+</span><span class='line'>  def parse
+</span><span class='line'>    case
+</span><span class='line'>      when self.start_with?('0')
+</span><span class='line'>        self.to_i(8)
+</span><span class='line'>      when self =~ /\A[01]+\z/ and self.length &gt; 3
+</span><span class='line'>        self.to_i(2)
+</span><span class='line'>      when self =~ /[a-f]/
+</span><span class='line'>        self.to_i(16)
+</span><span class='line'>      else
+</span><span class='line'>        self.to_i(10)
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>data = gets.strip.split(' ')
+</span><span class='line'>puts data.map(&:parse).map(&:chr).join</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Answer: <code>SECCON{W31C0M 70 7H3 53CC0N ZOIA}</code></p>
+
+<h1>Choose the number (Programming 100)</h1>
+
+<blockquote><p>nc number.quals.seccon.jp 31337</p>
+
+<p>sorry fixed URL</p></blockquote>
+
+<p>ncすると数列と問題が流れてくる。サンプルは以下の通り。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-5, -9
+</span><span class='line'>The minimum number? -9
+</span><span class='line'>6, 7, -4
+</span><span class='line'>The minimum number? -4
+</span><span class='line'>1, -7, 7, 1
+</span><span class='line'>The maximum number? 7
+</span><span class='line'>6, 8, -5, -4, -5
+</span><span class='line'>The minimum number? 8
+</span><span class='line'>-3, -5, -8, -6, -1, 0
+</span><span class='line'>The maximum number? 0
+</span><span class='line'>-1, 1, 4, 2, -6, -6, 0
+</span><span class='line'>The maximum number? 4
+</span><span class='line'>0, 4, -2, 1, 9, -9, 7, -4
+</span><span class='line'>The maximum number? 114514
+</span><span class='line'>Wrong, bye.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>与えられた数列に対して、その中での最大値もしくは最小値を答える。Rubyで入力を<code>,</code>で区切って数値化して<code>Enumerable.(max|min)</code>で答えるプログラムを書いた。入出力のデバッグで10分は取られてすごくつらい。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'socket'
+</span><span class='line'>
+</span><span class='line'>SERVER_URI = 'number.quals.seccon.jp'
+</span><span class='line'>SERVER_PORT = 31337
+</span><span class='line'>LOG_NAME = 'comm.log'
+</span><span class='line'>
+</span><span class='line'>def read_question(sock)
+</span><span class='line'>  s = ''
+</span><span class='line'>  while true
+</span><span class='line'>    c = sock.getc
+</span><span class='line'>    if c == '?'
+</span><span class='line'>      s &lt;&lt; c
+</span><span class='line'>      s &lt;&lt; sock.getc # whitespace
+</span><span class='line'>      break
+</span><span class='line'>    elsif c.nil?
+</span><span class='line'>      break
+</span><span class='line'>    end
+</span><span class='line'>    s &lt;&lt; c
+</span><span class='line'>  end
+</span><span class='line'>  s
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>begin
+</span><span class='line'>  sock = TCPSocket.open(SERVER_URI, SERVER_PORT)
+</span><span class='line'>  file = File.open(LOG_NAME, 'a')
+</span><span class='line'>
+</span><span class='line'>  num_str = ''
+</span><span class='line'>  qstr = ''
+</span><span class='line'>
+</span><span class='line'>  while true
+</span><span class='line'>    num_str.clear
+</span><span class='line'>    qstr.clear
+</span><span class='line'>
+</span><span class='line'>    num_str = sock.gets
+</span><span class='line'>    if num_str.include?('bye')
+</span><span class='line'>      fail 'connection closed by host'
+</span><span class='line'>    end
+</span><span class='line'>
+</span><span class='line'>    qstr = read_question(sock)
+</span><span class='line'>    file.puts num_str
+</span><span class='line'>    file.print qstr
+</span><span class='line'>    file.flush
+</span><span class='line'>
+</span><span class='line'>    nums = num_str.split(',').map(&:strip).map(&:to_i)
+</span><span class='line'>    qstr.strip!
+</span><span class='line'>    ans =
+</span><span class='line'>      case qstr
+</span><span class='line'>      when 'The minimum number?'
+</span><span class='line'>        nums.min
+</span><span class='line'>      when 'The maximum number?'
+</span><span class='line'>        nums.max
+</span><span class='line'>      else
+</span><span class='line'>        fail 'unknown question'
+</span><span class='line'>      end
+</span><span class='line'>    file.puts ans
+</span><span class='line'>    sock.puts "#{ans}\n"
+</span><span class='line'>    sock.flush
+</span><span class='line'>    file.flush
+</span><span class='line'>  end
+</span><span class='line'>rescue =&gt; e
+</span><span class='line'>  puts 'something went wrong!'
+</span><span class='line'>  p e
+</span><span class='line'>  puts 'num_str = ' + num_str unless num_str.empty?
+</span><span class='line'>  puts 'qstr = ' + qstr unless qstr.empty?
+</span><span class='line'>ensure
+</span><span class='line'>  file.close
+</span><span class='line'>  sock.close
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ちなみに<code>sock.puts</code>で答えを投げてるところに改行文字を入れてなかったのでバグってた。そんなのアリかよ(<code>puts</code>はそもそも改行を最後に入れるはずでゎ……)。しかしWiresharkで通信見たら問題の送信タイミングがおかしくて、それで気付いたのでやはりWireshark最強。</p>
+
+<h1>Get from curious &ldquo;FTP&rdquo; server (Network 300)</h1>
+
+<blockquote><p><a href="ftp://ftpsv.quals.seccon.jp/">ftp://ftpsv.quals.seccon.jp/</a></p></blockquote>
+
+<p>Chromeで見に行くとCOMMAND_NOT_SUPPORTEDとか言われてダメ。よくわからないのでとりあえず<a href="http://ja.wikipedia.org/wiki/FTP%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AE%E4%B8%80%E8%A6%A7">FTPコマンド一覧</a>を片手にtelnet。</p>
+
+<p>ログインしろと言われるがanonymousしかないと言われるので<code>USER anonymous</code>で接続。とりあえず<code>PWD</code>してみると<code>/</code>にいる。じゃあ<code>LIST</code>してみるかと思って<code>LIST</code>すると&#8221;not implemented&#8221;と言われる。そんなFTPサーバーがあるか。仕方ないので片っ端からコマンドを試そうとする。一覧の一番上は<code>ABOR</code>だったけど、さすがに何も転送してないのに<code>ABOR</code>しても仕方ないと思って、その次の<code>ACCT</code>にしてみる。そうすると<code>PORT</code>か<code>PASV</code>をしろと言われる。え、アカウント情報の転送って転送用のコネクションいるんですか、と思いながら電卓片手に<code>PASV</code>を叩いて、別のターミナルで指定のポートにtelnet（なんでncじゃなかったんだろう）。一応念のためもう一度<code>LIST</code>してみたけど相変わらず未実装らしいので<code>ACCT</code>を投げると、なぜか<code>LIST</code>相当の処理が走って別ターミナルにファイル一覧が流れてきた。何が起きたかさっぱりわからないが、「<code>key_is_in_this_file_...</code>」みたいなファイルがいるらしいので、<code>RETR</code>コマンドでそのファイルを持ってくる。</p>
+
+<blockquote><p>Answer: <code>SECCON{S0m3+im3_Pr0t0c0l_t411_4_1i3.}</code></p></blockquote>
+
+<p>参考までに通信内容。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% telnet ftpsv.quals.seccon.jp 21
+</span><span class='line'>Trying 133.242.224.21...
+</span><span class='line'>Connected to ftpsv.quals.seccon.jp.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>220 (vsFTPd 2.3.5(SECCON Custom))
+</span><span class='line'>USER anonymous
+</span><span class='line'>331 Please specify the password.
+</span><span class='line'>PASS pass
+</span><span class='line'>230 Login successful.
+</span><span class='line'>PWD
+</span><span class='line'>257 "/"
+</span><span class='line'>LIST
+</span><span class='line'>502 LIST not implemented.
+</span><span class='line'>ACCT
+</span><span class='line'>425 Use PORT or PASV first.
+</span><span class='line'>PASV
+</span><span class='line'>227 Entering Passive Mode (133,242,224,21,252,27).
+</span><span class='line'>LIST
+</span><span class='line'>502 LIST not implemented.
+</span><span class='line'>ACCT
+</span><span class='line'>150 Here comes the directory listing.
+</span><span class='line'>226 Directory send OK.
+</span><span class='line'>PASV
+</span><span class='line'>227 Entering Passive Mode (133,242,224,21,255,82).
+</span><span class='line'>RETR key_is_in_this_file_afjoirefjort94dv7u.txt
+</span><span class='line'>150 Opening BINARY mode data connection for key_is_in_this_file_afjoirefjort94dv7u.txt (38 bytes).
+</span><span class='line'>226 Transfer complete.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>別ターミナルの方。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% telnet ftpsv.quals.seccon.jp 64539
+</span><span class='line'>Trying 133.242.224.21...
+</span><span class='line'>Connected to ftpsv.quals.seccon.jp.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>-rw-r--r--    1 0        0              38 Nov 29 04:43 key_is_in_this_file_afjoirefjort94dv7u.txt
+</span><span class='line'>Connection closed by foreign host.
+</span><span class='line'>
+</span><span class='line'>% telnet ftpsv.quals.seccon.jp 65362
+</span><span class='line'>Trying 133.242.224.21...
+</span><span class='line'>Connected to ftpsv.quals.seccon.jp.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>SECCON{S0m3+im3_Pr0t0c0l_t411_4_1i3.}
+</span><span class='line'>Connection closed by foreign host.</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Making a bot (Programming 0)</h1>
+
+<p>この辺で解けそうな問題がなくなり人権を失ったが、@re_Ordが問題を解いたというので、Slack上でいいね！ができるようにbotに手を入れ始めた。つまるところ別のことをし始めた。</p>
+
+<p>元々hubotで（主に@opが使う）違法語句に対して全自動で:fu:を投げ付けるbotを書いていたのでそこに追加する形で実装した。永続化ストレージはなんかRedisの例ばかりだったのでとりあえずRedisにした。永続化ストレージをくっつけたついでに、違法語句を使用したときにお前の罪を数えろと言わなくていいようにkarmaポイントを記録するようにした。これで積極的に（主に@opに）罪の精算を迫っていこうと思う。最初の+1は@re_Ordに捧げられた。+1。</p>
+
+<p>ただ違法語句を使用したときに:fu:が飛ぶという仕様のせいで、botの名前をkogasa-chanにできないしアイコンに小傘ちゃんを使うこともできなくなった。あのかわいい小傘ちゃんは中指など飛ばさないのである。悩ましいことである。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1450,625 +1892,6 @@ env=os.environ)</p></blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/28/rails-app-with-mina/">Railsアプリ With Mina and OpenRC</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-28T00:07:56+09:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h1>目的とか</h1>
-
-<p>KONMAIが送る大人気リズムアクションゲーム&#8221;REFLEC BEAT groovin&#8217;!!&ldquo;に向けてRefixativeの新バージョンを書いていた。今までは毎回毎回サーバーにsshしてはgit pullしてうんぬんかんぬん、とやっていたので、現代的な環境を構築したかった。</p>
-
-<p>ついでに、サーバーを再起動する度にunicornのプロセス周りがなぜだかややこしいことになっていたので、どうせそもそもデーモンなんだからinitスクリプトを書けばいいんじゃね、ということでそっちもついでに対応した。</p>
-
-<p>OpenRCの実装を読み始めた辺りから変な沼にハマって、そこから3日くらいかかった。</p>
-
-<h1>環境その他</h1>
-
-<p>開発環境はMac OS X Mavericks。Homebrewでいろんなものを突っ込んである状態。</p>
-
-<p>サーバーはさくらのVPS(2G)でOSとしてGentoo Linuxがインストールされている。</p>
-
-<p>Rubyのバージョンは2.1.2、Railsのバージョンは4.1.1。</p>
-
-<p>DBにPostgreSQL 9.3を使用。現時点ではまだ用意していないが、memcachedも使用する予定。</p>
-
-<h1>Rails</h1>
-
-<p><code>rails new</code>して適当にGemfileを弄って<code>bundle install --path vendor/bundle</code>。</p>
-
-<h2>rbenv on Gentoo</h2>
-
-<p>まず第一関門がRubyだった。Gentoo上でrbenvやRVMを使ってRubyをインストールすると、<code>auto_gem</code>なるライブラリがないと言われてRubyが動かないという問題に遭遇した。ググってみると同じ問題に遭遇している人が多数いた。<code>RUBYOPT</code>を空にして<code>rubygems</code>をemergeしなおせばいいよ、とかまぁいろいろ見つかったのだけど、そもそも<code>auto_gem</code>というのが気になり、Twitterでいろいろ叫びながら調べていたところ、Gentooのこわいひとに教えてもらうことができた。</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" lang="ja"><p><a href="https://twitter.com/maytheplic">@maytheplic</a> dev-ruby/rubygemsがインストールしていて、加古にruby18にgems読ませるためにいれていた。いまはいらない。ruby18もそのうちおちるしその時におとしてくれようって言おうと思う</p>&mdash; 春はGentooインストールの季節 (@naota344) <a href="https://twitter.com/naota344/statuses/469521948465053696">2014, 5月 22</a></blockquote>
-
-
-<p>（ちなみにその後Gentooのこわいひとが次のように仰っていたので、きっとこの問題は起こらなくなるだろう）</p>
-
-<blockquote class="twitter-tweet" data-conversation="none" lang="ja"><p><a href="https://twitter.com/maytheplic">@maytheplic</a> いまgentoo ruby teamとIRCしたらruby18はもうおとつつあるしけしていいね、って話になったし3日ぐらいしたらそのあたりもきえちゃうんじゃないかな</p>&mdash; 春はGentooインストールの季節 (@naota344) <a href="https://twitter.com/naota344/statuses/469523144915427330">2014, 5月 22</a></blockquote>
-
-
-<p>さて、それはともかくとして、少なくともこれをやってた時点では直ってなかったので対策をしなければならない。</p>
-
-<p>そもそも<code>auto_gem.rb</code>とやらが何をしているのかというと、</p>
-
-<ul>
-<li><code>require 'rubygems'</code>する</li>
-<li>そのときに<code>LoadError</code>が起きたら握り潰す</li>
-</ul>
-
-
-<p>以上である。Gentooのこわいひとの言う通り、見事に現代には不要なブツである。不要なのだから、現代的なRuby環境では「何もしなくてもよい」ということができる。というわけで、適当に<code>site_ruby</code>辺りに空の<code>auto_gem.rb</code>を突っ込んでしまえばよい。例えばRuby 2.1.2であれば、</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>touch $HOME/.rbenv/versions/2.1.2/lib/ruby/site_ruby/2.1.0/auto_gem.rb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>とかやると動くようになる。</p>
-
-<p>ちなみにruby-buildを使っている場合はインストール後にそれを自動でやってくれるpluginがある。 -> <a href="https://github.com/Cofyc/rbenv-auto_gem">Cofyc/rbenv-auto_gem</a></p>
-
-<p>これを<code>$HOME/.rbenv/plugins</code>の下にcloneして<code>rbenv install ...</code>とかやると適切な場所に空の<code>auto_gem.rb</code>を作ってくれる。</p>
-
-<p>これでRubyが動くようになった。</p>
-
-<h2>therubyracer</h2>
-
-<p><code>rake assets:precompile</code>をしたとき、ローカルでは上手くいくのに、サーバー側ではSegmentation FaultでRubyが落ちるという事態に遭遇した。吐かれたエラーを見るとtherubyracerがどうの、といったところで落ちていた。サーバー側にはnode.jsが入っているし、特に問題ないだろうと判断してGemfileからtherubyracerを消したところ上手く動作した。なんだったんだろう。</p>
-
-<h1>Mina</h1>
-
-<p><a href="http://nadarei.co/mina/">Mina</a>はデプロイ自動化ツールで、同じようなツールで最も有名なのは恐らく<a href="http://capistranorb.com">Capistrano</a>だろう。</p>
-
-<p>今までRefixativeのデプロイというのはHerokuのように<code>git push</code>したら行われるとかなんかのbotにコマンド投げると行われるとかでは全くなく、開発者自身（つまり私）がデプロイ先サーバーにsshして、アプリケーションが置いてあるフォルダに移動して、git pullして、unicornをreloadして……とやっていた。正直アホらしい。</p>
-
-<p>そういうわけでその辺自動化するためにCapistranoでも触るか……と思っていたところで某筑波のておくれからこんなreplyが来た。</p>
-
-<blockquote class="twitter-tweet" lang="ja"><p><a href="https://twitter.com/maytheplic">@maytheplic</a> minaがナウいらしい <a href="http://t.co/MDwGLIx7Y0">http://t.co/MDwGLIx7Y0</a></p>&mdash; まてぃー (@rkmathi) <a href="https://twitter.com/rkmathi/statuses/459561993729347587">2014, 4月 25</a></blockquote>
-
-
-<p>ナウいらしい。ならば使うしかあるまい。というわけでMina採用となった。</p>
-
-<h2>その前に</h2>
-
-<p>サーバー側でRailsアプリを動かすユーザー等々を準備しておく。</p>
-
-<p>まずユーザー（今回は<code>refxgroovin</code>）を予め作成しておく。デプロイ先はこのユーザーのホームディレクトリ以下とし、今回は<code>/home/refxgroovin/refixative</code>としている。ステージング環境も同じユーザーで動かし、そちらのデプロイ先は<code>refixative-staging</code>とした。</p>
-
-<p>開発環境からサーバーに対してrefxgroovinとしてsshでログインできるように設定する。開発環境で公開鍵・秘密鍵のペアを作成し、サーバー側の<code>/home/refxgroovin/.ssh/authorized_keys</code>に公開鍵を追記する。</p>
-
-<p>ソースコードを取得する元になるリポジトリだが、今回github上にあるpublicなリポジトリなので実際どっちでもよさそうだし、SSH Agentを使うこともできるが、今回はさらにサーバー上のrefxgroovinユーザーでSSHの鍵を生成してリポジトリにアクセスできるように設定する。</p>
-
-<h2>Minaの準備</h2>
-
-<p>まずはGemfileに<code>gem 'mina'</code>の一行を追加して<code>bundle</code>した後、</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle exec mina init</span></code></pre></td></tr></table></div></figure>
-
-
-<p>とすると、<code>config/deploy.rb</code>というファイルが出来るのでこれを編集する。以下に示す<code>deploy.rb</code>はデフォルトを元にいろいろ試行錯誤した結果である。</p>
-
-<figure class='code'><figcaption><span>deploy.rb (refxgroovin_deploy.rb)</span> <a href='/downloads/code/refxgroovin_deploy.rb'>download</a></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-</pre></td><td class='code'><pre><code class='rb'><span class='line'><span class="nb">require</span> <span class="s1">&#39;mina/bundler&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;mina/rails&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;mina/git&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;mina/rbenv&#39;</span>  <span class="c1"># for rbenv support. (http://rbenv.org)</span>
-</span><span class='line'><span class="c1"># require &#39;mina/rvm&#39;    # for rvm support. (http://rvm.io)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Optional settings:</span>
-</span><span class='line'><span class="c1">#   set :user, &#39;foobar&#39;    # Username in the server to SSH to.</span>
-</span><span class='line'><span class="c1">#   set :port, &#39;30000&#39;     # SSH port number.</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">set</span> <span class="ss">:user</span><span class="p">,</span> <span class="s1">&#39;refxgroovin&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Basic settings:</span>
-</span><span class='line'><span class="c1">#   domain       - The hostname to SSH to.</span>
-</span><span class='line'><span class="c1">#   deploy_to    - Path to deploy into.</span>
-</span><span class='line'><span class="c1">#   repository   - Git repo to clone from. (needed by mina/git)</span>
-</span><span class='line'><span class="c1">#   branch       - Branch name to deploy. (needed by mina/git)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">set</span> <span class="ss">:domain</span><span class="p">,</span> <span class="s1">&#39;refxgroovin&#39;</span>
-</span><span class='line'><span class="n">set</span> <span class="ss">:repository</span><span class="p">,</span> <span class="s1">&#39;git@github.com:mayth/refixative.git&#39;</span>
-</span><span class='line'><span class="n">set</span> <span class="ss">:branch</span><span class="p">,</span> <span class="s1">&#39;next&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.</span>
-</span><span class='line'><span class="c1"># They will be linked in the &#39;deploy:link_shared_paths&#39; step.</span>
-</span><span class='line'><span class="n">set</span> <span class="ss">:shared_paths</span><span class="p">,</span> <span class="o">[</span>
-</span><span class='line'>  <span class="s1">&#39;config/database.yml&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;config/unicorn.rb&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;config/application.yml&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;log&#39;</span>
-</span><span class='line'><span class="o">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># This task is the environment that is loaded for most commands, such as</span>
-</span><span class='line'><span class="c1"># `mina deploy` or `mina rake`.</span>
-</span><span class='line'><span class="n">task</span> <span class="ss">:environment</span> <span class="k">do</span>
-</span><span class='line'>  <span class="k">case</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;to&#39;</span><span class="o">]</span>
-</span><span class='line'>  <span class="k">when</span> <span class="s1">&#39;staging&#39;</span>
-</span><span class='line'>    <span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;/home/</span><span class="si">#{</span><span class="n">user</span><span class="si">}</span><span class="s2">/refixative-staging&quot;</span>
-</span><span class='line'>  <span class="k">when</span> <span class="s1">&#39;production&#39;</span>
-</span><span class='line'>    <span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;/home/</span><span class="si">#{</span><span class="n">user</span><span class="si">}</span><span class="s2">/refixative&quot;</span>
-</span><span class='line'>  <span class="k">when</span> <span class="kp">nil</span>
-</span><span class='line'>    <span class="nb">fail</span> <span class="s1">&#39;specify `to`, deployment target&#39;</span>
-</span><span class='line'>  <span class="k">else</span>
-</span><span class='line'>    <span class="nb">fail</span> <span class="s1">&#39;unknown deployment target&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1"># If you&#39;re using rbenv, use this to load the rbenv environment.</span>
-</span><span class='line'>  <span class="c1"># Be sure to commit your .rbenv-version to your repository.</span>
-</span><span class='line'>  <span class="n">invoke</span> <span class="ss">:&#39;rbenv:load&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># Put any custom mkdir&#39;s in here for when `mina setup` is ran.</span>
-</span><span class='line'><span class="c1"># For Rails apps, we&#39;ll make some of the shared paths that are shared between</span>
-</span><span class='line'><span class="c1"># all releases.</span>
-</span><span class='line'><span class="n">task</span> <span class="ss">:setup</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">queue!</span> <span class="sx">%[mkdir -p &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/log&quot;]</span>
-</span><span class='line'>  <span class="n">queue!</span> <span class="sx">%[chmod g+rx,u+rwx &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/log&quot;]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">queue!</span> <span class="sx">%[mkdir -p &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/config&quot;]</span>
-</span><span class='line'>  <span class="n">queue!</span> <span class="sx">%[chmod g+rx,u+rwx &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/config&quot;]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">queue!</span> <span class="sx">%[mkdir -p &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/pids&quot;]</span>
-</span><span class='line'>  <span class="n">queue!</span> <span class="sx">%[chmod g+rx,u+rwx &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/pids&quot;]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">shared_configs</span> <span class="o">=</span> <span class="sx">%w(database.yml unicorn.rb application.yml)</span>
-</span><span class='line'>  <span class="n">shared_configs</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">conf</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">queue!</span> <span class="sx">%[touch &quot;</span><span class="si">#{</span><span class="n">deploy_to</span><span class="si">}</span><span class="sx">/shared/config/</span><span class="si">#{</span><span class="n">conf</span><span class="si">}</span><span class="sx">&quot;]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>  <span class="n">queue</span>  <span class="sx">%[echo &quot;-----&gt; Be sure to edit the following files in &#39;shared/config&#39;:&quot;]</span>
-</span><span class='line'>  <span class="n">shared_configs</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">conf</span><span class="o">|</span>
-</span><span class='line'>    <span class="n">queue</span>  <span class="sx">%[echo &quot;-----&gt;   * </span><span class="si">#{</span><span class="n">conf</span><span class="si">}</span><span class="sx">&quot;]</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">desc</span> <span class="s2">&quot;Deploys the current version to the server.&quot;</span>
-</span><span class='line'><span class="n">task</span> <span class="ss">:deploy</span> <span class="o">=&gt;</span> <span class="ss">:environment</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">deploy</span> <span class="k">do</span>
-</span><span class='line'>    <span class="c1"># Put things that will set up an empty directory into a fully set-up</span>
-</span><span class='line'>    <span class="c1"># instance of your project.</span>
-</span><span class='line'>    <span class="n">invoke</span> <span class="ss">:&#39;git:clone&#39;</span>
-</span><span class='line'>    <span class="n">invoke</span> <span class="ss">:&#39;deploy:link_shared_paths&#39;</span>
-</span><span class='line'>    <span class="n">invoke</span> <span class="ss">:&#39;bundle:install&#39;</span>
-</span><span class='line'>    <span class="n">invoke</span> <span class="ss">:&#39;rails:db_migrate&#39;</span>
-</span><span class='line'>    <span class="n">invoke</span> <span class="ss">:&#39;rails:assets_precompile&#39;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">to</span> <span class="ss">:launch</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">env</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;to&#39;</span><span class="o">]</span> <span class="o">==</span> <span class="s1">&#39;production&#39;</span> <span class="p">?</span> <span class="s1">&#39;&#39;</span> <span class="p">:</span> <span class="s2">&quot;.</span><span class="si">#{</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;to&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'>      <span class="n">cmd</span> <span class="o">=</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;reload&#39;</span><span class="o">]</span> <span class="o">||</span> <span class="s1">&#39;reload&#39;</span>
-</span><span class='line'>      <span class="n">queue</span> <span class="sx">%[sudo /etc/init.d/refxgroovin</span><span class="si">#{</span><span class="n">env</span><span class="si">}</span><span class="sx"> </span><span class="si">#{</span><span class="n">cmd</span><span class="si">}</span><span class="sx">]</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1"># For help in making your deploy script, see the Mina documentation:</span>
-</span><span class='line'><span class="c1">#</span>
-</span><span class='line'><span class="c1">#  - http://nadarei.co/mina</span>
-</span><span class='line'><span class="c1">#  - http://nadarei.co/mina/tasks</span>
-</span><span class='line'><span class="c1">#  - http://nadarei.co/mina/settings</span>
-</span><span class='line'><span class="c1">#  - http://nadarei.co/mina/helpers</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>shared_paths</h3>
-
-<p><code>shared_paths</code>に指定されたファイル・ディレクトリは、デプロイしたときに&#8221;#{deploy_to}/shared&#8221;にシンボリックリンクが張られるようになる。例えば<code>config/database.yml</code>を指定すると、デプロイしたときに<code>/home/refxgroovin/current/config/database.yml</code>から<code>/home/refxgroovin/shared/config/database.yml</code>にリンクが張られる。これによってサーバーに依存するファイルをいちいち書き換える必要がなくなる（んだろう、たぶん）。</p>
-
-<p>（※Minaはデプロイした最新版を&#8221;#{deploy_to}/current&#8221;とする。これもシンボリックリンクで、実体は<code>releases</code>フォルダ以下にある）</p>
-
-<p>例えばRails 4.1の<code>config/secrets.yml</code>。これは<code>rails new</code>したときに生成される<code>.gitignore</code>に含まれていてリポジトリにはないはずである。ここで、<code>shared_paths</code>に<code>config/secrets.yml</code>を設定して実体を<code>shared/config/secrets.yml</code>に置いておけば、デプロイ時にシンボリックリンクが作成されるので捗る、と思う。（ちなみにRefixativeの場合は<a href="https://github.com/laserlemon/figaro">Figaro</a>で管理しているので<code>config/secrets.yml</code>はリポジトリに存在している。その内容は単に環境変数を見るだけのものである。この場合は代わりに<code>config/application.yml</code>が存在しないので、これを<code>shared_paths</code>に設定してある）</p>
-
-<p>注意点としては、あくまで自動でリンクを張るだけであって実体に関しては何も関知しないので、それは自分で作成する必要がある。</p>
-
-<h3>セットアップ</h3>
-
-<p>その辺りの設定ができたら開発環境でセットアップのコマンドを発行する。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle exec mina setup to=production</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>to=production</code>に関しては、今回はproduction/stagingを切り替えられるようにしたので必須である（デフォルトのままなら必要ない）。これでデプロイ先にはMinaのディレクトリ構造が生成され、sharedディレクトリ以下にいくつかファイルやディレクトリが生成される。</p>
-
-<p>メッセージにあるとおり、<code>shared</code>以下のファイルは自分で編集しなければならないので、サーバー側で編集する。</p>
-
-<h3>デプロイ</h3>
-
-<p>ここまで終われば、開発環境に戻ってきて</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>bundle exec mina deploy to=production</span></code></pre></td></tr></table></div></figure>
-
-
-<p>とする。このコマンドによってsshしてgit cloneして云々……が実行され、最後に<code>to :launch</code>で書いた内容が実行され、デプロイは終了する。上述の例だとここで独自のinitスクリプトを用いているのでそれを用意しておく必要があるが、デフォルトだと<code>restart.txt</code>をtouchして終わりなので、特に何も起きずに終了するはずである。</p>
-
-<h1>サーバー側環境構築</h1>
-
-<p>rbenvとかrubyのインストールは省略。そこでハマったのは前述の点くらいである。</p>
-
-<h2>initスクリプトを書こう</h2>
-
-<p>Gentoo Linuxでは標準でOpenRCというinitシステムを採用している。それを踏まえた上で、unicornのデーモンを管理するためのinitスクリプトを書く。書き方は<a href="http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=2&amp;chap=4">Gentoo Linux Documentation &ndash; Initscripts</a>辺りを見たり、他のinitスクリプトを参考にする。今回は特にapache2とpostgresql-9.3を参考にして書いてみた。</p>
-
-<figure class='code'><figcaption><span>&#8220;init script&#8221; (refxgroovin_init)</span> <a href='/downloads/code/refxgroovin_init'>download</a></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'><span class="c1">#!/sbin/runscript</span>
-</span><span class='line'><span class="s-Atom">#</span> <span class="nv">Distributed</span> <span class="s-Atom">under</span> <span class="s-Atom">the</span> <span class="s-Atom">terms</span> <span class="s-Atom">of</span> <span class="s-Atom">the</span> <span class="nv">MIT</span> <span class="nv">License</span>
-</span><span class='line'><span class="s-Atom">#</span> <span class="err">$</span><span class="nv">Header</span><span class="s-Atom">:</span> <span class="err">$</span>
-</span><span class='line'>
-</span><span class='line'><span class="s-Atom">extra_started_commands=</span><span class="s2">&quot;reload&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s-Atom">description_graceful=</span><span class="s2">&quot;Reexecutes the running binary and stops the old master after the old workers finish their current request.&quot;</span>
-</span><span class='line'><span class="s-Atom">description_gracefulstop=</span><span class="s2">&quot;Stops the server after the workers finish their current request.&quot;</span>
-</span><span class='line'><span class="s-Atom">description_reload=</span><span class="s2">&quot;Reexecutes the running binary and stops the old master immediately.&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">CONF</span><span class="s-Atom">=</span><span class="s2">&quot;${RC_SVCNAME#*.}&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[</span> <span class="s2">&quot;${CONF}&quot;</span> <span class="o">==</span> <span class="s2">&quot;refxgroovin&quot;</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="nv">CONF</span><span class="s-Atom">=&#39;production&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="s-Atom">if</span> <span class="p">[</span> <span class="s2">&quot;${CONF}&quot;</span> <span class="o">==</span> <span class="s2">&quot;production&quot;</span> <span class="p">];</span> <span class="s-Atom">then</span>
-</span><span class='line'>  <span class="nv">REFXGROOVIN_BASE</span><span class="s-Atom">=</span><span class="s2">&quot;/home/refxgroovin/refixative&quot;</span>
-</span><span class='line'><span class="s-Atom">else</span>
-</span><span class='line'>  <span class="nv">REFXGROOVIN_BASE</span><span class="s-Atom">=</span><span class="s2">&quot;/home/refxgroovin/refixative-${CONF}&quot;</span>
-</span><span class='line'><span class="s-Atom">fi</span>
-</span><span class='line'><span class="nv">PIDFILE</span><span class="s-Atom">=</span><span class="s2">&quot;${REFXGROOVIN_BASE}/shared/pids/unicorn.pid&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">RBENV_DIR</span><span class="s-Atom">=</span><span class="s2">&quot;/home/${REFXGROOVIN_USER}/.rbenv&quot;</span>
-</span><span class='line'><span class="nv">PATH</span><span class="s-Atom">=</span><span class="s2">&quot;${RBENV_DIR}/bin:$PATH&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">depend</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s-Atom">need</span> <span class="s-Atom">net</span> <span class="s-Atom">postgresql</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s-Atom">ebegin</span> <span class="s2">&quot;Starting Refixative groovin&#39;!! ${CONF} server&quot;</span>
-</span><span class='line'>  <span class="s-Atom">start</span><span class="o">-</span><span class="s-Atom">stop</span><span class="o">-</span><span class="s-Atom">daemon</span> <span class="s-Atom">--start</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--name</span> <span class="s-Atom">unicorn_rails</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--chdir</span> <span class="err">$</span><span class="p">{</span><span class="nv">REFXGROOVIN_BASE</span><span class="p">}</span><span class="o">/</span><span class="s-Atom">current</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--user</span> <span class="err">$</span><span class="p">{</span><span class="nv">REFXGROOVIN_USER</span><span class="p">}</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--pidfile</span> <span class="err">$</span><span class="p">{</span><span class="nv">PIDFILE</span><span class="p">}</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--exec</span> <span class="s-Atom">rbenv</span> <span class="s-Atom">--</span> <span class="s-Atom">exec</span> <span class="s-Atom">bundle</span> <span class="s-Atom">exec</span> <span class="s-Atom">unicorn_rails</span> <span class="o">-</span><span class="s-Atom">c</span> <span class="s2">&quot;${REFXGROOVIN_BASE}/current/config/unicorn.rb&quot;</span> <span class="o">-</span><span class="nv">E</span> <span class="s-Atom">production</span> <span class="o">-</span><span class="nv">D</span>
-</span><span class='line'>  <span class="s-Atom">eend</span> <span class="err">$</span><span class="s-Atom">?</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">stop</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">seconds=</span><span class="err">$</span><span class="p">((</span> <span class="err">$</span><span class="p">{</span><span class="nv">GRACEFUL_TIMEOUT</span><span class="p">}</span> <span class="o">+</span> <span class="err">$</span><span class="p">{</span><span class="nv">FORCE_TIMEOUT</span><span class="p">}</span> <span class="p">))</span>
-</span><span class='line'>  <span class="s-Atom">ebegin</span> <span class="s2">&quot;Stopping Refixative groovin&#39;!! ${CONF} server gracefully (this can take up to ${seconds} seconds)&quot;</span>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">retries=</span><span class="s2">&quot;SIGQUIT/${GRACEFUL_TIMEOUT}&quot;</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">if</span> <span class="p">[</span> <span class="s2">&quot;${FORCE_QUIT}&quot;</span> <span class="o">=</span> <span class="s2">&quot;YES&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="s-Atom">then</span>
-</span><span class='line'>      <span class="s-Atom">einfo</span> <span class="s2">&quot;FORCE_QUIT enabled.&quot;</span>
-</span><span class='line'>      <span class="s-Atom">retries=</span><span class="s2">&quot;${retries}/SIGTERM/${FORCE_TIMEOUT}&quot;</span>
-</span><span class='line'>  <span class="s-Atom">fi</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">start</span><span class="o">-</span><span class="s-Atom">stop</span><span class="o">-</span><span class="s-Atom">daemon</span> <span class="s-Atom">--stop</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--pidfile</span> <span class="err">$</span><span class="p">{</span><span class="nv">PIDFILE</span><span class="p">}</span> <span class="s-Atom">\</span>
-</span><span class='line'>      <span class="s-Atom">--retry</span> <span class="s2">&quot;${retries}&quot;</span>
-</span><span class='line'>  <span class="s-Atom">eend</span> <span class="err">$</span><span class="s-Atom">?</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">restart</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s-Atom">stop</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">timeout=</span><span class="err">$</span><span class="p">{</span><span class="nv">RESTART_TIMEOUT</span><span class="p">:-</span><span class="m">10</span><span class="p">}</span>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">i</span><span class="o">=</span><span class="m">0</span> <span class="s-Atom">retval</span><span class="o">=</span><span class="m">0</span>
-</span><span class='line'>  <span class="s-Atom">while</span> <span class="p">[</span> <span class="o">-</span><span class="s-Atom">e</span> <span class="err">$</span><span class="p">{</span><span class="nv">PIDFILE</span><span class="p">}</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="p">[</span> <span class="err">$</span><span class="s-Atom">i</span> <span class="o">-</span><span class="s-Atom">lt</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">timeout</span><span class="p">}</span> <span class="p">]</span> <span class="p">;</span> <span class="s-Atom">do</span>
-</span><span class='line'>      <span class="s-Atom">sleep</span> <span class="m">1</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">i=</span><span class="err">$</span><span class="p">(</span><span class="s-Atom">expr</span> <span class="err">$</span><span class="s-Atom">i</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span>
-</span><span class='line'>  <span class="s-Atom">done</span>
-</span><span class='line'>  <span class="p">[</span> <span class="o">-</span><span class="s-Atom">e</span> <span class="err">$</span><span class="p">{</span><span class="nv">PIDFILE</span><span class="p">}</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">retval</span><span class="o">=</span><span class="m">1</span>
-</span><span class='line'>  <span class="s-Atom">eend</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span> <span class="s2">&quot;Unable to confirm whether the server stopped or not.&quot;</span>
-</span><span class='line'>  <span class="p">[</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span> <span class="o">-</span><span class="s-Atom">ne</span> <span class="m">0</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">return</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">sleep</span> <span class="m">2</span> <span class="s-Atom">#</span> <span class="s-Atom">waiting</span> <span class="s-Atom">a</span> <span class="s-Atom">little</span> <span class="s-Atom">for</span> <span class="nv">COMPLETELY</span> <span class="s-Atom">stopped</span> <span class="s-Atom">the</span> <span class="s-Atom">old</span> <span class="s-Atom">master</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">start</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="nf">reload</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">retval</span><span class="o">=</span><span class="m">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">ebegin</span> <span class="s2">&quot;Reloading Refixative groovin&#39;!! ${CONF} server&quot;</span>
-</span><span class='line'>  <span class="s-Atom">kill</span> <span class="o">-</span><span class="nv">USR2</span> <span class="err">`</span><span class="s-Atom">cat</span> <span class="err">$</span><span class="p">{</span><span class="nv">PIDFILE</span><span class="p">}</span><span class="err">`</span>
-</span><span class='line'>  <span class="s-Atom">retval=</span><span class="err">$</span><span class="s-Atom">?</span>
-</span><span class='line'>  <span class="s-Atom">eend</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span> <span class="s2">&quot;Unable to reload the server.&quot;</span>
-</span><span class='line'>  <span class="p">[</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span> <span class="o">-</span><span class="s-Atom">ne</span> <span class="m">0</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">return</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">timeout=</span><span class="err">$</span><span class="p">{</span><span class="nv">RELOAD_TIMEOUT</span><span class="p">:-</span><span class="m">10</span><span class="p">}</span>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">oldbin=</span><span class="s2">&quot;${PIDFILE}.oldbin&quot;</span>
-</span><span class='line'>  <span class="s-Atom">ebegin</span> <span class="s2">&quot;Waiting for restarting (this can take up to ${timeout} seconds)&quot;</span>
-</span><span class='line'>  <span class="s-Atom">local</span> <span class="s-Atom">i</span><span class="o">=</span><span class="m">0</span>
-</span><span class='line'>  <span class="s-Atom">retval</span><span class="o">=</span><span class="m">0</span>
-</span><span class='line'>  <span class="s-Atom">while</span> <span class="p">[</span> <span class="p">!</span> <span class="o">-</span><span class="s-Atom">e</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">oldbin</span><span class="p">}</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="p">[</span> <span class="err">$</span><span class="s-Atom">i</span> <span class="o">-</span><span class="s-Atom">lt</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">timeout</span><span class="p">}</span> <span class="p">]</span> <span class="p">;</span> <span class="s-Atom">do</span>
-</span><span class='line'>      <span class="s-Atom">sleep</span> <span class="m">1</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">i=</span><span class="err">$</span><span class="p">(</span><span class="s-Atom">expr</span> <span class="err">$</span><span class="s-Atom">i</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span>
-</span><span class='line'>  <span class="s-Atom">done</span>
-</span><span class='line'>  <span class="p">[</span> <span class="p">!</span> <span class="o">-</span><span class="s-Atom">e</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">oldbin</span><span class="p">}</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">retval</span><span class="o">=</span><span class="m">1</span>
-</span><span class='line'>  <span class="s-Atom">eend</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span> <span class="s2">&quot;Unable to found the old pidfile at ${oldbin}&quot;</span>
-</span><span class='line'>  <span class="p">[</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span> <span class="o">-</span><span class="s-Atom">ne</span> <span class="m">0</span> <span class="p">]</span> <span class="s-Atom">&amp;&amp;</span> <span class="s-Atom">return</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">retval</span><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="s-Atom">ebegin</span> <span class="s2">&quot;Stopping old Refixative groovin&#39;!! ${CONF} server&quot;</span>
-</span><span class='line'>  <span class="s-Atom">kill</span> <span class="o">-</span><span class="nv">QUIT</span> <span class="err">`</span><span class="s-Atom">cat</span> <span class="err">$</span><span class="p">{</span><span class="s-Atom">oldbin</span><span class="p">}</span><span class="err">`</span>
-</span><span class='line'>  <span class="s-Atom">eend</span> <span class="err">$</span><span class="s-Atom">?</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="s-Atom">#</span> <span class="nn">vim</span><span class="p">:</span> <span class="s-Atom">ts</span><span class="o">=</span><span class="m">4</span> <span class="s-Atom">filetype</span><span class="o">=</span><span class="s-Atom">gentoo</span><span class="o">-</span><span class="s-Atom">init</span><span class="o">-</span><span class="s-Atom">d</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><code>reload</code>はUSR2+QUITの組み合わせでダウンタイムなしでの更新を行うものである。あと<code>restart</code>はタイミングの問題か何かで、前のmasterがリッスンしているポートを手放す前に新しいmasterが動き始めて起動に失敗することがあったので、とりあえず間に<code>sleep 2</code>を入れてある。ひとまずこれで安定して再起動できる。適当。</p>
-
-<p>最初は強制的なstop（TERMシグナル）とgracefulなstop（QUITシグナル）を別のコマンドに分けていたのだが、<code>stop()</code>のときに呼ばれる処理が<code>gracefulstop()</code>とかにしてしまうと呼ばれないために、gracefulstopしてもサービスが停止していないと判断されてしまった。そんなわけで、postgresqlのスクリプトを参考にしてstopを書き換えた。<code>start-stop-daemon</code>は<code>--retry</code>オプションに所定の形式のリストを渡すと、最初の要素から順に指定されたタイムアウト分だけ待ちながらシグナルを送ってくれる。これを用いて、最初はQUITを送り、それから一定時間経っても終了出来なければTERMを送るような処理になっている。</p>
-
-<p>こんな感じのスクリプトを<code>/etc/init.d/refxgroovin</code>として作成して、あといくつか変数を定義したファイルを<code>/etc/conf.d/refxgroovin</code>として作成する。conf.dの方では<code>REFXGROOVIN_USER</code>の設定が必須である。これ以外にいくつかのタイムアウトの設定を行う。そうしたら</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/refxgroovin start</span></code></pre></td></tr></table></div></figure>
-
-
-<p>としてサービスを起動させる。これでログを確認してmasterがreadyになっていて、かつ<code>curl</code>か何かでリクエストを投げて返事が返ってくれば成功である。</p>
-
-<h3>stagingの話</h3>
-
-<p>ところで今回はstaging環境にも対応させている。initスクリプトは<code>refxgroovin.(env)</code>という名前で<code>refxgroovin</code>へのシンボリックリンクを張ればおしまいである。つまり、<code>refxgroovin.staging</code>という名前でシンボリックリンクを作成すると、それがstaging環境向けのinitスクリプトになる。</p>
-
-<p>conf.dの方はシンボリックリンクではなくコピーで対応する。</p>
-
-<h2>sudoers</h2>
-
-<p>デプロイが完了したとき、refxgroovinユーザーでサービスの再起動またはreloadが出来ればよい。しかしながらサービスの操作というのは当然スーパーユーザーでないとできない。そこでsudoである。でもrefxgroovinユーザーはunicornを動かすので、仮にunicornやRails、アプリケーション自身に任意コマンド実行の脆弱性があった場合、sudoから何かされる可能性がある。だからといってrefxgroovinユーザーにパスワードを設定するとデプロイする度にパスワードを入力しなきゃいけなくて、それは面倒（ここは運用方針に依存する気がするけど）。</p>
-
-<p>そういうわけで、refxgroovinユーザーに対しては「任意のユーザーとして、パスワードなしで、/etc/init.d/refxgroovinと/etc/init.d/refxgroovin.stagingの実行のみを許可する」ように設定する。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>refxgroovin ALL = (ALL) NOPASSWD: /etc/init.d/refxgroovin, (ALL) NOPASSWD: /etc/init.d/refxgroovin.staging</span></code></pre></td></tr></table></div></figure>
-
-
-<p>を<code>visudo</code>で追記する。<code>(ALL) NOPASSWD:</code>は2回書かなくてよかったような気もするのだが、何か動かなかったので2回書いてある（他に原因があったかもしれない）。</p>
-
-<p>この状態で一度試しにサーバー上で</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo /etc/init.d/refxgroovin reload</span></code></pre></td></tr></table></div></figure>
-
-
-<p>とかやって動くかどうかを確認する。動かなかったらググってみるとかmanを読むとかしてほしい。</p>
-
-<p>ひとまずこれでrefxgroovinユーザーがroot（とか他のユーザー権限）で出来ることはinitスクリプトを使ってrefxgroovinデーモンを操作することだけになった、はずである。たぶん。</p>
-
-<p>ちゃんと動いたならば、<code>deploy.rb</code>の<code>to :launch</code>を書き換える。上記の例のように<code>queue</code>を使って<code>sudo</code>を呼べばよい。編集したらデプロイしてみて、ちゃんとデプロイが成功するかどうかを確認する。</p>
-
-<p>私は当初unicornのpidfileをデフォルトの位置に設定していたが、この設定ではreloadが失敗した。</p>
-
-<p>pidfileのデフォルトの位置は<code>#{APPROOT}/tmp/pids/unicorn.rb</code>だが（今回であれば<code>APPROOT</code>は<code>/home/refxgroovin/current</code>）、Minaがlaunchを試みるのは<em>currentが最新版のコードベースに置き換わった後</em>である。つまり、例えば元々<code>releases/4</code>がcurrentだったとして、その状態でデプロイして<code>to :launch</code>が動くのはcurrentが<code>releases/5</code>に置き換わった後になる。要はpidfileはreleases/4/tmp/pidsにあるのに、releases/5/tmp/pidsを見に行ってしまう。当然そこには何もないのでpidfileがないといって失敗する。</p>
-
-<p>そんなわけで明示的に、かつデプロイ時にシンボリックリンクとかで実体の位置が変わらない場所にpidfileの場所を設定しておく必要がある。今回の場合は<code>shared/pids/unicorn.pid</code>にした。shared以下に配置しているが、<code>shared_paths</code>には設定していない（こういう使い方がMina的にOKなのかは知らない）。またディレクトリ自体がないと起動に失敗するので、setup時に<code>shared/pids</code>ディレクトリを作成するようにした。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="2">&larr; Older</a>
@@ -2117,6 +1940,10 @@ env=os.environ)</p></blockquote>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/12/07/seccon2014-online-winter/">SECCON 2014 Online Qualification (December) write-up</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/11/24/tkbctf4-amida/">tkbctf4 [misc 400] amida</a>
       </li>
     
@@ -2130,10 +1957,6 @@ env=os.environ)</p></blockquote>
     
       <li class="post">
         <a href="/blog/2014/09/23/csawctf2014-forensics/">CSAW CTF 2014 Quals Forensics</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/22/csawctf2014-trivia/">CSAW CTF 2014 Quals Trivia</a>
       </li>
     
   </ul>

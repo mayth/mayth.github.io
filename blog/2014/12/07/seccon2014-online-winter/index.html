@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SECCON 2014 Online Qualification (December) write-up - Hello (forgotten) world</title>
+  <meta name="author" content="Mei Akizuru">
+
+  
+  <meta name="description" content="Welcome to SECCON (Start 100) The answer is &ldquo;SECCON{20141206}&rdquo;. 答えは、「SECCON{20141206}」です。 驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。 Answer: &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/12/07/seccon2014-online-winter/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Hello (forgotten) world" type="application/atom+xml">
+  <meta name="twitter:widgets:csp" content="on">
+
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Code+Pro:200,300,400,500,600,700,900' rel='stylesheet' type='text/css'>
+
+
+
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">SECCON 2014 Online Qualification (December) Write-up</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-07T22:11:39+09:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>Welcome to SECCON (Start 100)</h1>
+
+<blockquote><p>The answer is &ldquo;SECCON{20141206}&rdquo;.</p>
+
+<p>答えは、「SECCON{20141206}」です。</p></blockquote>
+
+<p>驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。</p>
+
+<p>Answer: <code>SECCON{20141206}</code></p>
+
+<h1>jspuzzle (Web 100)</h1>
+
+<blockquote><p>jspuzzle.zip</p>
+
+<p>You need to fill in all blanks!</p></blockquote>
+
+<p><code>jspuzzle.zip</code>を展開すると<code>q.html</code>と<code>sha1.js</code>がある。<code>sha1.js</code>はJavaScriptでSHA-1のハッシュ値を計算するライブラリの模様。本体は<code>q.html</code>。</p>
+
+<p>HTMLファイルを開くと穴あきになったJavaScriptのコードと、空いている箇所に埋めるピースとなる語が表示されている。目標はピースをはめていって、<code>alert(1)</code>を実行するコードにすること。フラグの値は埋めたピースから計算されたSHA-1ハッシュ値。問題文には「全ての空欄を埋めよ」とあるので、ちゃんと全部埋める。当然ながら一度使ったピースは二度使えない。</p>
+
+<p>コードは次の通り(<code>"???"</code>が空欄の箇所)。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>"use strict";
+</span><span class='line'>
+</span><span class='line'>({"???" :function(){
+</span><span class='line'>    this[ "???" ] = (new Function( "???" + "???" + "???" ))();
+</span><span class='line'>    var pattern = "???";
+</span><span class='line'>    var r = new RegExp( pattern );
+</span><span class='line'>    this[ r[ "???" ]( pattern ) ][ "???" ]( 1 );
+</span><span class='line'>}})[ "???"[ "???" ]() ]();</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ピースは次の通り。</p>
+
+<ul>
+<li>fromCharCode</li>
+<li>indexOf</li>
+<li>match</li>
+<li>this</li>
+<li>new</li>
+<li>null</li>
+<li>charAt</li>
+<li>alert</li>
+<li>constructor</li>
+<li>/<em>^_^</em>/</li>
+<li>return</li>
+<li>pattern</li>
+<li>toLowerCase</li>
+<li>exec</li>
+<li>eval</li>
+<li>debugger</li>
+<li>function</li>
+<li>^[w]$</li>
+</ul>
+
+
+<p>外側から見ていく。連想配列を生成して、その連想配列のある要素を関数として呼び出すコードがある。値は<code>function () { ... }</code>で固定で、キーの方が抜けている。また要素を取り出すときに<code>"???"["???"]()</code>をキーにしている。書き換えれば<code>"???".someMethod()</code>なので、後者の方は<code>String</code>に対するメソッドだと推測出来る。また、最初の空欄とこのメソッド呼び出しの結果が一致しなければならないから、最初の空欄が<code>function</code>、最後の2つの空欄が<code>Function</code>と<code>toLowerCase</code>となる。</p>
+
+<p>本題の内側の方。4行目は何かしらの関数を生成してそれを実行した結果をこの連想配列に代入している。ということは、<code>new Function("...")</code>の中身は何かを返さねばならないので、3つの空欄のうち最初は<code>return</code>である。また7行目を見ると最終的にここで返した何かに対してメソッド呼び出しを行っている。引数が<code>1</code>なので<code>alert</code>が来ることは明らかである。よってここは<code>window</code>を返したい。だが3つの空欄は単純な文字列連結なので空白がない。これでしばらく悩んだが、よく見ると<code>/*^_^*/</code>はコメントである。まさかと思って2番目にこれを入れて、3番目に<code>this</code>を入れたところ、見事に<code>window</code>が返ってきた。ちなみに<code>this</code>を入れたのは他に選択肢がなかったからで、JavaScriptの<code>this</code>の仕様はさっぱり理解してない、というか出来る気がしない。なんで左辺の<code>this</code>は連想配列自身なのに右辺の関数内の<code>this</code>は<code>window</code>（たぶん外側で関数呼び出しを実行してる時点での<code>this</code>）なんだ…。ここまで固まったついでに5行目の2番目の空欄が<code>alert</code>であることも確定。</p>
+
+<p>さて、7行目の最初の空欄だが、<code>r</code>はRegExpのインスタンスなのでここに入れられるのは<code>exec</code>か<code>constructor</code>くらいしかない。<code>constructor</code>入れたところで<code>this[/pattern/][alert](1)</code>になって意味不明なので<code>exec</code>を入れる。そうすると、4行目に先ほどの関数を代入した先のキーと<code>r.exec(pattern)</code>の結果が一致しなければならない。だが先ほど使ったような<code>function</code>と<code>"Function".toLowerCase()</code>の手は使えない。ところで、このとき調べて初めて知ったのだが、<code>test["null"] = "hoge"; console.log(test[null])</code>は<code>hoge</code>を出力する。マジかよと思って実行して唖然とした。JavaScriptヤバすぎるのでゎ。……でなんでそんな話をしたかというとちょうどピースに<code>null</code>が入っていて、かつ<code>pattern = "^[w]$"</code>とすると<code>r.exec(pattern)</code>は<code>null</code>を返すのである。</p>
+
+<p>——というわけで空欄に<code>null</code>、<code>^[w]$</code>を埋めて完了。<code>alert(1)</code>が実行されるのを確認してフラグを送信して終了。</p>
+
+<p><code>this["null"] = ...</code>の部分は@yyuがいなければ無限に悩んで死亡していた。連想配列のキーの比較どうなってるんだよマジ。</p>
+
+<p>Answer: <code>SECCON{3678cbe0171c8517abeab9d20786a7390ffb602d}</code></p>
+
+<h1>Easy Cipher (Crypto 100)</h1>
+
+<blockquote><p>87 101 108 1100011 0157 6d 0145 040 116 0157 100000 0164 104 1100101 32 0123 69 67 0103 1001111 1001110 040 062 060 49 064 100000 0157 110 6c 0151 1101110 101 040 0103 1010100 70 101110 0124 1101000 101 100000 1010011 1000101 67 0103 4f 4e 100000 105 1110011 040 116 1101000 0145 040 1100010 0151 103 103 0145 1110011 0164 100000 1101000 0141 99 6b 1100101 0162 32 0143 111 1101110 1110100 101 0163 0164 040 0151 0156 040 74 0141 1110000 1100001 0156 056 4f 0157 0160 115 44 040 0171 1101111 117 100000 1110111 0141 0156 1110100 32 0164 6f 32 6b 1101110 1101111 1110111 100000 0164 1101000 0145 040 0146 6c 97 1100111 2c 100000 0144 111 110 100111 116 100000 1111001 6f 117 63 0110 1100101 0162 0145 100000 1111001 111 117 100000 97 114 0145 46 1010011 0105 0103 67 79 1001110 123 87 110011 110001 67 110000 1001101 32 55 060 100000 110111 0110 110011 32 53 51 0103 0103 060 0116 040 5a 0117 73 0101 7d 1001000 0141 1110110 1100101 100000 102 0165 0156 33</p></blockquote>
+
+<p>十進法の値と二進法の値と八進法の値と十六進法の値が入り乱れている気がするテキスト。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class String
+</span><span class='line'>  def parse
+</span><span class='line'>    case
+</span><span class='line'>      when self.start_with?('0')
+</span><span class='line'>        self.to_i(8)
+</span><span class='line'>      when self =~ /\A[01]+\z/ and self.length &gt; 3
+</span><span class='line'>        self.to_i(2)
+</span><span class='line'>      when self =~ /[a-f]/
+</span><span class='line'>        self.to_i(16)
+</span><span class='line'>      else
+</span><span class='line'>        self.to_i(10)
+</span><span class='line'>    end
+</span><span class='line'>  end
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>data = gets.strip.split(' ')
+</span><span class='line'>puts data.map(&:parse).map(&:chr).join</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Answer: <code>SECCON{W31C0M 70 7H3 53CC0N ZOIA}</code></p>
+
+<h1>Choose the number (Programming 100)</h1>
+
+<blockquote><p>nc number.quals.seccon.jp 31337</p>
+
+<p>sorry fixed URL</p></blockquote>
+
+<p>ncすると数列と問題が流れてくる。サンプルは以下の通り。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-5, -9
+</span><span class='line'>The minimum number? -9
+</span><span class='line'>6, 7, -4
+</span><span class='line'>The minimum number? -4
+</span><span class='line'>1, -7, 7, 1
+</span><span class='line'>The maximum number? 7
+</span><span class='line'>6, 8, -5, -4, -5
+</span><span class='line'>The minimum number? 8
+</span><span class='line'>-3, -5, -8, -6, -1, 0
+</span><span class='line'>The maximum number? 0
+</span><span class='line'>-1, 1, 4, 2, -6, -6, 0
+</span><span class='line'>The maximum number? 4
+</span><span class='line'>0, 4, -2, 1, 9, -9, 7, -4
+</span><span class='line'>The maximum number? 114514
+</span><span class='line'>Wrong, bye.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>与えられた数列に対して、その中での最大値もしくは最小値を答える。Rubyで入力を<code>,</code>で区切って数値化して<code>Enumerable.(max|min)</code>で答えるプログラムを書いた。入出力のデバッグで10分は取られてすごくつらい。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'socket'
+</span><span class='line'>
+</span><span class='line'>SERVER_URI = 'number.quals.seccon.jp'
+</span><span class='line'>SERVER_PORT = 31337
+</span><span class='line'>LOG_NAME = 'comm.log'
+</span><span class='line'>
+</span><span class='line'>def read_question(sock)
+</span><span class='line'>  s = ''
+</span><span class='line'>  while true
+</span><span class='line'>    c = sock.getc
+</span><span class='line'>    if c == '?'
+</span><span class='line'>      s &lt;&lt; c
+</span><span class='line'>      s &lt;&lt; sock.getc # whitespace
+</span><span class='line'>      break
+</span><span class='line'>    elsif c.nil?
+</span><span class='line'>      break
+</span><span class='line'>    end
+</span><span class='line'>    s &lt;&lt; c
+</span><span class='line'>  end
+</span><span class='line'>  s
+</span><span class='line'>end
+</span><span class='line'>
+</span><span class='line'>begin
+</span><span class='line'>  sock = TCPSocket.open(SERVER_URI, SERVER_PORT)
+</span><span class='line'>  file = File.open(LOG_NAME, 'a')
+</span><span class='line'>
+</span><span class='line'>  num_str = ''
+</span><span class='line'>  qstr = ''
+</span><span class='line'>
+</span><span class='line'>  while true
+</span><span class='line'>    num_str.clear
+</span><span class='line'>    qstr.clear
+</span><span class='line'>
+</span><span class='line'>    num_str = sock.gets
+</span><span class='line'>    if num_str.include?('bye')
+</span><span class='line'>      fail 'connection closed by host'
+</span><span class='line'>    end
+</span><span class='line'>
+</span><span class='line'>    qstr = read_question(sock)
+</span><span class='line'>    file.puts num_str
+</span><span class='line'>    file.print qstr
+</span><span class='line'>    file.flush
+</span><span class='line'>
+</span><span class='line'>    nums = num_str.split(',').map(&:strip).map(&:to_i)
+</span><span class='line'>    qstr.strip!
+</span><span class='line'>    ans =
+</span><span class='line'>      case qstr
+</span><span class='line'>      when 'The minimum number?'
+</span><span class='line'>        nums.min
+</span><span class='line'>      when 'The maximum number?'
+</span><span class='line'>        nums.max
+</span><span class='line'>      else
+</span><span class='line'>        fail 'unknown question'
+</span><span class='line'>      end
+</span><span class='line'>    file.puts ans
+</span><span class='line'>    sock.puts "#{ans}\n"
+</span><span class='line'>    sock.flush
+</span><span class='line'>    file.flush
+</span><span class='line'>  end
+</span><span class='line'>rescue =&gt; e
+</span><span class='line'>  puts 'something went wrong!'
+</span><span class='line'>  p e
+</span><span class='line'>  puts 'num_str = ' + num_str unless num_str.empty?
+</span><span class='line'>  puts 'qstr = ' + qstr unless qstr.empty?
+</span><span class='line'>ensure
+</span><span class='line'>  file.close
+</span><span class='line'>  sock.close
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ちなみに<code>sock.puts</code>で答えを投げてるところに改行文字を入れてなかったのでバグってた。そんなのアリかよ(<code>puts</code>はそもそも改行を最後に入れるはずでゎ……)。しかしWiresharkで通信見たら問題の送信タイミングがおかしくて、それで気付いたのでやはりWireshark最強。</p>
+
+<h1>Get from curious &ldquo;FTP&rdquo; server (Network 300)</h1>
+
+<blockquote><p><a href="ftp://ftpsv.quals.seccon.jp/">ftp://ftpsv.quals.seccon.jp/</a></p></blockquote>
+
+<p>Chromeで見に行くとCOMMAND_NOT_SUPPORTEDとか言われてダメ。よくわからないのでとりあえず<a href="http://ja.wikipedia.org/wiki/FTP%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AE%E4%B8%80%E8%A6%A7">FTPコマンド一覧</a>を片手にtelnet。</p>
+
+<p>ログインしろと言われるがanonymousしかないと言われるので<code>USER anonymous</code>で接続。とりあえず<code>PWD</code>してみると<code>/</code>にいる。じゃあ<code>LIST</code>してみるかと思って<code>LIST</code>すると&#8221;not implemented&#8221;と言われる。そんなFTPサーバーがあるか。仕方ないので片っ端からコマンドを試そうとする。一覧の一番上は<code>ABOR</code>だったけど、さすがに何も転送してないのに<code>ABOR</code>しても仕方ないと思って、その次の<code>ACCT</code>にしてみる。そうすると<code>PORT</code>か<code>PASV</code>をしろと言われる。え、アカウント情報の転送って転送用のコネクションいるんですか、と思いながら電卓片手に<code>PASV</code>を叩いて、別のターミナルで指定のポートにtelnet（なんでncじゃなかったんだろう）。一応念のためもう一度<code>LIST</code>してみたけど相変わらず未実装らしいので<code>ACCT</code>を投げると、なぜか<code>LIST</code>相当の処理が走って別ターミナルにファイル一覧が流れてきた。何が起きたかさっぱりわからないが、「<code>key_is_in_this_file_...</code>」みたいなファイルがいるらしいので、<code>RETR</code>コマンドでそのファイルを持ってくる。</p>
+
+<blockquote><p>Answer: <code>SECCON{S0m3+im3_Pr0t0c0l_t411_4_1i3.}</code></p></blockquote>
+
+<p>参考までに通信内容。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% telnet ftpsv.quals.seccon.jp 21
+</span><span class='line'>Trying 133.242.224.21...
+</span><span class='line'>Connected to ftpsv.quals.seccon.jp.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>220 (vsFTPd 2.3.5(SECCON Custom))
+</span><span class='line'>USER anonymous
+</span><span class='line'>331 Please specify the password.
+</span><span class='line'>PASS pass
+</span><span class='line'>230 Login successful.
+</span><span class='line'>PWD
+</span><span class='line'>257 "/"
+</span><span class='line'>LIST
+</span><span class='line'>502 LIST not implemented.
+</span><span class='line'>ACCT
+</span><span class='line'>425 Use PORT or PASV first.
+</span><span class='line'>PASV
+</span><span class='line'>227 Entering Passive Mode (133,242,224,21,252,27).
+</span><span class='line'>LIST
+</span><span class='line'>502 LIST not implemented.
+</span><span class='line'>ACCT
+</span><span class='line'>150 Here comes the directory listing.
+</span><span class='line'>226 Directory send OK.
+</span><span class='line'>PASV
+</span><span class='line'>227 Entering Passive Mode (133,242,224,21,255,82).
+</span><span class='line'>RETR key_is_in_this_file_afjoirefjort94dv7u.txt
+</span><span class='line'>150 Opening BINARY mode data connection for key_is_in_this_file_afjoirefjort94dv7u.txt (38 bytes).
+</span><span class='line'>226 Transfer complete.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>別ターミナルの方。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>% telnet ftpsv.quals.seccon.jp 64539
+</span><span class='line'>Trying 133.242.224.21...
+</span><span class='line'>Connected to ftpsv.quals.seccon.jp.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>-rw-r--r--    1 0        0              38 Nov 29 04:43 key_is_in_this_file_afjoirefjort94dv7u.txt
+</span><span class='line'>Connection closed by foreign host.
+</span><span class='line'>
+</span><span class='line'>% telnet ftpsv.quals.seccon.jp 65362
+</span><span class='line'>Trying 133.242.224.21...
+</span><span class='line'>Connected to ftpsv.quals.seccon.jp.
+</span><span class='line'>Escape character is '^]'.
+</span><span class='line'>SECCON{S0m3+im3_Pr0t0c0l_t411_4_1i3.}
+</span><span class='line'>Connection closed by foreign host.</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Making a bot (Programming 0)</h1>
+
+<p>この辺で解けそうな問題がなくなり人権を失ったが、@re_Ordが問題を解いたというので、Slack上でいいね！ができるようにbotに手を入れ始めた。つまるところ別のことをし始めた。</p>
+
+<p>元々hubotで（主に@opが使う）違法語句に対して全自動で:fu:を投げ付けるbotを書いていたのでそこに追加する形で実装した。永続化ストレージはなんかRedisの例ばかりだったのでとりあえずRedisにした。永続化ストレージをくっつけたついでに、違法語句を使用したときにお前の罪を数えろと言わなくていいようにkarmaポイントを記録するようにした。これで積極的に（主に@opに）罪の精算を迫っていこうと思う。最初の+1は@re_Ordに捧げられた。+1。</p>
+
+<p>ただ違法語句を使用したときに:fu:が飛ぶという仕様のせいで、botの名前をkogasa-chanにできないしアイコンに小傘ちゃんを使うこともできなくなった。あのかわいい小傘ちゃんは中指など飛ばさないのである。悩ましいことである。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Mei Akizuru</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-12-07T22:11:39+09:00" pubdate data-updated="true"></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/seccon/'>seccon</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/12/07/seccon2014-online-winter/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/12/07/seccon2014-online-winter/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/11/24/tkbctf4-amida/" title="Previous Post: tkbctf4 [misc 400] amida">&laquo; tkbctf4 [misc 400] amida</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section id="titles">
+  <h1 id="site_title"><a href="http://tech.aquarite.info" title="Hello (forgotten) world">Hello (forgotten) world</a></h1>
+  <h3 id="site_subtitle">Kogasa-chan is kawaii.</h3>
+</section>
+
+<section id="menu">
+  <ul>
+    <li><i class="fa fa-home fa-lg"></i><a href="http://tech.aquarite.info"> Home </a></li>
+    <li><i class="fa fa-calendar fa-lg"></i><a href="http://tech.aquarite.info/blog/archives/"> Archives </a></li>
+    <li><i class="fa fa-user fa-lg"></i><a href="http://tech.aquarite.info/about/"> About </a></li>
+    <li><i class="fa fa-rss fa-lg"></i><a href="http://tech.aquarite.info/atom.xml"> Feed </a></li>
+  </ul>
+</section>
+
+<section id="social">
+  
+
+  
+
+  
+
+  
+    <a href="https://github.com/mayth" title="mayth"><i class="fa fa-github fa-2x"></i></a>
+  
+
+  
+
+  
+    <a href="https://twitter.com/maytheplic" title="maytheplic"><i class="fa fa-twitter fa-2x"></i></a>
+  
+</section>
+
+
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/12/07/seccon2014-online-winter/">SECCON 2014 Online Qualification (December) write-up</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/11/24/tkbctf4-amida/">tkbctf4 [misc 400] amida</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/11/24/tkbctf4-cheerofcpu/">tkbctf4 [bin300] Cheer of CPU</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/17/sublime-latex-yosemite/">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/23/csawctf2014-forensics/">CSAW CTF 2014 Quals Forensics</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/mayth">@mayth</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'mayth',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Mei Akizuru -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
