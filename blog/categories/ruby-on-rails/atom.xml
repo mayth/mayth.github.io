@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby on rails | Hello (forgotten) world]]></title>
+  <link href="http://tech.aquarite.info/blog/categories/ruby-on-rails/atom.xml" rel="self"/>
+  <link href="http://tech.aquarite.info/"/>
+  <updated>2015-03-12T19:50:17+09:00</updated>
+  <id>http://tech.aquarite.info/</id>
+  <author>
+    <name><![CDATA[Mei Akizuru]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[DatabaseRewinder with Rails 4.2 & PostgreSQL]]></title>
+    <link href="http://tech.aquarite.info/blog/2015/03/12/database-rewinder-with-rails-4-2/"/>
+    <updated>2015-03-12T18:49:02+09:00</updated>
+    <id>http://tech.aquarite.info/blog/2015/03/12/database-rewinder-with-rails-4-2</id>
+    <content type="html"><![CDATA[<p>Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか<code>disable_referential_integrity</code>を使っている限り起こると思う。</p>
+
+<h1>原因</h1>
+
+<ul>
+<li><p>Rails 4.2からmigrationにおいて外部キー制約をサポートした(ref: <a href="http://guides.rubyonrails.org/4_2_release_notes.html#foreign-key-support">Ruby on Rails 4.2 Release Notes</a>)。scaffoldとかで<code>references</code>や<code>belongs_to</code>を使うと、生成されるmigrationファイルには<code>add_foreign_key</code>が使われる。</p></li>
+<li><p>PostgreSQLでは外部キー制約はシステムトリガーでチェックされている。</p></li>
+<li><p>システムトリガーはスーパーユーザーでないと無効に出来ない。そのデータベースやテーブルのオーナーでも不可。</p></li>
+<li><p>DatabaseRewinderは<code>disable_referential_integrity</code>を使ってトリガーを無効にするが、上述の理由によりスーパーユーザーでないと無理。</p></li>
+<li><p>トリガーを無効にしようとした時点で例外が出て、トランザクションはロールバック、同一トランザクションの後続クエリは無視される。</p></li>
+<li><p>例外が出てるのでテストは失敗する。</p></li>
+</ul>
+
+
+<p>ちなみにここでいう「スーパーユーザー」はPostgreSQLのroleの話であって、システムのスーパーユーザーとは関係ない。</p>
+
+<h1>解決策</h1>
+
+<ul>
+<li>スーパーユーザーでテストを走らせる。テストを動かすユーザーをスーパーユーザー権限を持ったユーザーに変更するか、テスト用のユーザーにスーパーユーザー権限を付与する:</li>
+</ul>
+
+
+<pre><code>ALTER ROLE username WITH SUPERUSER;
+</code></pre>
+
+<p>当たり前だがスーパーユーザー権限の付与にはスーパーユーザー権限が必要。</p>
+
+<ul>
+<li><p>（一時的に）外部キー制約を外す。</p></li>
+<li><p>PostgreSQL使うのやめる（他のデータベースでどうなるのかは調べてない）。</p></li>
+</ul>
+
+
+<h1>ダメだった方法</h1>
+
+<ul>
+<li>migrationの<code>add_foreign_key</code>で<code>on_delete</code>オプションを<code>cascade</code>か<code>nullify</code>にしてみる。</li>
+</ul>
+
+
+<p><code>on_delete: :cascade</code>にしてみたがダメだった。解決しない理由は、「スーパーユーザーでないのにトリガーを無効にしようとした」後に来るDELETE文の発行までそもそも辿り着いてないからだと思う。</p>
+
+<p>つまるところ、外部キー制約に違反するかどうかは問題ではないという感じがある。</p>
+
+<h1>Links</h1>
+
+<ul>
+<li><a href="http://blog.endpoint.com/2012/10/postgres-system-triggers-error.html">Postgres system triggers error: permission denied | End Point Blog</a></li>
+</ul>
+
+
+<p>この記事に「制約外せるのにその制約をチェックするトリガーを無効に出来ないのっておかしな話だよな」みたいなコメントがあって、確かになぁという気分になった。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="Welcome to SECCON (Start 100) The answer is &ldquo;SECCON{20141206}&rdquo;. 答えは、「SECCON{20141206}」です。 驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。 Answer: &hellip;">
+  <meta name="description" content="Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -51,6 +51,95 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/12/database-rewinder-with-rails-4-2/">DatabaseRewinder With Rails 4.2 & PostgreSQL</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-12T18:49:02+09:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか<code>disable_referential_integrity</code>を使っている限り起こると思う。</p>
+
+<h1>原因</h1>
+
+<ul>
+<li><p>Rails 4.2からmigrationにおいて外部キー制約をサポートした(ref: <a href="http://guides.rubyonrails.org/4_2_release_notes.html#foreign-key-support">Ruby on Rails 4.2 Release Notes</a>)。scaffoldとかで<code>references</code>や<code>belongs_to</code>を使うと、生成されるmigrationファイルには<code>add_foreign_key</code>が使われる。</p></li>
+<li><p>PostgreSQLでは外部キー制約はシステムトリガーでチェックされている。</p></li>
+<li><p>システムトリガーはスーパーユーザーでないと無効に出来ない。そのデータベースやテーブルのオーナーでも不可。</p></li>
+<li><p>DatabaseRewinderは<code>disable_referential_integrity</code>を使ってトリガーを無効にするが、上述の理由によりスーパーユーザーでないと無理。</p></li>
+<li><p>トリガーを無効にしようとした時点で例外が出て、トランザクションはロールバック、同一トランザクションの後続クエリは無視される。</p></li>
+<li><p>例外が出てるのでテストは失敗する。</p></li>
+</ul>
+
+
+<p>ちなみにここでいう「スーパーユーザー」はPostgreSQLのroleの話であって、システムのスーパーユーザーとは関係ない。</p>
+
+<h1>解決策</h1>
+
+<ul>
+<li>スーパーユーザーでテストを走らせる。テストを動かすユーザーをスーパーユーザー権限を持ったユーザーに変更するか、テスト用のユーザーにスーパーユーザー権限を付与する:</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ALTER ROLE username WITH SUPERUSER;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>当たり前だがスーパーユーザー権限の付与にはスーパーユーザー権限が必要。</p>
+
+<ul>
+<li><p>（一時的に）外部キー制約を外す。</p></li>
+<li><p>PostgreSQL使うのやめる（他のデータベースでどうなるのかは調べてない）。</p></li>
+</ul>
+
+
+<h1>ダメだった方法</h1>
+
+<ul>
+<li>migrationの<code>add_foreign_key</code>で<code>on_delete</code>オプションを<code>cascade</code>か<code>nullify</code>にしてみる。</li>
+</ul>
+
+
+<p><code>on_delete: :cascade</code>にしてみたがダメだった。解決しない理由は、「スーパーユーザーでないのにトリガーを無効にしようとした」後に来るDELETE文の発行までそもそも辿り着いてないからだと思う。</p>
+
+<p>つまるところ、外部キー制約に違反するかどうかは問題ではないという感じがある。</p>
+
+<h1>Links</h1>
+
+<ul>
+<li><a href="http://blog.endpoint.com/2012/10/postgres-system-triggers-error.html">Postgres system triggers error: permission denied | End Point Blog</a></li>
+</ul>
+
+
+<p>この記事に「制約外せるのにその制約をチェックするトリガーを無効に出来ないのっておかしな話だよな」みたいなコメントがあって、確かになぁという気分になった。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1836,62 +1925,6 @@ env=os.environ)</p></blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/20/miocat-at-coinslt0/">miocatのその後、あるいはcoinsLT #0で発表した話</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true"></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/39806085" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-
-
-<p> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/maytheplic/coinslt0-miocat" title="coinsLT#0 tkbctf3 miocatができるまで" target="_blank">coinsLT#0 tkbctf3 miocatができるまで</a> </strong> from <strong><a href="//www.slideshare.net/maytheplic" target="_blank">Mei Akizuru</a></strong> </div></p>
-
-<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
-
-<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
-
-
-<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
-
-<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
-
-<p>曰く、「&#8221;<a href="http://test.com">http://test.com</a>&#8221; はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
-
-<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
-
-<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="2">&larr; Older</a>
@@ -1940,6 +1973,10 @@ env=os.environ)</p></blockquote>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/03/12/database-rewinder-with-rails-4-2/">DatabaseRewinder with Rails 4.2 & PostgreSQL</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/12/07/seccon2014-online-winter/">SECCON 2014 Online Qualification (December) write-up</a>
       </li>
     
@@ -1953,10 +1990,6 @@ env=os.environ)</p></blockquote>
     
       <li class="post">
         <a href="/blog/2014/10/17/sublime-latex-yosemite/">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/23/csawctf2014-forensics/">CSAW CTF 2014 Quals Forensics</a>
       </li>
     
   </ul>
@@ -2001,7 +2034,7 @@ env=os.environ)</p></blockquote>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Mei Akizuru -
+  Copyright &copy; 2015 - Mei Akizuru -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

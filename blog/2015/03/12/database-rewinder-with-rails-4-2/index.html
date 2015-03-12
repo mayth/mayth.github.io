@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>miocatのその後、あるいはcoinsLT #0で発表した話 - Hello (forgotten) world</title>
+  <title>DatabaseRewinder with Rails 4.2 & PostgreSQL - Hello (forgotten) world</title>
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="情報科学類1年が企画したcoinsLT #0（ATNDの方が情報量が多いのだが、一応Webページも存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである &hellip;">
+  <meta name="description" content="Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/">
+  <link rel="canonical" href="http://tech.aquarite.info/blog/2015/03/12/database-rewinder-with-rails-4-2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -54,7 +54,7 @@
   
   <header>
     
-      <h1 class="entry-title">miocatのその後、あるいはcoinsLT #0で発表した話</h1>
+      <h1 class="entry-title">DatabaseRewinder With Rails 4.2 & PostgreSQL</h1>
     
     
       <p class="meta">
@@ -70,34 +70,67 @@
   
 
 
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true"></time>
+<time datetime="2015-03-12T18:49:02+09:00" pubdate data-updated="true"></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
+<div class="entry-content"><p>Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか<code>disable_referential_integrity</code>を使っている限り起こると思う。</p>
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/39806085" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+<h1>原因</h1>
+
+<ul>
+<li><p>Rails 4.2からmigrationにおいて外部キー制約をサポートした(ref: <a href="http://guides.rubyonrails.org/4_2_release_notes.html#foreign-key-support">Ruby on Rails 4.2 Release Notes</a>)。scaffoldとかで<code>references</code>や<code>belongs_to</code>を使うと、生成されるmigrationファイルには<code>add_foreign_key</code>が使われる。</p></li>
+<li><p>PostgreSQLでは外部キー制約はシステムトリガーでチェックされている。</p></li>
+<li><p>システムトリガーはスーパーユーザーでないと無効に出来ない。そのデータベースやテーブルのオーナーでも不可。</p></li>
+<li><p>DatabaseRewinderは<code>disable_referential_integrity</code>を使ってトリガーを無効にするが、上述の理由によりスーパーユーザーでないと無理。</p></li>
+<li><p>トリガーを無効にしようとした時点で例外が出て、トランザクションはロールバック、同一トランザクションの後続クエリは無視される。</p></li>
+<li><p>例外が出てるのでテストは失敗する。</p></li>
+</ul>
 
 
-<p> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/maytheplic/coinslt0-miocat" title="coinsLT#0 tkbctf3 miocatができるまで" target="_blank">coinsLT#0 tkbctf3 miocatができるまで</a> </strong> from <strong><a href="//www.slideshare.net/maytheplic" target="_blank">Mei Akizuru</a></strong> </div></p>
+<p>ちなみにここでいう「スーパーユーザー」はPostgreSQLのroleの話であって、システムのスーパーユーザーとは関係ない。</p>
 
-<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
+<h1>解決策</h1>
 
-<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
+<ul>
+<li>スーパーユーザーでテストを走らせる。テストを動かすユーザーをスーパーユーザー権限を持ったユーザーに変更するか、テスト用のユーザーにスーパーユーザー権限を付与する:</li>
+</ul>
 
 
-<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ALTER ROLE username WITH SUPERUSER;</span></code></pre></td></tr></table></div></figure>
 
-<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
 
-<p>曰く、「&#8221;<a href="http://test.com">http://test.com</a>&#8221; はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
+<p>当たり前だがスーパーユーザー権限の付与にはスーパーユーザー権限が必要。</p>
 
-<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
+<ul>
+<li><p>（一時的に）外部キー制約を外す。</p></li>
+<li><p>PostgreSQL使うのやめる（他のデータベースでどうなるのかは調べてない）。</p></li>
+</ul>
 
-<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
+
+<h1>ダメだった方法</h1>
+
+<ul>
+<li>migrationの<code>add_foreign_key</code>で<code>on_delete</code>オプションを<code>cascade</code>か<code>nullify</code>にしてみる。</li>
+</ul>
+
+
+<p><code>on_delete: :cascade</code>にしてみたがダメだった。解決しない理由は、「スーパーユーザーでないのにトリガーを無効にしようとした」後に来るDELETE文の発行までそもそも辿り着いてないからだと思う。</p>
+
+<p>つまるところ、外部キー制約に違反するかどうかは問題ではないという感じがある。</p>
+
+<h1>Links</h1>
+
+<ul>
+<li><a href="http://blog.endpoint.com/2012/10/postgres-system-triggers-error.html">Postgres system triggers error: permission denied | End Point Blog</a></li>
+</ul>
+
+
+<p>この記事に「制約外せるのにその制約をチェックするトリガーを無効に出来ないのっておかしな話だよな」みたいなコメントがあって、確かになぁという気分になった。</p>
 </div>
 
 
@@ -120,12 +153,12 @@
   
 
 
-<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true"></time>
+<time datetime="2015-03-12T18:49:02+09:00" pubdate data-updated="true"></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/dot-net/'>.net</a>, <a class='category' href='/blog/categories/coinslt/'>coinslt</a>, <a class='category' href='/blog/categories/ctf/'>ctf</a>, <a class='category' href='/blog/categories/miocat/'>miocat</a>, <a class='category' href='/blog/categories/mono/'>mono</a>, <a class='category' href='/blog/categories/tkbctf3/'>tkbctf3</a>
+    <a class='category' href='/blog/categories/postgresql/'>postgresql</a>, <a class='category' href='/blog/categories/ruby-on-rails/'>ruby on rails</a>
   
 </span>
 
@@ -134,7 +167,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2014/06/20/miocat-at-coinslt0/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tech.aquarite.info/blog/2015/03/12/database-rewinder-with-rails-4-2/" data-via="maytheplic" data-counturl="http://tech.aquarite.info/blog/2015/03/12/database-rewinder-with-rails-4-2/" >Tweet</a>
   
   
   
@@ -143,10 +176,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/05/28/rails-app-with-mina/" title="Previous Post: Railsアプリ with Mina and OpenRC">&laquo; Railsアプリ with Mina and OpenRC</a>
+        <a class="basic-alignment left" href="/blog/2014/12/07/seccon2014-online-winter/" title="Previous Post: SECCON 2014 Online Qualification (December) write-up">&laquo; SECCON 2014 Online Qualification (December) write-up</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/07/20/seccon2014-online-amida/" title="Next Post: SECCON 2014 オンライン予選 【あみだくじ】">SECCON 2014 オンライン予選 【あみだくじ】 &raquo;</a>
       
     </p>
   </footer>

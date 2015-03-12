@@ -9,7 +9,7 @@
   <meta name="author" content="Mei Akizuru">
 
   
-  <meta name="description" content="目的とか KONMAIが送る大人気リズムアクションゲーム"REFLEC BEAT groovin'!!&ldquo;に向けてRefixativeの新バージョンを書いていた。今までは毎回毎回サーバーにsshしてはgit pullしてうんぬんかんぬん、とやっていたので、現代的な環境を構築したかった。 &hellip;">
+  <meta name="description" content="情報科学類1年が企画したcoinsLT #0（ATNDの方が情報量が多いのだが、一応Webページも存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -51,6 +51,62 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/06/20/miocat-at-coinslt0/">miocatのその後、あるいはcoinsLT #0で発表した話</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-20T11:09:26+09:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>情報科学類1年が企画した<a href="http://atnd.org/events/51236">coinsLT #0</a>（ATNDの方が情報量が多いのだが、一応<a href="http://coinslt.org/zero.html">Webページ</a>も存在している）で発表した。タイトルがクソ長いが要するにこのブログでいくつか投稿してきた、.NET FrameworkとMonoにおけるGetFullPathとかnew Uriの挙動の違いについてである。</p>
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/39806085" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+
+
+<p> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/maytheplic/coinslt0-miocat" title="coinsLT#0 tkbctf3 miocatができるまで" target="_blank">coinsLT#0 tkbctf3 miocatができるまで</a> </strong> from <strong><a href="//www.slideshare.net/maytheplic" target="_blank">Mei Akizuru</a></strong> </div></p>
+
+<p>実際の発表時の動画も公開されている。だいたい07:58あたりからが私の発表である。</p>
+
+<iframe width="560" height="315" src="//www.youtube-nocookie.com/embed/s3_BCaFAVv8" frameborder="0" allowfullscreen></iframe>
+
+
+<p>「小傘ちゃんかわいい」のところでなぜか拍手が起こったり（これは後で原因がわかった）、ぼちぼち笑いが取れていたように思う。</p>
+
+<p>さて、それはともかくとして実は前に投げたバグレポートに返事がついていて、状態はRESOLVED INVALIDとなっていた。</p>
+
+<p>曰く、「&#8221;<a href="http://test.com">http://test.com</a>&#8221; はUnixでは妥当なファイルパスである。.NETはUnixに対する考慮が足りてないからそういう挙動になるんであって、つまりお前のコードで対処しろ」。</p>
+
+<p>全くの正論であった。そもそもユーザーから与えられた文字列をそのままDownloadStringとかに投げている時点で結構異常なので、ちゃんと入力はチェックしましょう、という結論に至った。</p>
+
+<p>Unixで妥当なら仕方ないね、と私は思ったし、今述べたように事前にチェックすべきだと考えるので私はこのままでいいんじゃないかと思っている。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1425,6 +1481,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/03/12/database-rewinder-with-rails-4-2/">DatabaseRewinder with Rails 4.2 & PostgreSQL</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/12/07/seccon2014-online-winter/">SECCON 2014 Online Qualification (December) write-up</a>
       </li>
     
@@ -1438,10 +1498,6 @@
     
       <li class="post">
         <a href="/blog/2014/10/17/sublime-latex-yosemite/">YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/09/23/csawctf2014-forensics/">CSAW CTF 2014 Quals Forensics</a>
       </li>
     
   </ul>
@@ -1486,7 +1542,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Mei Akizuru -
+  Copyright &copy; 2015 - Mei Akizuru -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
