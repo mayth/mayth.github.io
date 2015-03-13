@@ -10,6 +10,8 @@ categories:
 
 Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか`disable_referential_integrity`を使っている限り起こると思う。
 
+あとRails 4.2で外部キー制約をサポートしたから今ハマっただけで、実際のところ自分で外部キー制約を付与するとかしてたら同じ問題が起きていたはずで、ハマりやすくなった、というだけだとも思う。
+
 # 原因
 
 * Rails 4.2からmigrationにおいて外部キー制約をサポートした(ref: [Ruby on Rails 4.2 Release Notes](http://guides.rubyonrails.org/4_2_release_notes.html#foreign-key-support))。scaffoldとかで`references`や`belongs_to`を使うと、生成されるmigrationファイルには`add_foreign_key`が使われる。
@@ -47,6 +49,14 @@ ALTER ROLE username WITH SUPERUSER;
 `on_delete: :cascade`にしてみたがダメだった。解決しない理由は、「スーパーユーザーでないのにトリガーを無効にしようとした」後に来るDELETE文の発行までそもそも辿り着いてないからだと思う。
 
 つまるところ、外部キー制約に違反するかどうかは問題ではないという感じがある。
+
+(2015-03-13 追記)
+
+## ダメじゃなくなるかもしれない方法
+
+`ActiveRecord::ConnectionAdapters::PostgreSQL::ReferentialIntegrity#supports_disable_referential_integrity?`が`false`を返すようにすれば、そもそも問題の`disable_referential_integrity`が呼ばれない。このとき、上記のように`on_delete: :cascade`(or `:nullify`)を指定して、外部キー制約に違反したときにDELETEが失敗しないようになっていれば、特に問題なく動作を続行できるはず。
+
+※試してない。
 
 # Links
 
