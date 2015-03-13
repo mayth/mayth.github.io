@@ -4,7 +4,7 @@
   <title><![CDATA[Category: postgresql | Hello (forgotten) world]]></title>
   <link href="http://tech.aquarite.info/blog/categories/postgresql/atom.xml" rel="self"/>
   <link href="http://tech.aquarite.info/"/>
-  <updated>2015-03-12T19:50:17+09:00</updated>
+  <updated>2015-03-13T16:20:49+09:00</updated>
   <id>http://tech.aquarite.info/</id>
   <author>
     <name><![CDATA[Mei Akizuru]]></name>
@@ -19,6 +19,8 @@
     <updated>2015-03-12T18:49:02+09:00</updated>
     <id>http://tech.aquarite.info/blog/2015/03/12/database-rewinder-with-rails-4-2</id>
     <content type="html"><![CDATA[<p>Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか<code>disable_referential_integrity</code>を使っている限り起こると思う。</p>
+
+<p>あとRails 4.2で外部キー制約をサポートしたから今ハマっただけで、実際のところ自分で外部キー制約を付与するとかしてたら同じ問題が起きていたはずで、ハマりやすくなった、というだけだとも思う。</p>
 
 <h1>原因</h1>
 
@@ -62,6 +64,14 @@
 <p><code>on_delete: :cascade</code>にしてみたがダメだった。解決しない理由は、「スーパーユーザーでないのにトリガーを無効にしようとした」後に来るDELETE文の発行までそもそも辿り着いてないからだと思う。</p>
 
 <p>つまるところ、外部キー制約に違反するかどうかは問題ではないという感じがある。</p>
+
+<p>(2015-03-13 追記)</p>
+
+<h2>ダメじゃなくなるかもしれない方法</h2>
+
+<p><code>ActiveRecord::ConnectionAdapters::PostgreSQL::ReferentialIntegrity#supports_disable_referential_integrity?</code>が<code>false</code>を返すようにすれば、そもそも問題の<code>disable_referential_integrity</code>が呼ばれない。このとき、上記のように<code>on_delete: :cascade</code>(or <code>:nullify</code>)を指定して、外部キー制約に違反したときにDELETEが失敗しないようになっていれば、特に問題なく動作を続行できるはず。</p>
+
+<p>※試してない。</p>
 
 <h1>Links</h1>
 
