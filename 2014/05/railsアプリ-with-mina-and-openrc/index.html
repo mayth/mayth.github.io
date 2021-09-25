@@ -6,9 +6,9 @@
 <meta name=generator content="Hugo 0.88.1">
 <title>Railsアプリ with Mina and OpenRC &#183; blog.aquarite.info</title>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://blog.aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://blog.aquarite.info/css/side-menu.css><!--<![endif]-->
-<link rel=stylesheet href=https://blog.aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://www.aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://www.aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://www.aquarite.info/css/blackburn.css>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
 <link rel=preconnect href=https://fonts.gstatic.com>
 <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
@@ -16,7 +16,7 @@
 <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/tomorrow-night-bright.min.css>
 <script async src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js></script>
 <script>hljs.initHighlightingOnLoad()</script>
-<link rel="shortcut icon" href=https://blog.aquarite.info/img/favicon.ico type=image/x-icon>
+<link rel="shortcut icon" href=https://www.aquarite.info/img/favicon.ico type=image/x-icon>
 </head>
 <body>
 <div id=layout>
@@ -24,17 +24,17 @@
 <span></span>
 </a>
 <div id=menu>
-<a class="pure-menu-heading brand" href=https://blog.aquarite.info/>aquarite.info</a>
+<a class="pure-menu-heading brand" href=https://www.aquarite.info/>aquarite.info</a>
 <div class=pure-menu>
 <ul class=pure-menu-list>
 <li class=pure-menu-item>
-<a class=pure-menu-link href=https://blog.aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+<a class=pure-menu-link href=https://www.aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
 </li>
 <li class=pure-menu-item>
-<a class=pure-menu-link href=https://blog.aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+<a class=pure-menu-link href=https://www.aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
 </li>
 <li class=pure-menu-item>
-<a class=pure-menu-link href=https://blog.aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+<a class=pure-menu-link href=https://www.aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
 </li>
 </ul>
 </div>
@@ -74,7 +74,7 @@
 </div>
 <div>
 <i class="fa fa-tags fa-fw"></i>
-<a class=post-taxonomy-tag href=https://blog.aquarite.info/tags/rails>Rails</a>
+<a class=post-taxonomy-tag href=https://www.aquarite.info/tags/rails>Rails</a>
 </div>
 </div>
 <h1 id=目的とか>目的とか</h1>
@@ -361,27 +361,27 @@ reload<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
 <p>そんなわけで明示的に、かつデプロイ時にシンボリックリンクとかで実体の位置が変わらない場所にpidfileの場所を設定しておく必要がある。今回の場合は<code>shared/pids/unicorn.pid</code>にした。shared以下に配置しているが、<code>shared_paths</code>には設定していない（こういう使い方がMina的にOKなのかは知らない）。またディレクトリ自体がないと起動に失敗するので、setup時に<code>shared/pids</code>ディレクトリを作成するようにした。</p>
 <h4><i class="fas fa-share-alt" aria-hidden=true></i>&nbsp;Share!</h4>
 <ul class=share-buttons>
-<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a>
+<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fblog.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a>
+<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fwww.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="https://plus.google.com/share?url=https%3a%2f%2fblog.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a>
+<li><a href="https://plus.google.com/share?url=https%3a%2f%2fwww.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fblog.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a>
+<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fwww.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fblog.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a>
+<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fwww.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fblog.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a>
+<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fwww.aquarite.info%2f2014%2f05%2frails%25E3%2582%25A2%25E3%2583%2597%25E3%2583%25AA-with-mina-and-openrc%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a>
 </li>
 </ul>
 <style>ul.share-buttons{list-style:none;padding:0}ul.share-buttons li{display:inline}ul.share-buttons .sr-only{position:absolute;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}</style>
 <div class="prev-next-post pure-g">
 <div class=pure-u-1-24 style=text-align:left>
-<a href=https://blog.aquarite.info/2014/05/different-behaviors-of-downloadstring-and-uri-between-.net-and-mono/><i class="fa fa-chevron-left"></i></a>
+<a href=https://www.aquarite.info/2014/05/different-behaviors-of-downloadstring-and-uri-between-.net-and-mono/><i class="fa fa-chevron-left"></i></a>
 </div>
 <div class=pure-u-10-24>
 <nav class=prev>
-<a href=https://blog.aquarite.info/2014/05/different-behaviors-of-downloadstring-and-uri-between-.net-and-mono/>Different Behaviors of DownloadString and Uri between .NET and Mono</a>
+<a href=https://www.aquarite.info/2014/05/different-behaviors-of-downloadstring-and-uri-between-.net-and-mono/>Different Behaviors of DownloadString and Uri between .NET and Mono</a>
 </nav>
 </div>
 <div class=pure-u-2-24>
@@ -389,19 +389,19 @@ reload<span style=color:#f92672>()</span> <span style=color:#f92672>{</span>
 </div>
 <div class=pure-u-10-24>
 <nav class=next>
-<a href=https://blog.aquarite.info/2014/06/miocat%E3%81%AE%E3%81%9D%E3%81%AE%E5%BE%8C%E3%81%82%E3%82%8B%E3%81%84%E3%81%AFcoinslt-#0%E3%81%A7%E7%99%BA%E8%A1%A8%E3%81%97%E3%81%9F%E8%A9%B1/>miocatのその後、あるいはcoinsLT #0で発表した話</a>
+<a href=https://www.aquarite.info/2014/06/miocat%E3%81%AE%E3%81%9D%E3%81%AE%E5%BE%8C%E3%81%82%E3%82%8B%E3%81%84%E3%81%AFcoinslt-#0%E3%81%A7%E7%99%BA%E8%A1%A8%E3%81%97%E3%81%9F%E8%A9%B1/>miocatのその後、あるいはcoinsLT #0で発表した話</a>
 </nav>
 </div>
 <div class=pure-u-1-24 style=text-align:right>
-<a href=https://blog.aquarite.info/2014/06/miocat%E3%81%AE%E3%81%9D%E3%81%AE%E5%BE%8C%E3%81%82%E3%82%8B%E3%81%84%E3%81%AFcoinslt-#0%E3%81%A7%E7%99%BA%E8%A1%A8%E3%81%97%E3%81%9F%E8%A9%B1/><i class="fa fa-chevron-right"></i></a>
+<a href=https://www.aquarite.info/2014/06/miocat%E3%81%AE%E3%81%9D%E3%81%AE%E5%BE%8C%E3%81%82%E3%82%8B%E3%81%84%E3%81%AFcoinslt-#0%E3%81%A7%E7%99%BA%E8%A1%A8%E3%81%97%E3%81%9F%E8%A9%B1/><i class="fa fa-chevron-right"></i></a>
 </div>
 </div>
 </div>
 </div>
 </div>
-<script src=https://blog.aquarite.info/js/ui.js></script>
-<script src=https://blog.aquarite.info/js/menus.js></script>
-<script src=https://blog.aquarite.info/js/math-code.js></script>
+<script src=https://www.aquarite.info/js/ui.js></script>
+<script src=https://www.aquarite.info/js/menus.js></script>
+<script src=https://www.aquarite.info/js/math-code.js></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 </body>
 </html>
