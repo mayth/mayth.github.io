@@ -1,0 +1,151 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.88.1">
+<title>SECCON 2014 オンライン予選 【Print it!】 &#183; aquarite.info</title>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://www.aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://www.aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://www.aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
+<link rel=preconnect href=https://fonts.gstatic.com>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/tomorrow-night-bright.min.css>
+<script async src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script>
+<link rel="shortcut icon" href=https://www.aquarite.info/img/favicon.ico type=image/x-icon>
+</head>
+<body>
+<div id=layout>
+<a href=#menu id=menuLink class=menu-link>
+<span></span>
+</a>
+<div id=menu>
+<a class="pure-menu-heading brand" href=https://www.aquarite.info/>aquarite.info</a>
+<div class=pure-menu>
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://www.aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://www.aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://www.aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+</li>
+</ul>
+</div>
+<div class="pure-menu social">
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
+</li>
+</ul>
+</div>
+<div>
+<div class=small-print>
+<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
+</div>
+<div class=small-print>
+<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
+</div>
+</div>
+</div>
+<div id=main>
+<div class=header>
+<h1>SECCON 2014 オンライン予選 【Print it!】</h1>
+<h2></h2>
+</div>
+<div class=content>
+<div class=post-meta>
+<div>
+<i class="fa fa-calendar fa-fw"></i>
+<time>20 Jul 2014, 18:53</time>
+</div>
+<div>
+<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://www.aquarite.info/tags/ctf>CTF</a>&nbsp;/
+<a class=post-taxonomy-tag href=https://www.aquarite.info/tags/seccon>SECCON</a>&nbsp;/
+<a class=post-taxonomy-tag href=https://www.aquarite.info/tags/seccon2014>SECCON2014</a>&nbsp;/
+<a class=post-taxonomy-tag href=https://www.aquarite.info/tags/write-up>Write-up</a>
+</div>
+</div>
+<p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。</p>
+<h2 id=問題概要>問題概要</h2>
+<p>謎のファイルが降ってきます。以上。</p>
+<h2 id=解法>解法</h2>
+<p>降ってきたファイルの正体は"Standard Triangulated Language"というフォーマットのファイル(参考: <a href=http://ja.wikipedia.org/wiki/Standard_Triangulated_Language>Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
+<p>ans: <code>Bar1kaTaLab.</code></p>
+<h2 id=経緯>経緯</h2>
+<p>とりあえずファイルをバイナリエディタに突っ込んでビットマップで見てみると、かなり規則性の高いらしいということはわかったのですが、それ以上のことはさっぱりわからず。nullが14個くらい続いてたりとか、それが繰り返されてたりとか、その辺の規則性が高いわりに、先頭には普通にテキストが入っているし、テキストの間にはまたもnullが入っていてよくわかんないなぁと思ってました。</p>
+<p>先頭のテキストには意味がないんじゃないかと思って削ってみても、削った後の先頭数バイトが何かのシグネチャになってるわけではありませんでした。あと、前述のnullが続いている箇所がかなり多いことから圧縮されているわけでもなさそうだということはわかりました。</p>
+<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に"Print"に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
+<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（&ldquo;Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
+<div class=pure-g>
+<div class=pure-u>
+<div style="padding:0 .2em">
+<img class=pure-img-responsive src=https://www.aquarite.info/images/2014-07-20-printit-google.png alt>
+</div>
+</div>
+</div>
+<p>……なるほどね（白目）</p>
+<p>これほどまでに検索結果のスニペットが欲しい情報をピンポイントで持ってきたことはもはや感動的ですらあるので引用しておくと</p>
+<blockquote>
+米国のスリーディー・システムズ（英語版）によって開発された三次元CADソフト用の<strong>ファイルフォーマットシステム</strong>。多くのソフトにサポートされ ... バイナリーSTLファイルは<strong>80バイト</strong>の任意の文字列で開始される（通常内容は無視される。ただし、 solid から記載を ...
+</blockquote>
+<p>そんなわけで、このファイルフォーマットのバイナリ形式では先頭80bytesは無視されること、このフォーマットはfloatの値がずらーっと並んでいることがわかりました。floatの値が並んでいるだけなら、確かにデータに規則性があって、nullが連続しているのも納得です。</p>
+<p>私のマシンにはこれを見られるものがなかったので、Wikipediaの記事の外部リンクにあった3DViewというChromeのアプリを入れてファイルを読むことで解答が得られました。</p>
+<h4><i class="fas fa-share-alt" aria-hidden=true></i>&nbsp;Share!</h4>
+<ul class=share-buttons>
+<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.aquarite.info%2f2014%2f07%2fseccon2014-online-printit%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a>
+</li>&nbsp;&nbsp;&nbsp;
+<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fwww.aquarite.info%2f2014%2f07%2fseccon2014-online-printit%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a>
+</li>&nbsp;&nbsp;&nbsp;
+<li><a href="https://plus.google.com/share?url=https%3a%2f%2fwww.aquarite.info%2f2014%2f07%2fseccon2014-online-printit%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a>
+</li>&nbsp;&nbsp;&nbsp;
+<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fwww.aquarite.info%2f2014%2f07%2fseccon2014-online-printit%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a>
+</li>&nbsp;&nbsp;&nbsp;
+<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fwww.aquarite.info%2f2014%2f07%2fseccon2014-online-printit%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a>
+</li>&nbsp;&nbsp;&nbsp;
+<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fwww.aquarite.info%2f2014%2f07%2fseccon2014-online-printit%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a>
+</li>
+</ul>
+<style>ul.share-buttons{list-style:none;padding:0}ul.share-buttons li{display:inline}ul.share-buttons .sr-only{position:absolute;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}</style>
+<div class="prev-next-post pure-g">
+<div class=pure-u-1-24 style=text-align:left>
+<a href=https://www.aquarite.info/2014/07/seccon2014-online-amida/><i class="fa fa-chevron-left"></i></a>
+</div>
+<div class=pure-u-10-24>
+<nav class=prev>
+<a href=https://www.aquarite.info/2014/07/seccon2014-online-amida/>SECCON 2014 オンライン予選 【あみだくじ】</a>
+</nav>
+</div>
+<div class=pure-u-2-24>
+&nbsp;
+</div>
+<div class=pure-u-10-24>
+<nav class=next>
+<a href=https://www.aquarite.info/2014/07/seccon2014-online-preliminary/>SECCON 2014 オンライン予選 その他諸々</a>
+</nav>
+</div>
+<div class=pure-u-1-24 style=text-align:right>
+<a href=https://www.aquarite.info/2014/07/seccon2014-online-preliminary/><i class="fa fa-chevron-right"></i></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src=https://www.aquarite.info/js/ui.js></script>
+<script src=https://www.aquarite.info/js/menus.js></script>
+</body>
+</html>
