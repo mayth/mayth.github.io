@@ -1,6 +1,6 @@
 baseURL = 'https://www.aquarite.info/'
 languageCode = 'ja-jp'
-title = 'blog.aquarite.info'
+title = 'aquarite.info'
 author = 'Mei Akizuru'
 theme = 'blackburn'
 copyright = "&copy; 2021 Mei Akizuru. All rights reserved."
