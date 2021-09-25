@@ -2,6 +2,7 @@
 title: "MonoのWebClientにおけるURI"
 date: 2014-05-07 13:33:03 +0900
 author: Mei Akizuru
+slug: uri-parsing-in-webclient
 tags:
   - .NET Framework
   - Mono

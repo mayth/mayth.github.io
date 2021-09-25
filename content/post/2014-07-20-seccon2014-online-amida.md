@@ -2,6 +2,7 @@
 title: SECCON 2014 オンライン予選 【あみだくじ】
 date: 2014-07-20 00:29:19 +0900
 author: Mei Akizuru
+slug: seccon2014-online-amida
 tags:
   - CTF
   - SECCON

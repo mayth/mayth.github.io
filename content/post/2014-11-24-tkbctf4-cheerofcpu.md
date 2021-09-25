@@ -2,6 +2,7 @@
 title: "tkbctf4 [bin300] Cheer of CPU"
 date: 2014-11-24 04:16:38 +0900
 author: Mei Akizuru
+slug: tkbctf4-cheerofcpu
 tags:
   - CTF
   - tkbctf4

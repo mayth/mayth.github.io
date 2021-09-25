@@ -2,6 +2,7 @@
 title: "CSAW CTF 2014 Quals Forensics"
 date: 2014-09-23 03:07:38 +0900
 author: Mei Akizuru
+slug: csawctf2014-forensics
 tags:
   - CTF
   - CSAW CTF

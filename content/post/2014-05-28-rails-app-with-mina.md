@@ -2,6 +2,7 @@
 title: "Railsアプリ with Mina and OpenRC"
 date: 2014-05-28 00:07:56 +0900
 author: Mei Akizuru
+slug: rails-app-with-mina
 tags:
     - Rails
 aliases:

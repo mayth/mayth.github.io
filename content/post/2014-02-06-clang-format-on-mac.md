@@ -2,6 +2,7 @@
 title: "MacのSublime Text 3でもclang使って整形とか補完とかしたい"
 date: 2014-02-06 08:56:44 +0900
 author: Mei Akizuru
+slug: clang-format-on-mac
 tags:
     - C/C++
 aliases:

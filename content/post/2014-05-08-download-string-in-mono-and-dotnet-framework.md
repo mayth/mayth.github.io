@@ -2,6 +2,7 @@
 title: "結局Monoと.NETの挙動の違いはなんだったのか"
 date: 2014-05-08 06:49:41 +0900
 author: Mei Akizuru
+slug: download-string-in-mono-and-dotnet-framework
 tags:
   - .NET
   - Mono

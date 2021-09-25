@@ -2,6 +2,7 @@
 title: "OctopressからHugoへの切り替えついでにサイト整理しました"
 date: 2021-09-26T03:22:39+09:00
 author: Mei Akizuru
+slug: 
 tags:
     - blog
 ---

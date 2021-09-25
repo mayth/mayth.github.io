@@ -2,6 +2,7 @@
 title: "miocatのその後、あるいはcoinsLT #0で発表した話"
 date: 2014-06-20 11:09:26 +0900
 author: Mei Akizuru
+slug: miocat-at-coinslt0
 tags:
     - coinsLT
     - miocat

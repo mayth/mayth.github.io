@@ -2,6 +2,7 @@
 title: "DatabaseRewinder with Rails 4.2 & PostgreSQL"
 date: 2015-03-12 18:49:02 +0900
 author: Mei Akizuru
+slug: database-rewinder-with-rails-4-2
 tags:
   - Ruby on Rails
   - PostgreSQL

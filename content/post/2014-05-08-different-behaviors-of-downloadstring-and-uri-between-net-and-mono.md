@@ -2,6 +2,7 @@
 title: "Different Behaviors of DownloadString and Uri between .NET and Mono"
 date: 2014-05-08 07:43:38 +0900
 author: Mei Akizuru
+slug: different-behaviors-of-downloadstring-and-uri-between-net-and-mono
 tags:
   - .NET
   - Mono

@@ -2,6 +2,7 @@
 title: SECCON 2014 オンライン予選 その他諸々
 date: 2014-07-20 19:24:34 +0900
 author: Mei Akizuru
+slug: seccon2014-online-preliminary
 tags:
   - CTF
   - SECCON

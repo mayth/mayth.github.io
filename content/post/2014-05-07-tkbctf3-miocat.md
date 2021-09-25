@@ -2,6 +2,7 @@
 title: tkbctf3 miocat
 date: 2014-05-07 13:26:00 +0900
 author: Mei Akizuru
+slug: tkbctf3-miocat
 tags:
   - CTF
   - tkbctf

@@ -2,6 +2,7 @@
 title: "SECCON 2014 Online Qualification (December) write-up"
 date: 2014-12-07 22:11:39 +0900
 author: Mei Akizuru
+slug: seccon2014-online-winter
 tags:
   - CTF
   - SECCON

@@ -2,6 +2,7 @@
 title: "YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話"
 date: 2014-10-17 17:56:46 +0900
 author: Mei Akizuru
+slug: sublime-latex-yosemite
 tags:
   - Yosemite
   - Sublime Text

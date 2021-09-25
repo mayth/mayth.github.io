@@ -2,6 +2,7 @@
 title: "RailsAdminの日時選択が日本語でバグる"
 date: 2014-01-23 20:08:42 +0900
 author: Mei Akizuru
+slug: rails-admin-jp-problem
 tags:
     - Rails
     - i18n

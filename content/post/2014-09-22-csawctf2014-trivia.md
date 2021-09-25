@@ -2,6 +2,7 @@
 title: "CSAW CTF 2014 Quals Trivia"
 date: 2014-09-22 20:18:08 +0900
 author: Mei Akizuru
+slug: csawctf2014-trivia
 tags:
   - CTF
   - CSAW CTF

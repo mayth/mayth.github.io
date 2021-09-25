@@ -2,6 +2,7 @@
 title: "tkbctf4 [misc 400] amida"
 date: 2014-11-24 06:11:50 +0900
 author: Mei Akizuru
+slug: tkbctf4-amida
 tags:
   - CTF
   - tkbctf4

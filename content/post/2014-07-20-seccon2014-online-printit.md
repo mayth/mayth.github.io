@@ -2,6 +2,7 @@
 title: SECCON 2014 オンライン予選 【Print it!】
 date: 2014-07-20 18:53:55 +0900
 author: Mei Akizuru
+slug: seccon2014-online-printit
 tags:
   - CTF
   - SECCON
