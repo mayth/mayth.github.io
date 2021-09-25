@@ -1,0 +1,54 @@
+baseURL = 'https://blog.aquarite.info/'
+languageCode = 'ja-jp'
+title = 'blog.aquarite.info'
+author = 'Mei Akizuru'
+theme = 'blackburn'
+copyright = "&copy; 2021 Mei Akizuru. All rights reserved."
+canonifyurls = true
+paginate = 10
+hasCJKLanguage = true
+
+ignoreErrors = ["error-remote-getjson"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+
+[params]
+  brand = "aquarite.info"
+  dateFormat = "02 Jan 2006, 15:04"
+  highlightjs = 'tomorrow-night-bright'
+
+[permalinks]
+  post = '/:year/:month/:slug'
+
+[menu]
+  # Shown in the side menu.
+  [[menu.main]]
+    name = "Home"
+    pre = "<i class='fa fa-home fa-fw'></i>"
+    weight = 1
+    identifier = "home"
+    url = "/"
+  [[menu.main]]
+    name = "Posts"
+    pre = "<i class='fa fa-list fa-fw'></i>"
+    weight = 2
+    identifier = "post"
+    url = "/post/"
+  [[menu.main]]
+    name = "About"
+    pre = "<i class='fa fa-user fa-fw'></i>"
+    weight = 3
+    identifier = "about"
+    url = "/about/"
+
+[social]
+  twitter = "maytheplic"
+  github = "mayth"
+  steam = "maythorzy"
