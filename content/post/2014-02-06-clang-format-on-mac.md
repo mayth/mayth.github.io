@@ -33,7 +33,7 @@ Sublime Textとの連携については公式からプラグインが提供さ�
 
 ソースコード冒頭に簡単な説明があるのでそれに従う。まずはこのファイルを`~/Library/Application Support/Sublime Text 3/Packages/User`以下に入れる。次にSublime TextのPreferences -> Key Bindings - Userを選んでキーバインドの設定ファイルを開き次の一行を追加する（説明ではCtrl+Shift+Cになっているのでそのようにしたが適宜変える）。
 
-```
+```json
 { "keys": ["ctrl+shift+c"], "command": "clang_format" }
 ```
 
@@ -56,7 +56,7 @@ Sublime Textとの連携については公式からプラグインが提供さ�
 
 まずホームフォルダに`go`フォルダを作る。そして`GOPATH`という環境変数を設定する。ついでに`$GOPATH/bin`にもパスを通しておく。
 
-```
+```bash
 $ mkdir $HOME/go
 $ export GOPATH=$HOME/go
 $ export PATH=$PATH:$GOPATH/bin
@@ -64,7 +64,7 @@ $ export PATH=$PATH:$GOPATH/bin
 
 環境変数の設定は`.bashrc`なり`.zshrc`なりに書いておいた方がよいと思う。ここまで済ませた上で
 
-```
+```bash
 $ go get -d github.com/quarnster/completion
 ```
 
@@ -72,14 +72,14 @@ $ go get -d github.com/quarnster/completion
 
 さて、これで`$GOPATH/src/github.com/quarnster/completion`にcloneされている。ビルドするには`build`ディレクトリに入って`make`すればよい。
 
-```
+```bash
 $ cd $GOPATH/src/github.com/quarnster/completion/build
 $ make
 ```
 
 ビルドに成功すると同じディレクトリに`completion`というバイナリが生成されている。Sublime Textにプラグインとしてインストールするにはそのまま
 
-```
+```bash
 $ ./completion install -st
 ```
 
@@ -98,7 +98,7 @@ $ ./completion install -st
 
 Python3.3のヘッダーファイルが見つからないと言っているので`PKG_CONFIG_PATH`を設定する。HomebrewでPython3.3が入っていれば（なければ入れる）、`/usr/local/Cellar/python3/3.3.3/Frameworks/Python.framework/Versions/3.3/lib/pkgconfig`にある（3.3.3の辺りはバージョンによる。これ更新されたらどうなるんだ）。
 
-```
+```bash
 PKG_CONFIG_PATH=/usr/local/Cellar/python3/3.3.3/Frameworks/Python.framework/Versions/3.3/lib/pkgconfig
 ```
 
@@ -116,7 +116,7 @@ PKG_CONFIG_PATH=/usr/local/Cellar/python3/3.3.3/Frameworks/Python.framework/Vers
 
 そうして見つかったのが[Dynamic Libraries, RPATH, and Mac OS (Joe Di Pol's Blog)](https://blogs.oracle.com/dipol/entry/dynamic_libraries_rpath_and_mac)という記事だった。これを読んだところ、`install_name_tool`というツールが備わっているのでそれを使って`libcomplete.so`を弄ってしまえばよさそうという感触。ただまぁ使い方も何もさっぱりわからないのでいろいろ試したところ、
 
-```
+```bash
 $ install_name_tool -add_rpath $HOME/clang/lib libcomplete.so
 ```
 

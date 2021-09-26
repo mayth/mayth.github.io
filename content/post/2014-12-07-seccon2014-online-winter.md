@@ -32,7 +32,7 @@ HTMLファイルを開くと穴あきになったJavaScriptのコードと、空
 
 コードは次の通り(`"???"`が空欄の箇所)。
 
-```
+```js
 "use strict";
 
 ({"???" :function(){
@@ -82,7 +82,7 @@ Answer: `SECCON{3678cbe0171c8517abeab9d20786a7390ffb602d}`
 
 十進法の値と二進法の値と八進法の値と十六進法の値が入り乱れている気がするテキスト。
 
-```
+```ruby
 class String
   def parse
     case
@@ -132,7 +132,7 @@ Wrong, bye.
 
 与えられた数列に対して、その中での最大値もしくは最小値を答える。Rubyで入力を`,`で区切って数値化して`Enumerable.(max|min)`で答えるプログラムを書いた。入出力のデバッグで10分は取られてすごくつらい。
 
-```
+```ruby
 require 'socket'
 
 SERVER_URI = 'number.quals.seccon.jp'

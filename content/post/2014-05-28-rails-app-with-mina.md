@@ -93,8 +93,8 @@ touch $HOME/.rbenv/versions/2.1.2/lib/ruby/site_ruby/2.1.0/auto_gem.rb
 
 まずはGemfileに`gem 'mina'`の一行を追加して`bundle`した後、
 
-```
-bundle exec mina init
+```bash
+$ bundle exec mina init
 ```
 
 とすると、`config/deploy.rb`というファイルが出来るのでこれを編集する。以下に示す`deploy.rb`はデフォルトを元にいろいろ試行錯誤した結果である。
@@ -215,8 +215,8 @@ end
 
 その辺りの設定ができたら開発環境でセットアップのコマンドを発行する。
 
-```
-bundle exec mina setup to=production
+```bash
+$ bundle exec mina setup to=production
 ```
 
 `to=production`に関しては、今回はproduction/stagingを切り替えられるようにしたので必須である（デフォルトのままなら必要ない）。これでデプロイ先にはMinaのディレクトリ構造が生成され、sharedディレクトリ以下にいくつかファイルやディレクトリが生成される。
@@ -227,8 +227,8 @@ bundle exec mina setup to=production
 
 ここまで終われば、開発環境に戻ってきて
 
-```
-bundle exec mina deploy to=production
+```bash
+$ bundle exec mina deploy to=production
 ```
 
 とする。このコマンドによってsshしてgit cloneして云々……が実行され、最後に`to :launch`で書いた内容が実行され、デプロイは終了する。上述の例だとここで独自のinitスクリプトを用いているのでそれを用意しておく必要があるが、デフォルトだと`restart.txt`をtouchして終わりなので、特に何も起きずに終了するはずである。
@@ -349,8 +349,8 @@ reload() {
 
 こんな感じのスクリプトを`/etc/init.d/refxgroovin`として作成して、あといくつか変数を定義したファイルを`/etc/conf.d/refxgroovin`として作成する。conf.dの方では`REFXGROOVIN_USER`の設定が必須である。これ以外にいくつかのタイムアウトの設定を行う。そうしたら
 
-```
-/etc/init.d/refxgroovin start
+```bash
+$ /etc/init.d/refxgroovin start
 ```
 
 としてサービスを起動させる。これでログを確認してmasterがreadyになっていて、かつ`curl`か何かでリクエストを投げて返事が返ってくれば成功である。
@@ -375,8 +375,8 @@ refxgroovin ALL = (ALL) NOPASSWD: /etc/init.d/refxgroovin, (ALL) NOPASSWD: /etc/
 
 この状態で一度試しにサーバー上で
 
-```
-sudo /etc/init.d/refxgroovin reload
+```bash
+$ sudo /etc/init.d/refxgroovin reload
 ```
 
 とかやって動くかどうかを確認する。動かなかったらググってみるとかmanを読むとかしてほしい。

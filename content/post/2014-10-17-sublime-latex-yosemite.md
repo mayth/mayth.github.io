@@ -47,7 +47,7 @@ env=os.environ)
 
 これは`makePDF.py`の中に含まれている。Macでは`makePDF.py`は以下のパスにある。
 
-```
+```sh
 $HOME/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/
 ```
 
