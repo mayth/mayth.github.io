@@ -2,9 +2,11 @@
 title: "OctopressからHugoへの切り替えついでにサイト整理しました"
 date: 2021-09-26T03:22:39+09:00
 author: Mei Akizuru
-slug: 
+slug: site-migration
 tags:
     - blog
+aliases:
+    - /2021/09/octopressからhugoへの切り替えついでにサイト整理しました/
 ---
 
 最終更新は6年前と完全放置だった `tech.aquarite.info` ですが、Octopressもすっかり動きがなくなってしまったので、いい機会だと思いHugoに切り替えました。何がいい機会なのかは自分でもよく分かりませんが、urandomの方でも使っているので多少は慣れたツールであるというのが選定理由です。
