@@ -6,9 +6,9 @@
 <meta name=generator content="Hugo 0.88.1">
 <title>OctopressからHugoへの切り替えついでにサイト整理しました &#183; Hello, (forgotten) world ☂</title>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://www.aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://www.aquarite.info/css/side-menu.css><!--<![endif]-->
-<link rel=stylesheet href=https://www.aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
 <link rel=preconnect href=https://fonts.gstatic.com>
 <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
@@ -16,7 +16,7 @@
 <link rel=stylesheet href=//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/tomorrow-night-bright.min.css>
 <script async src=//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js></script>
 <script>hljs.initHighlightingOnLoad()</script>
-<link rel="shortcut icon" href=https://www.aquarite.info/img/favicon.ico type=image/x-icon>
+<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
 </head>
 <body>
 <div id=layout>
@@ -24,17 +24,17 @@
 <span></span>
 </a>
 <div id=menu>
-<a class="pure-menu-heading brand" href=https://www.aquarite.info/>aquarite.info</a>
+<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
 <div class=pure-menu>
 <ul class=pure-menu-list>
 <li class=pure-menu-item>
-<a class=pure-menu-link href=https://www.aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
 </li>
 <li class=pure-menu-item>
-<a class=pure-menu-link href=https://www.aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+<a class=pure-menu-link href=https://aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
 </li>
 <li class=pure-menu-item>
-<a class=pure-menu-link href=https://www.aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
 </li>
 </ul>
 </div>
@@ -74,11 +74,11 @@
 </div>
 <div>
 <i class="fa fa-tags fa-fw"></i>
-<a class=post-taxonomy-tag href=https://www.aquarite.info/tags/blog>blog</a>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/blog>blog</a>
 </div>
 </div>
 <p>最終更新は6年前と完全放置だった <code>tech.aquarite.info</code> ですが、Octopressもすっかり動きがなくなってしまったので、いい機会だと思いHugoに切り替えました。何がいい機会なのかは自分でもよく分かりませんが、urandomの方でも使っているので多少は慣れたツールであるというのが選定理由です。</p>
-<p>それと同時に <code>aquarite.info</code> で公開していた殺風景なプロフィールページ（的なもの）も特に書くことないのにドメイン占有してるのもな、と思ってブログと統一することにしました。あの辺に書いてあった内容は<a href=https://www.aquarite.info/about/>About</a>に書いてあります、たぶん。あのページはあのページで古式ゆかしい手書きのHTMLで、Static Site Generatorでは感じられない人の温もりみたいなものがあったとは思うのですが、シンプルに面倒なので。そもそも人の温もりも何もキーボードでタイプしとるだけやろがい、という話です。</p>
+<p>それと同時に <code>aquarite.info</code> で公開していた殺風景なプロフィールページ（的なもの）も特に書くことないのにドメイン占有してるのもな、と思ってブログと統一することにしました。あの辺に書いてあった内容は<a href=https://aquarite.info/about/>About</a>に書いてあります、たぶん。あのページはあのページで古式ゆかしい手書きのHTMLで、Static Site Generatorでは感じられない人の温もりみたいなものがあったとは思うのですが、シンプルに面倒なので。そもそも人の温もりも何もキーボードでタイプしとるだけやろがい、という話です。</p>
 <p>URL構成も微妙に変えています。URLに日付まで入れんでよくない？　と思ったので、ドメイン変更とあわせまして次の通り移行します。</p>
 <pre tabindex=0><code>old: tech.aquarite.info/blog/:year/:month/:day/:slug
 new: aquarite.info/blog/:year/:month/:slug
@@ -86,27 +86,27 @@ new: aquarite.info/blog/:year/:month/:slug
 <p>お引っ越し記念にHugoに切り替えた作業内容なんかはまた書きます。</p>
 <h4><i class="fas fa-share-alt" aria-hidden=true></i>&nbsp;Share!</h4>
 <ul class=share-buttons>
-<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fwww.aquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a>
+<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2faquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fwww.aquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a>
+<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2faquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="https://plus.google.com/share?url=https%3a%2f%2fwww.aquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a>
+<li><a href="https://plus.google.com/share?url=https%3a%2f%2faquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fwww.aquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a>
+<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2faquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fwww.aquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a>
+<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2faquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a>
 </li>&nbsp;&nbsp;&nbsp;
-<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fwww.aquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a>
+<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2faquarite.info%2f2021%2f09%2foctopress%25E3%2581%258B%25E3%2582%2589hugo%25E3%2581%25B8%25E3%2581%25AE%25E5%2588%2587%25E3%2582%258A%25E6%259B%25BF%25E3%2581%2588%25E3%2581%25A4%25E3%2581%2584%25E3%2581%25A7%25E3%2581%25AB%25E3%2582%25B5%25E3%2582%25A4%25E3%2583%2588%25E6%2595%25B4%25E7%2590%2586%25E3%2581%2597%25E3%2581%25BE%25E3%2581%2597%25E3%2581%259F%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a>
 </li>
 </ul>
 <style>ul.share-buttons{list-style:none;padding:0}ul.share-buttons li{display:inline}ul.share-buttons .sr-only{position:absolute;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}</style>
 <div class="prev-next-post pure-g">
 <div class=pure-u-1-24 style=text-align:left>
-<a href=https://www.aquarite.info/2015/03/database-rewinder-with-rails-4-2/><i class="fa fa-chevron-left"></i></a>
+<a href=https://aquarite.info/2015/03/database-rewinder-with-rails-4-2/><i class="fa fa-chevron-left"></i></a>
 </div>
 <div class=pure-u-10-24>
 <nav class=prev>
-<a href=https://www.aquarite.info/2015/03/database-rewinder-with-rails-4-2/>DatabaseRewinder with Rails 4.2 & PostgreSQL</a>
+<a href=https://aquarite.info/2015/03/database-rewinder-with-rails-4-2/>DatabaseRewinder with Rails 4.2 & PostgreSQL</a>
 </nav>
 </div>
 <div class=pure-u-2-24>
@@ -120,7 +120,7 @@ new: aquarite.info/blog/:year/:month/:slug
 </div>
 </div>
 </div>
-<script src=https://www.aquarite.info/js/ui.js></script>
-<script src=https://www.aquarite.info/js/menus.js></script>
+<script src=https://aquarite.info/js/ui.js></script>
+<script src=https://aquarite.info/js/menus.js></script>
 </body>
 </html>
