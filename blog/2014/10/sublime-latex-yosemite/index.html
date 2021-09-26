@@ -1,0 +1,104 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.88.1">
+<title>YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話 &#183; Hello, (forgotten) world ☂</title>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
+<link rel=preconnect href=https://fonts.gstatic.com>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
+</head>
+<body>
+<div id=layout>
+<a href=#menu id=menuLink class=menu-link>
+<span></span>
+</a>
+<div id=menu>
+<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
+<div class=pure-menu>
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+</li>
+</ul>
+</div>
+<div class="pure-menu social">
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
+</li>
+</ul>
+</div>
+<div>
+<div class=small-print>
+<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
+</div>
+<div class=small-print>
+<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
+</div>
+</div>
+</div>
+<div id=main>
+<div class=header>
+<h1>YosemiteでSublime Text 3 + LaTeXToolsを使ったらPDF出てこない話</h1>
+<h2></h2>
+</div>
+<div class=content>
+<p>覚え書き。</p>
+<p>今日公開されたMac OS X Yosemite (10.10)に早速更新したところ、Sublime Text 3 + LaTeXToolsの環境でLaTeXをビルドしてもPDFが出力されなくなった。</p>
+<p>この問題はYosemiteがbetaの時点でアップグレードして報告した猛者がいた。<a href=https://github.com/SublimeText/LaTeXTools/issues/401>LaTeXTools on OS X 10.10 · Issue #401 · SublimeText/LaTeXTools</a></p>
+<blockquote>
+<p>opened this issue on 5 Jun</p>
+</blockquote>
+<p>（白目）</p>
+<p>症状としては上述の通り。ビルドを実行したときにコンソールへ吐き出されているログはこんな感じ。</p>
+<pre tabindex=0><code>Welcome to thread Thread-13
+['latexmk', '-cd', '-e', &quot;$latex = 'uplatex %O -interaction=nonstopmode -synctex=1 %S'&quot;, '-e', &quot;$biber = 'biber %O --bblencoding=utf8 -u -U --output_safechars %B'&quot;, '-e', &quot;$bibtex = 'upbibtex %O %B'&quot;, '-e', &quot;$makeindex = 'makeindex %O -o %D %S'&quot;, '-e', &quot;$dvipdf = 'dvipdfmx %O -o %D %S'&quot;, '-f', '-norc', '-gg', '-pdfdvi', 'report.tex']
+Finished normally
+12
+Exception in thread Thread-13:
+Traceback (most recent call last):
+  File &quot;./threading.py&quot;, line 901, in _bootstrap_inner
+  File &quot;/Users/mayth/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/makePDF.py&quot;, line 147, in run
+    data = open(self.caller.tex_base + &quot;.log&quot;, 'rb').read()
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/mayth/Documents/report.log'
+</code></pre><p><code>report.{pdf,log}</code>。察して。</p>
+<p>それはともかく、どうやらこれは<a href=https://github.com/SublimeText/LaTeXTools/issues/401#issuecomment-59058434>YosemiteでデフォルトのPATHの値が変わっているのが原因</a>らしい。そこで、肝心のコマンドを呼んでいるところでPATHを追加してあげればよい。</p>
+<p><a href=https://github.com/SublimeText/LaTeXTools/issues/401#issuecomment-59080557>LaTeXTools on OS X 10.10 · Issue #401 · SublimeText/LaTeXTools</a>から引用すると</p>
+<blockquote>
+<p>proc = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+env=os.environ)</p>
+</blockquote>
+<p>これは<code>makePDF.py</code>の中に含まれている。Macでは<code>makePDF.py</code>は以下のパスにある。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=color:#8be9fd;font-style:italic>$HOME</span>/Library/Application Support/Sublime Text 3/Packages/LaTeXTools/
+</code></pre></div><p>パス辿るのが面倒ならPreferences -> Browse Packagesを使えばPackagesフォルダがFinderで開かれるので、その中のLaTeXToolsを見ると存在するはず。</p>
+<p>現時点では当該の記述は95行目にある。その行に上記引用のように、<code>env=os.environ</code>を追記すると上手く動くようになった。</p>
+</div>
+</div>
+</div>
+<script src=https://aquarite.info/js/ui.js></script>
+<script src=https://aquarite.info/js/menus.js></script>
+<script src=https://aquarite.info/js/math-code.js></script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.88.1">
+<title>SECCON 2014 オンライン予選 その他諸々 &#183; Hello, (forgotten) world ☂</title>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
+<link rel=preconnect href=https://fonts.gstatic.com>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
+</head>
+<body>
+<div id=layout>
+<a href=#menu id=menuLink class=menu-link>
+<span></span>
+</a>
+<div id=menu>
+<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
+<div class=pure-menu>
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+</li>
+</ul>
+</div>
+<div class="pure-menu social">
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
+</li>
+</ul>
+</div>
+<div>
+<div class=small-print>
+<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
+</div>
+<div class=small-print>
+<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
+</div>
+</div>
+</div>
+<div id=main>
+<div class=header>
+<h1>SECCON 2014 オンライン予選 その他諸々</h1>
+<h2></h2>
+</div>
+<div class=content>
+<p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。</p>
+<p>個別に書いたのは次の2つ。</p>
+<ul>
+<li><a href=https://aquarite.info/blog/2014/07/20/seccon2014-online-amida/>あみだくじ</a></li>
+<li><a href=https://aquarite.info/blog/2014/07/20/seccon2014-online-printit/>Print it</a></li>
+</ul>
+<p>この2つとここで書かれていないのは問題見てすらいません˙꒳˙</p>
+<h2 id=decode-me>decode me</h2>
+<p>ダウンロードした<code>encoded.txt</code>を見ると盛大に文字化けしてるんだけど、<code>FRPPBA 2014</code>という文字を見た瞬間にここが<code>SECCON 2014</code>であることを確信。ということは換字式暗号か何かなんだろうけど、<code>ebg13/47</code>という文字が気になる。とここで@re_Ordが「rot13/47というのがあるらしい」。なんじゃそりゃと思って調べてみると、rot13を拡張したそういう暗号があるらしかった。</p>
+<p>rot13/47はnkfコマンドで簡単に変換出来るので、それを実行しておしまい。</p>
+<h2 id=ソーシャルハック>ソーシャルハック？</h2>
+<p>私はページを開いて「天安門事件」って入力したら即座に退出されてしまったのであんまり遊んでません。</p>
+<h2 id=捏造された契約書を暴け>捏造された契約書を暴け</h2>
+<p>降ってきたファイルを展開すると<code>Timestamp.dd</code>というファイルが得られる。ここから特定の日付以降になってるようなファイルを探す。日付だから年が入ってるだろうと思って、マウントして云々とかは一切せずに<code>strings Timestamp.dd | grep 2012</code>とかやると1つだけ結果が出てくる。</p>
+<p>……で、300点問題だし、まさかそんなわけないよねー、と思ってそれをスルーしてマウントして探し始めたところ、隣で@yuscarletがこの問題を通していた。正解はまさかの先ほど<code>strings</code>やって出てきた日付だったらしい。</p>
+<p>よくわかんなくてもとりあえず送信しておくべきですね（白目）</p>
+<h2 id=重ねてみよう>重ねてみよう</h2>
+<p>チーム複数人でまずImageMagickでgif画像を分解して合成云々で粘っていた。これ合成したらQRコードとか出てくるんだろとか思っていたら実際に出てきたのはQRコードでした。</p>
+<p>ちなみに、ImageMagickでgif画像を分解、色を反転、透過色を設定……ってやったけどどうにも合成が上手く行ってなかったらしい。で、最終的に取った手段は透過色の設定までやった画像ファイルを全部GIMPに突っ込んでレイヤーとして開き、一番下に白一色のレイヤーを追加するという方法でした。GIMP最強じゃん（</p>
+<h2 id=詰将棋>詰将棋</h2>
+<p>突然のurandom将棋部発足。私は何もしてません（</p>
+<p>盤面をにらめっこして頭の中で考えるよりも、適当な紙を用意して駒と盤面作った方がよかったようです。</p>
+<h2 id=諸々>諸々</h2>
+<p>チーム内連携で解けた割と問題があって、今回は結構みんな神が降りていた気がします。ググれる文鎮とは私のことだ！（迫真）</p>
+<p>最後の1時間くらい、他のメンバーがDecrypt it!を解いている間に祈っていたら、どうやら全国行けるようです。最後の瞬間のランキングを確認してないんですがひょっとしたらチーム1位かもしれません。やったね。</p>
+</div>
+</div>
+</div>
+<script src=https://aquarite.info/js/ui.js></script>
+<script src=https://aquarite.info/js/menus.js></script>
+</body>
+</html>

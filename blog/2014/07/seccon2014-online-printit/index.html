@@ -1,0 +1,98 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.88.1">
+<title>SECCON 2014 オンライン予選 【Print it!】 &#183; Hello, (forgotten) world ☂</title>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
+<link rel=preconnect href=https://fonts.gstatic.com>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
+</head>
+<body>
+<div id=layout>
+<a href=#menu id=menuLink class=menu-link>
+<span></span>
+</a>
+<div id=menu>
+<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
+<div class=pure-menu>
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+</li>
+</ul>
+</div>
+<div class="pure-menu social">
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
+</li>
+</ul>
+</div>
+<div>
+<div class=small-print>
+<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
+</div>
+<div class=small-print>
+<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
+</div>
+</div>
+</div>
+<div id=main>
+<div class=header>
+<h1>SECCON 2014 オンライン予選 【Print it!】</h1>
+<h2></h2>
+</div>
+<div class=content>
+<p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。</p>
+<h2 id=問題概要>問題概要</h2>
+<p>謎のファイルが降ってきます。以上。</p>
+<h2 id=解法>解法</h2>
+<p>降ってきたファイルの正体は"Standard Triangulated Language"というフォーマットのファイル(参考: <a href=http://ja.wikipedia.org/wiki/Standard_Triangulated_Language>Wikipedia</a>)で、このフォーマットのバイナリ形式で記録された3Dモデルです。このファイルを適切なアプリケーションで開くと3Dモデルを見ることが出来て、そのモデルにフラグが書かれています。</p>
+<p>ans: <code>Bar1kaTaLab.</code></p>
+<h2 id=経緯>経緯</h2>
+<p>とりあえずファイルをバイナリエディタに突っ込んでビットマップで見てみると、かなり規則性の高いらしいということはわかったのですが、それ以上のことはさっぱりわからず。nullが14個くらい続いてたりとか、それが繰り返されてたりとか、その辺の規則性が高いわりに、先頭には普通にテキストが入っているし、テキストの間にはまたもnullが入っていてよくわかんないなぁと思ってました。</p>
+<p>先頭のテキストには意味がないんじゃないかと思って削ってみても、削った後の先頭数バイトが何かのシグネチャになってるわけではありませんでした。あと、前述のnullが続いている箇所がかなり多いことから圧縮されているわけでもなさそうだということはわかりました。</p>
+<p>問題名がPrint it!なので、きっと何かにPrintするんだろうと思って、仮想プリンタドライバにlprコマンドでデータを送りつけても何も起きませんでした。他に"Print"に関係しそうなファイルフォーマットを考えてみましたが、たいていがテキスト形式のもので、問題ファイルとは噛み合いません。あとpbcopyでコピーしてコンソールに無理矢理突っ込んだらえらい目にあいました。</p>
+<p>じゃあテキストに意味があるのだろうと思って削らないままで眺めてみると、先頭のテキスト（＋謎データ）群のサイズがちょうど80bytesでした（&ldquo;Thanks!&ldquo;で終わっていたので切れ目はわかりやすかった）。80byte、やたらキリがいい。そんな話を@6f70として、じゃあきっと先頭80bytesは何かしらのヘッダーに違いない！　……ということで、先頭80bytesがヘッダになってるようなファイルフォーマットを探すと……</p>
+<div class=pure-g>
+<div class=pure-u>
+<div style="padding:0 .2em">
+<img class=pure-img-responsive src=https://aquarite.info/images/2014-07-20-printit-google.png alt>
+</div>
+</div>
+</div>
+<p>……なるほどね（白目）</p>
+<p>これほどまでに検索結果のスニペットが欲しい情報をピンポイントで持ってきたことはもはや感動的ですらあるので引用しておくと</p>
+<blockquote>
+米国のスリーディー・システムズ（英語版）によって開発された三次元CADソフト用の<strong>ファイルフォーマットシステム</strong>。多くのソフトにサポートされ ... バイナリーSTLファイルは<strong>80バイト</strong>の任意の文字列で開始される（通常内容は無視される。ただし、 solid から記載を ...
+</blockquote>
+<p>そんなわけで、このファイルフォーマットのバイナリ形式では先頭80bytesは無視されること、このフォーマットはfloatの値がずらーっと並んでいることがわかりました。floatの値が並んでいるだけなら、確かにデータに規則性があって、nullが連続しているのも納得です。</p>
+<p>私のマシンにはこれを見られるものがなかったので、Wikipediaの記事の外部リンクにあった3DViewというChromeのアプリを入れてファイルを読むことで解答が得られました。</p>
+</div>
+</div>
+</div>
+<script src=https://aquarite.info/js/ui.js></script>
+<script src=https://aquarite.info/js/menus.js></script>
+</body>
+</html>
