@@ -1,0 +1,898 @@
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content>
+<meta name=generator content="Hugo 0.91.2">
+<title>SpresenseとBP35A1でスマートメーターと通信する &#183; Hello, (forgotten) world ☂</title>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
+<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
+<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
+<link rel=preconnect href=https://fonts.gstatic.com>
+<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
+<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
+</head>
+<body>
+<div id=layout>
+<a href=#menu id=menuLink class=menu-link>
+<span></span>
+</a>
+<div id=menu>
+<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
+<div class=pure-menu>
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/post/><i class="fa fa-list fa-fw"></i>Posts</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
+</li>
+</ul>
+</div>
+<div class="pure-menu social">
+<ul class=pure-menu-list>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+</li>
+<li class=pure-menu-item>
+<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
+</li>
+</ul>
+</div>
+<div>
+<div class=small-print>
+<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
+</div>
+<div class=small-print>
+<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
+</div>
+</div>
+</div>
+<div id=main>
+<div class=header>
+<h1>SpresenseとBP35A1でスマートメーターと通信する</h1>
+<h2></h2>
+</div>
+<div class=content>
+<h2 id=背景>背景</h2>
+<p>結構前にスマートメーターに切り替わり、このタイミングで電力消費量なんかを取れないかと調べてみてBルートサービスなるものがあることを知った。</p>
+<p>スマートメーターとWi-SUNなる規格で通信して情報を取得できるが、このモジュールがなかなか高価で尻込みしていた。しかし、最近どうもブレーカーが落ちる頻度が上がってきた感じがあったので、電力使用量をモニタリングしてみようと思ったものである。</p>
+<p>そういうわけでBP35A1と一式を集め、「さて余っていたRaspberry Piがあったはず……」と探してみたが引っ越しのタイミングで行方不明となってしまっていた。そこで最近久しぶりに触っていたSpresenseを代わりに使ってみることにした。</p>
+<h2 id=用意したもの>用意したもの</h2>
+<table>
+<thead>
+<tr>
+<th>品名</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BP35A1</td>
+<td>スマートメーターと通信するためのWi-SUN規格対応モジュール。Amazonで入手。</td>
+</tr>
+<tr>
+<td>BP35A7A</td>
+<td>BP35A1のブレークアウトボード。マルツオンラインで入手。</td>
+</tr>
+<tr>
+<td>BP35A7-accessories</td>
+<td>BP35A7Aのピンヘッダ、BP35A7AにBP35A1を固定するためのスペーサー、ネジ、ナットのセット。秋葉原の千石電商で入手。</td>
+</tr>
+<tr>
+<td>Spresense</td>
+<td>ソニーのシングルボードコンピュータ。発売当初に秋葉原のツクモロボット王国（閉店済み）で買ったような気がする。</td>
+</tr>
+<tr>
+<td>その他いろいろ</td>
+<td>ブレッドボード、ジャンパーワイヤー、はんだごて一式、etc.</td>
+</tr>
+</tbody>
+</table>
+<p>一式注文してこの記事を書き始めたのが実は2021年8月下旬なのだが、そのときBP35A1とBP35A7Aをマルツオンラインで注文したところ、「BP35A1については在庫切れで、今から発注して納期は来年（2022年）3月」という連絡を受けてBP35A7Aのみ手配してもらった。そこから慌てて他のBP35A1の在庫を探してAmazon.co.jpで在庫有りだったので即注文してgot kotonakiしたが、今（2022年1月）探してみるとどこも本当に在庫がない。そういうわけでこの記事の内容はモノがなくて試すのが難しい状況にある。</p>
+<h2 id=開発環境>開発環境</h2>
+<ul>
+<li>MacBook Pro (2016)</li>
+<li>macOS BigSur (11.5.2)</li>
+<li>Visual Studio Code (1.59.1)
+<ul>
+<li>Spresense VSCode IDE (1.2.1)</li>
+</ul>
+</li>
+</ul>
+<h2 id=やったこと>やったこと</h2>
+<h3 id=bp35a1とbp35a7aの準備>BP35A1とBP35A7Aの準備</h3>
+<p>BP35A1とBP35A7Aを接続する。向きがあるのでデータシートを見て確認しておく（BP35A1のアンテナ部がBP35A7Aの外側に出るようにする）。2つのボードの間にスペーサーを挟み、ネジとナットで固定する。</p>
+<p>BP35A7Aにピンヘッダをはんだ付けする。</p>
+<h3 id=接続動作確認>接続・動作確認</h3>
+<p>ブレッドボードにBP35A7Aを挿し、配線する。</p>
+<table>
+<thead>
+<tr>
+<th>Spresense</th>
+<th>BP35A7A</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.3V</td>
+<td>VCC (CN1-4)</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND (CN1-1)</td>
+</tr>
+<tr>
+<td>TX</td>
+<td>RXD (CN2-4)</td>
+</tr>
+<tr>
+<td>RX</td>
+<td>TXD (CN2-5)</td>
+</tr>
+</tbody>
+</table>
+<p>その他データシートでGND接続推奨になってる箇所も一通りGNDに繋いでおいたが、たぶんしなくても動く。フロー制御は行わないのでその辺の配線も省略。</p>
+<p>Spresenseの開発環境はVSCode IDEを使用する。事前にSpresense SDK IDE編のセットアップを済ませておく。</p>
+<p>USBでSpresenseと接続すると <code>/dev/cu.SLAB_USBtoUART</code> が見えるので、これをシリアルポートとして選択する。</p>
+<p>Spresense SDKのコンフィグで、<code>SYSTEM_CUTERM</code>を有効にする（メニュー名は"Application Configuration > System Libraries and NSH Add-Ons > CU minimal serial terminal"）。これでNuttShell上で<code>cu</code>コマンドが使えるようになる。</p>
+<p>シリアルターミナルを開いたら、<code>ls /dev</code> を叩いてデバイスを確認する。</p>
+<pre tabindex=0><code>nsh&gt; ls /dev
+/dev:
+ console
+ i2c0
+ mtdblock0
+ null
+ rtc0
+ smart0d1
+ sysctl
+ timer0
+ timer1
+ ttyS0
+ ttyS2
+ usrsock
+ watchdog0
+</code></pre><p>SpresenseのTX/RXピンはUART#2に対応していて、これは<code>/dev/ttyS2</code>として見えているので、<code>cu</code>コマンドでこのデバイスを開く。</p>
+<p><code>cu</code>コマンドの使い方は<code>-?</code>で確認できる。実際に実行すると次のように表示される。</p>
+<pre tabindex=0><code>nsh&gt; cu -?
+Usage: cu [options]
+ -l: Use named device (default /dev/ttyS0)
+ -e: Set even parity
+ -o: Set odd parity
+ -s: Use given speed (default 115200)
+ -r: Disable RTS/CTS flow control (default: on)
+ -?: This help
+</code></pre><p>BP35A1のデータシートによればボーレートは115200なので、これはデフォルトで良い。記載の通り、<code>cu</code>コマンドではフロー制御がデフォルトで有効になっているが、今回フロー制御のピンを繋いでいないので<code>-r</code>オプションで無効にする。</p>
+<p>接続確認のため、BP35A1のファームウェアバージョンを確認するコマンド <code>SKVER</code> を送る。<code>EVER</code>に続いてバージョン番号、続いて<code>OK</code>が返ってきたら接続に問題はない。</p>
+<pre tabindex=0><code>nsh&gt; cu -l /dev/ttyS2 -r
+SKVER
+EVER 1.2.10
+OK
+</code></pre><p><code>cu</code>から抜ける際は<code>~.</code>を入力する。</p>
+<p>ここまで問題なければ、続けて試しにスマートメーターとの接続まで行ってみる。やることは次の通り。</p>
+<ol>
+<li>BルートのIDとパスワードを設定する</li>
+<li>接続先のスマートメーターをスキャンする</li>
+<li>スキャンした結果から通信チャンネル、PAN IDを設定する</li>
+<li>スマートメーターのアドレスをIPv6アドレスに変換する</li>
+<li>スマートメーターとの間で認証を成立させて通信を開始する</li>
+</ol>
+<p>実際に<code>cu</code>内でやってみるとこんな結果になる（アドレス部分等は潰している）。<code>(n)</code>は<code>n</code>番目の手順と対応する操作を表す。</p>
+<pre tabindex=0><code># (1)
+SKSETRBID &lt;ID&gt;
+OK
+SKSETPWD C &lt;PW&gt;
+OK
+# (2)
+SKSCAN 2 FFFFFFFF 6
+OK
+EVENT 20 0000:0000:0000:0000:0000:0000:0000:0000
+EPANDESC
+  Channel:37
+  Channel Page:09
+  Pan ID:0123
+  Addr:0123456789ABCDEF
+  LQI:51
+  PairID:01234567
+EVENT 22 0000:0000:0000:0000:0000:0000:0000:0000
+# (3)
+SKSREG S2 37
+OK
+SKSREG S3 0123
+OK
+# (4)
+SKLL64 0123456789ABCDEF
+0000:0000:0000:0000:0000:0000:0000:0000
+# (5)
+SKJOIN 0000:0000:0000:0000:0000:0000:0000:0000
+OK
+EVENT 21 0000:0000:0000:0000:0000:0000:0000:0000 02
+EVENT 02 0000:0000:0000:0000:0000:0000:0000:0000
+ERXUDP 0000:0000:0000:0000:0000:0000:0000:0000
+...
+</code></pre><p>認証に成功すると、それ以降<code>ERXUDP</code>というイベントが送られてくるようになる。これはUDPパケットの受信イベントで、この内容を適宜読んでいくことになる。</p>
+<p><code>SKSCAN</code>コマンドでスキャンを開始すると、<code>EVENT 20</code>に続けて<code>EPANDESC</code>というイベントが送られてくる。<code>EPANDESC</code>に続く内容がスキャンして得られたデバイスの詳細情報で、必要になるのは<code>Channel</code>、<code>Pan ID</code>、<code>Addr</code>の3つである。</p>
+<p>通信チャンネルとPAN IDは<code>SKSREG</code>コマンドでそれぞれレジスタ<code>S02</code>と<code>S03</code>に登録する。<code>Addr</code>はEUI-64のアドレスで、<code>SKLL64</code>コマンドでこれをIPv6アドレスに変換してから<code>SKJOIN</code>コマンドの引数として使用する。なお、<code>SKLL64</code>を使わなくとも次の法則でIPv6アドレスを生成出来る。</p>
+<ul>
+<li>前半64ビットは FE80:0000:0000:0000 （生成されるのはリンクローカルアドレス）</li>
+<li>後半64ビットは <strong>先頭から7ビット目（先頭バイトの下位から2ビット目）を反転して</strong> 元のアドレスをコピーする</li>
+</ul>
+<p>アドレスが分かったら <code>SKJOIN</code> で認証を行う。</p>
+<h3 id=通信用のコードを書く>通信用のコードを書く</h3>
+<p>UARTによるシリアル通信だが、その辺はOS(NuttX)側で上手く抽象化されているので前述の <code>/dev/ttyS2</code> をオープンして読み書きする。少なくともBP35A1との通信はテキストベースだと思ってよいが、スマートメーターとの通信ではバイナリを読み書きする必要があるので注意が必要である。</p>
+<p>BP35A1とのやりとりで注意すべき点はだいたい次の点だと思う。</p>
+<ul>
+<li>改行コードはCRLF。コマンド入力は改行で終端されるので、これを間違うと永遠に反応が来ない（読み出す分には余計な<code>\r</code>が行末にくっつくだけなので実害は少なめ）。</li>
+<li>デフォルトではコマンドのエコーバックが有効になっている。つまりコマンドを送って直後に <code>OK</code> を期待するようなコードを書くとエコーバックで誤動作する。1行読み飛ばすか、<code>SFE</code>レジスタを<code>0</code>に設定してエコーバックを無効にするとよい。</li>
+</ul>
+<h4 id=そもそも通信できない問題>そもそも通信できない問題</h4>
+<p>巷にはRaspberry Piを使ったりArduinoだったりで取得する記事が多いので、あえてのSpresense SDK (C/C++)や！　と変な気を起こしたのが運の尽き。</p>
+<p>まず最初で最大の関門となったのが「何故か正常にレスポンスが読み出せない」問題だった。</p>
+<ul>
+<li>SDKではなくSpresense Arduinoを使い、<code>Serial</code>で通信してみる → <strong>動作する</strong></li>
+<li><code>\r\n</code>ではなくコマンド行を送った後に <code>0x0d, 0x0a</code> を送るようにしてみた → 変わらない</li>
+<li>対向をBP35A1ではなくRaspberry PiにしてSpresenseがUARTを通して送ってる内容をダンプしてみる → 特におかしなところはない</li>
+<li>プログラムからコマンドを送った後、nshに戻ってcuしてEnterすると「不明なコマンド」的なエラーを返される → <strong>それは改行コード送れてない説ない？</strong></li>
+</ul>
+<p>などなど、諸々の試行錯誤や動作検証を経て、最終的には <strong>Spresense起動後のエントリポイントをnshではなく自作プログラムにする</strong> ことで解決した（Spresense Arduinoだったら動く、Spresense Arduino使用時はnshが起動しない、という点から思いついた）。</p>
+<p>タスク優先度の関係で送信途中にタスクが変わって正しく送れてない、もしくは受信したデータを誰かに横取りされてる、<code>nsh</code>が起動した時点で入力に何かしらフック噛まされてる、とか考えているが、原因はさっぱり分かっていない。</p>
+<h4 id=イベントハンドリング>イベントハンドリング</h4>
+<p><code>SKSREG</code>や<code>SKSETRBID</code>といった何かしら設定をするタイプのコマンドを取り扱っている間は特に問題はないのだが、スキャン系のコマンド、あるいはUDPパケット受信などは「イベント」として通知されてくる。よって、最初の設定が一通り終わったらイベントを処理するループを回すことになる。</p>
+<p>注目・処理すべきイベントは次の通り。</p>
+<table>
+<thead>
+<tr>
+<th>イベント</th>
+<th>内容</th>
+<th>やること</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EPANDESC</code></td>
+<td>アクティブスキャンで検出されたPANの情報通知。</td>
+<td>PANの情報を取り出す。</td>
+</tr>
+<tr>
+<td><code>EVENT 22</code></td>
+<td>アクティブスキャンの終了通知。</td>
+<td>通信対象のPANを決定する。</td>
+</tr>
+<tr>
+<td><code>EVENT 24</code></td>
+<td>接続失敗通知。</td>
+<td>エラーハンドリング、リトライ。</td>
+</tr>
+<tr>
+<td><code>EVENT 25</code></td>
+<td>接続完了通知。この通知が来たら無線通信を開始してよい。</td>
+<td>処理を次に進める。</td>
+</tr>
+<tr>
+<td><code>EVENT 29</code></td>
+<td>セッションタイムアウト通知。この通知が来たら無線通信をしてはならない。</td>
+<td>再接続する。</td>
+</tr>
+<tr>
+<td><code>ERXUDP</code></td>
+<td>UDPパケット到着通知。パケットのペイロードが入っている。</td>
+<td>パケットを処理する。</td>
+</tr>
+</tbody>
+</table>
+<p>無限ループを回して1行を読み続け、読んだ行をスペース区切りにして読み出す形になる(<code>strtok(buf, " ")</code>)。ただし<code>ERXUDP</code>については最後にペイロードがバイナリそのまんまで入ってくるので、素直に<code>fgets</code>っぽい挙動（改行文字もしくは<code>NULL</code>で終端とみなす）で読んでいくとバグるかもしれない。面倒なのでそこをケアする実装にはしていないが、今のところそれでバグってはいない。<code>WOPT 01</code>を実行すると、バイナリ部がhex stringになるので、初期化時にこれをやっておく手もある（hex stringを解釈するのと、改行や
+NULLを考慮するのとどちらが楽だろう……）。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#8be9fd>void</span> <span style=color:#ff79c6>*</span><span style=color:#50fa7b>event_main</span>(<span style=color:#8be9fd>void</span> <span style=color:#ff79c6>*</span>arg) {
+  Context <span style=color:#ff79c6>*</span>ctx <span style=color:#ff79c6>=</span> (Context <span style=color:#ff79c6>*</span>)arg;
+  <span style=color:#8be9fd>char</span> buf[<span style=color:#bd93f9>256</span>];
+  <span style=color:#ff79c6>while</span> (<span style=color:#8be9fd;font-style:italic>true</span>) {
+    <span style=color:#8be9fd>int</span> ret;
+    <span style=color:#ff79c6>if</span> ((ret <span style=color:#ff79c6>=</span> read_serial(ctx<span style=color:#ff79c6>-&gt;</span>fd, buf, <span style=color:#bd93f9>256</span>)) <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>0</span>) {
+      <span style=color:#ff79c6>return</span> ret;
+    }
+    <span style=color:#8be9fd>char</span> <span style=color:#ff79c6>*</span>cmd <span style=color:#ff79c6>=</span> strtok(buf, <span style=color:#f1fa8c>&#34; &#34;</span>);
+    <span style=color:#ff79c6>if</span> (cmd <span style=color:#ff79c6>==</span> <span style=color:#8be9fd;font-style:italic>NULL</span>) {
+      <span style=color:#ff79c6>continue</span>;
+    }
+    <span style=color:#ff79c6>if</span> (strcmp(cmd, <span style=color:#f1fa8c>&#34;OK&#34;</span>) <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+      ctx<span style=color:#ff79c6>-&gt;</span>response <span style=color:#ff79c6>=</span> RS_OK;
+    } <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span> (strcmp(cmd, <span style=color:#f1fa8c>&#34;FAIL&#34;</span>) <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+      <span style=color:#8be9fd>char</span> <span style=color:#ff79c6>*</span>code_s <span style=color:#ff79c6>=</span> strtok(<span style=color:#8be9fd;font-style:italic>NULL</span>, <span style=color:#f1fa8c>&#34; &#34;</span>);
+      <span style=color:#8be9fd>int</span> code;
+      sprintf(code_s, <span style=color:#f1fa8c>&#34;ER%2d&#34;</span>, <span style=color:#ff79c6>&amp;</span>code);
+      ctx<span style=color:#ff79c6>-&gt;</span>response <span style=color:#ff79c6>=</span> (ResponseStatus)code;
+    } <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span> (strcmp(cmd, <span style=color:#f1fa8c>&#34;ERXUDP&#34;</span>) <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+      <span style=color:#8be9fd>char</span> <span style=color:#ff79c6>*</span>sender_s <span style=color:#ff79c6>=</span> strtok(<span style=color:#8be9fd;font-style:italic>NULL</span>, <span style=color:#f1fa8c>&#34; &#34;</span>);
+      <span style=color:#8be9fd>uint8_t</span> sender[<span style=color:#bd93f9>16</span>];
+      parse_ipv6_addr(sender_s, sender);
+
+      <span style=color:#6272a4>/* ... */</span>
+
+      <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>data <span style=color:#ff79c6>=</span> (<span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>)malloc(data_len);
+      memcpy(data, data_len_s <span style=color:#ff79c6>+</span> <span style=color:#bd93f9>5</span>, data_len);
+
+      handler_erxudp(ctx, sender, dest, rport, lport, sender_lla, secured,
+                     data_len, data);
+      free(data);
+    } <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span> (strcmp(cmd, <span style=color:#f1fa8c>&#34;EEDSCAN&#34;</span>) <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+      <span style=color:#6272a4>/* ... */</span>
+    } <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span> (strcmp(cmd, <span style=color:#f1fa8c>&#34;EVENT&#34;</span>) <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+      <span style=color:#8be9fd>char</span> <span style=color:#ff79c6>*</span>num_s <span style=color:#ff79c6>=</span> strtok(<span style=color:#8be9fd;font-style:italic>NULL</span>, <span style=color:#f1fa8c>&#34; &#34;</span>);
+      <span style=color:#6272a4>/* ... */</span>
+      handler_event(ctx, num, sender, param);
+    } <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span> (strcmp(cmd, <span style=color:#f1fa8c>&#34;EPANDESC&#34;</span>) <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+      memset(buf, <span style=color:#bd93f9>0</span>, <span style=color:#bd93f9>256</span>);
+      <span style=color:#ff79c6>if</span> ((ret <span style=color:#ff79c6>=</span> read_serial(ctx<span style=color:#ff79c6>-&gt;</span>fd, buf, <span style=color:#bd93f9>256</span>)) <span style=color:#ff79c6>&lt;</span> <span style=color:#bd93f9>0</span>) {
+        <span style=color:#ff79c6>return</span> ret;
+      }
+      <span style=color:#8be9fd>uint8_t</span> channel;
+      sscanf(buf, <span style=color:#f1fa8c>&#34;  Channel:%2X&#34;</span>, <span style=color:#ff79c6>&amp;</span>channel);
+
+      <span style=color:#6272a4>/* ... */</span>
+
+      handler_epandesc(ctx, (Channel)channel, channel_page, (<span style=color:#8be9fd>uint16_t</span>)pan_id,
+                       addr, (<span style=color:#8be9fd>uint8_t</span>)lqi);
+    } <span style=color:#ff79c6>else</span> {
+      <span style=color:#6272a4>// no handler
+</span><span style=color:#6272a4></span>    }
+  }
+}
+</code></pre></div><p>だいぶ端折ったが、Cで文字列処理を書くもんじゃないなという思いがある。</p>
+<p>今回はこのイベントループを別スレッドで回すように実装した。<code>Context</code>という構造体を定義し、メインスレッドで初期化、イベントスレッドにポインタを渡してやりとりする形となっている。基本的にイベントスレッドとメインスレッドで同じフィールドを同時に触ることはないはずなので読み書きについてノーロック戦法を採っているが、いつか分かりにくいバグを生む可能性は否定できない。</p>
+<p>NuttXではpthreadが使えるのでスレッドを生やすところは<code>pthread_create</code>を呼べばよい。ちなみにNuttXにはタスクという概念もあるが、その辺は公式ドキュメントを参照してほしい: <a href=https://cwiki.apache.org/confluence/display/NUTTX/Tasks+vs.+Threads+FAQ>Tasks vs. Threads FAQ</a>。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>#include</span> <span style=color:#ff79c6>&lt;pthread.h&gt;</span><span style=color:#ff79c6>
+</span><span style=color:#ff79c6></span>
+<span style=color:#8be9fd>int</span> <span style=color:#50fa7b>broute_main</span>(<span style=color:#8be9fd>int</span> argc, <span style=color:#8be9fd>char</span> <span style=color:#ff79c6>*</span>argv[]) {
+  <span style=color:#6272a4>// ...
+</span><span style=color:#6272a4></span>  Context <span style=color:#ff79c6>*</span>ctx <span style=color:#ff79c6>=</span> context_new();
+  pthread_t ptid;
+  <span style=color:#ff79c6>if</span> (pthread_create(<span style=color:#ff79c6>&amp;</span>ptid, <span style=color:#8be9fd;font-style:italic>NULL</span>, event_main, ctx)) {
+    perror(<span style=color:#f1fa8c>&#34;main: create event thread&#34;</span>);
+    bp35a1_close(client);
+    <span style=color:#ff79c6>return</span> <span style=color:#ff79c6>-</span><span style=color:#bd93f9>1</span>;
+  }
+  <span style=color:#6272a4>// ...
+</span><span style=color:#6272a4></span>}
+</code></pre></div><h4 id=echonet-liteフレーム>ECHONET Liteフレーム</h4>
+<p>スマートメーターとの通信は<a href=https://echonet.jp/>ECHONET Lite</a>という規格で行う。これがUDPの上に乗っているので、つまり<code>ERXUDP</code>イベントのペイロードはECHONET Lite仕様に則った形になっているというわけである。</p>
+<p>補足: ECHONET Liteの仕様としてはOSIモデルでいうL4以下がなんであるかは規定していないが、HEMSコントローラとスマートメーター間のアプリケーション通信インターフェース仕様はUDP/IPv6を想定して書かれている。</p>
+<p>この規格の仕様は <a href=https://echonet.jp/spec_g/#standard-01>https://echonet.jp/spec_g/#standard-01</a> で公開されている。見なければならないのは次の3つ。</p>
+<ul>
+<li>ECHONET Lite規格書 第2部 ECHONET Lite 通信ミドルウェア仕様</li>
+<li>アプリケーション通信インターフェース仕様書 低圧スマート電力量メータ・HEMSコントローラ間</li>
+<li>APPENDIX ECHONET機器オブジェクト詳細規定Release P</li>
+</ul>
+<p>データ仕様を確認していく。まず、ECHONET Liteフレームは次のように構成されている。</p>
+<table>
+<thead>
+<tr>
+<th>オフセット</th>
+<th>長さ</th>
+<th>名前</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td><code>EHD1</code></td>
+<td>ヘッダ1（常に <code>0b00010000</code> = <code>0x10</code> ）。</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td><code>EHD2</code></td>
+<td>ヘッダ2。EDATAのフォーマットを指定する。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td><code>TID</code></td>
+<td>トランザクションID。リクエスト時に任意の値を指定する。レスポンスには対応するリクエストと同じTIDが入る。</td>
+</tr>
+<tr>
+<td>4</td>
+<td>n</td>
+<td><code>EDATA</code></td>
+<td>データの本体。</td>
+</tr>
+</tbody>
+</table>
+<p>NOTE: データはビッグエンディアンでやりとりされる。</p>
+<p><code>EHD2</code>が<code>0x81</code>なら<code>EDATA</code>は「規定電文形式」であり、<code>0x82</code>なら「任意電文形式」である。任意電文形式の場合<code>EDATA</code>の解釈は完全にアプリケーションに委ねられる。ただし今回任意電文形式の出番はない。</p>
+<p>規定電文形式の場合、<code>EDATA</code>は次のように構成される。</p>
+<table>
+<thead>
+<tr>
+<th>オフセット</th>
+<th>長さ</th>
+<th>名前</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>3</td>
+<td><code>SEOJ</code></td>
+<td>送信元のECHONET Liteオブジェクト。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td><code>DEOJ</code></td>
+<td>送信先のECHONET Liteオブジェクト。</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td><code>ESV</code></td>
+<td>ECHONET Liteサービス。</td>
+</tr>
+<tr>
+<td>7</td>
+<td>1</td>
+<td><code>OPC</code></td>
+<td>プロパティ数。この数だけ以降3つの構造が繰り返される。</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1</td>
+<td><code>EPC1</code></td>
+<td>1つ目のECHONET Liteプロパティ。</td>
+</tr>
+<tr>
+<td>9</td>
+<td>1</td>
+<td><code>PDC1</code></td>
+<td><code>EDT</code>の長さ（バイト数）。<code>0</code>のこともある。</td>
+</tr>
+<tr>
+<td>10</td>
+<td>n</td>
+<td><code>EDT1</code></td>
+<td>プロパティの値。</td>
+</tr>
+</tbody>
+</table>
+<p>補足: オブジェクトとかサービスとかプロパティとかの用語はあんまり分からなくても実装できるので、詳細に興味のある人は仕様書を読んでいただきたい。</p>
+<p>プロパティの数はたぶん1以上だが（プロパティを1つも含まないリクエスト・レスポンスに意味がないはず）、<code>PDC</code>が<code>0</code>、つまり<code>EDT</code>が空になることはありうる。こんな感じでフォーマットが決まっているので前の方から順番に読んでいけばフレームを解釈できる。</p>
+<p>とりあえずこの仕様をそのまま構造体に落とし込んでみる。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>typedef</span> <span style=color:#ff79c6>struct</span> {
+  <span style=color:#8be9fd>uint8_t</span> class_group_code;
+  <span style=color:#8be9fd>uint8_t</span> class_code;
+  <span style=color:#8be9fd>uint8_t</span> instance_code;
+} EOJ;
+
+<span style=color:#ff79c6>typedef</span> <span style=color:#ff79c6>struct</span> {
+  <span style=color:#6272a4>/// ECHONET Lite property specifier.
+</span><span style=color:#6272a4></span>  <span style=color:#8be9fd>uint8_t</span> epc;
+  <span style=color:#6272a4>/// A length of EDT in bytes.
+</span><span style=color:#6272a4></span>  <span style=color:#8be9fd>uint8_t</span> pdc;
+  <span style=color:#6272a4>/// Property value.
+</span><span style=color:#6272a4></span>  <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>edt;
+} ELProperty;
+
+<span style=color:#ff79c6>typedef</span> <span style=color:#ff79c6>struct</span> {
+  <span style=color:#6272a4>/// EOJ of sender.
+</span><span style=color:#6272a4></span>  EOJ sender;
+  <span style=color:#6272a4>/// EOJ of destination.
+</span><span style=color:#6272a4></span>  EOJ dest;
+  <span style=color:#6272a4>/// ECHONET Lite service specifier.
+</span><span style=color:#6272a4></span>  <span style=color:#8be9fd>uint8_t</span> esv;
+  <span style=color:#6272a4>/// A number of properties.
+</span><span style=color:#6272a4></span>  <span style=color:#8be9fd>uint8_t</span> opc;
+  <span style=color:#6272a4>/// ECHONET Lite properties.
+</span><span style=color:#6272a4></span>  ELProperty <span style=color:#ff79c6>**</span>properties;
+} ELDefiendData;
+
+<span style=color:#ff79c6>typedef</span> <span style=color:#ff79c6>union</span> {
+  ELDefiendData <span style=color:#ff79c6>*</span>defined;
+  <span style=color:#ff79c6>struct</span> { size_t size; <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>data; } arbitrary_data;
+} EDATA;
+
+<span style=color:#ff79c6>typedef</span> <span style=color:#ff79c6>struct</span> {
+  <span style=color:#8be9fd>uint8_t</span> ehd1;
+  <span style=color:#8be9fd>uint8_t</span> ehd2;
+  <span style=color:#6272a4>/// Transaction ID.
+</span><span style=color:#6272a4></span>  <span style=color:#8be9fd>uint16_t</span> tid;
+  EDATA edata;
+} ELFrame;
+</code></pre></div><p>デシリアライズは前から読んでいくだけ。</p>
+<h4 id=スマートメーターからの情報取得>スマートメーターからの情報取得</h4>
+<p>あるタイミングでの瞬間電力消費量はこちらからリクエストを送って取得する。リクエスト送信は60秒に1回メインスレッドから行う。</p>
+<p>リクエストする際のECHONET Liteフレームの各値は次の通り。</p>
+<table>
+<thead>
+<tr>
+<th>名前</th>
+<th>値</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TID</code></td>
+<td>任意の16bit整数</td>
+<td></td>
+</tr>
+<tr>
+<td><code>SEOJ</code></td>
+<td><code>{0x05, 0xFF, 0x01}</code></td>
+<td>HEMSコントローラを表すオブジェクト。</td>
+</tr>
+<tr>
+<td><code>DEOJ</code></td>
+<td><code>{0x02, 0x88, 0x01}</code></td>
+<td>低圧スマート電力量メータを表すオブジェクト。</td>
+</tr>
+<tr>
+<td><code>ESV</code></td>
+<td><code>0x62</code></td>
+<td>プロパティ値読み出し要求。</td>
+</tr>
+<tr>
+<td><code>OPC</code></td>
+<td><code>1</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>EPC1</code></td>
+<td><code>0xE7</code></td>
+<td>瞬時電力計測値。</td>
+</tr>
+<tr>
+<td><code>PDC1</code></td>
+<td><code>0</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>EDT1</code></td>
+<td>NULL</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>これにヘッダとトランザクションIDを付与した上でバイト列に落とし込み、<code>SKSENDTO</code>コマンドでスマートメーターへ送信する。送信先ポートはECHONET Liteの仕様で決まっていて、<code>3610</code>で固定である。なお、<code>SKSENDTO</code>コマンドは引数にデータ長を取るが、そのデータ長分だけデータが書き込まれないとコマンド受け付け状態から抜けないようになっている（そうでないとバイナリデータの中にたまたま<code>\r\n</code>が出現してしまったときに不完全なデータになる）。</p>
+<p><code>ELFrame</code>を確保する関数を用意する。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>ELFrame <span style=color:#ff79c6>*</span><span style=color:#50fa7b>make_frame</span>(EDATAForm form, <span style=color:#8be9fd>uint16_t</span> tid, EDATA data) {
+  ELFrame <span style=color:#ff79c6>*</span>frame <span style=color:#ff79c6>=</span> (ELFrame <span style=color:#ff79c6>*</span>)malloc(<span style=color:#ff79c6>sizeof</span>(ELFrame));
+  frame<span style=color:#ff79c6>-&gt;</span>ehd1 <span style=color:#ff79c6>=</span> EHD1;
+  frame<span style=color:#ff79c6>-&gt;</span>ehd2 <span style=color:#ff79c6>=</span> form;
+  frame<span style=color:#ff79c6>-&gt;</span>tid <span style=color:#ff79c6>=</span> tid;
+  frame<span style=color:#ff79c6>-&gt;</span>edata <span style=color:#ff79c6>=</span> data;
+  <span style=color:#ff79c6>return</span> frame;
+}
+</code></pre></div><p>リクエストフレームのうち、トランザクションID以外は毎回同じデータを送ればよいので、予め適当なオブジェクトを持っておくと簡単。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#6272a4>// main
+</span><span style=color:#6272a4></span>  <span style=color:#ff79c6>const</span> <span style=color:#ff79c6>struct</span> timespec fetch_interval <span style=color:#ff79c6>=</span> { <span style=color:#bd93f9>60</span>, <span style=color:#bd93f9>0</span> };
+
+  EOJ sender <span style=color:#ff79c6>=</span> {<span style=color:#bd93f9>0x05</span>, <span style=color:#bd93f9>0xFF</span>, <span style=color:#bd93f9>0x01</span>};
+  EOJ dest <span style=color:#ff79c6>=</span> {<span style=color:#bd93f9>0x02</span>, <span style=color:#bd93f9>0x88</span>, <span style=color:#bd93f9>0x01</span>};
+
+  ELDefiendData edata;
+  edata.sender <span style=color:#ff79c6>=</span> sender;
+  edata.dest <span style=color:#ff79c6>=</span> dest;
+  edata.esv <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0x62</span>;
+  edata.opc <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>1</span>;
+  edata.properties <span style=color:#ff79c6>=</span> (ELProperty <span style=color:#ff79c6>**</span>)malloc(<span style=color:#ff79c6>sizeof</span>(ELProperty <span style=color:#ff79c6>*</span>));
+  edata.properties[<span style=color:#bd93f9>0</span>] <span style=color:#ff79c6>=</span> (ELProperty <span style=color:#ff79c6>*</span>)malloc(<span style=color:#ff79c6>sizeof</span>(ELProperty));
+  edata.properties[<span style=color:#bd93f9>0</span>]<span style=color:#ff79c6>-&gt;</span>epc <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0xE7</span>;
+  edata.properties[<span style=color:#bd93f9>0</span>]<span style=color:#ff79c6>-&gt;</span>pdc <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0x00</span>;
+  edata.properties[<span style=color:#bd93f9>0</span>]<span style=color:#ff79c6>-&gt;</span>edt <span style=color:#ff79c6>=</span> <span style=color:#8be9fd;font-style:italic>NULL</span>;
+  EDATA data;
+  data.defined <span style=color:#ff79c6>=</span> <span style=color:#ff79c6>&amp;</span>edata;
+
+  srand(time(<span style=color:#8be9fd;font-style:italic>NULL</span>));
+  <span style=color:#ff79c6>while</span> (<span style=color:#8be9fd;font-style:italic>true</span>) {
+    <span style=color:#8be9fd>uint16_t</span> tid <span style=color:#ff79c6>=</span> (<span style=color:#8be9fd>uint16_t</span>)rand();
+    printf(<span style=color:#f1fa8c>&#34;main: making frame with tid=%d</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>, tid);
+    ELFrame <span style=color:#ff79c6>*</span>frame <span style=color:#ff79c6>=</span> make_frame(DEFINED_FORM, tid, data);
+    <span style=color:#8be9fd>uint8_t</span> <span style=color:#ff79c6>*</span>packed;
+    size_t plen <span style=color:#ff79c6>=</span> pack_frame(frame, <span style=color:#ff79c6>&amp;</span>packed);
+    printf(<span style=color:#f1fa8c>&#34;main: sending request</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+    printf(<span style=color:#f1fa8c>&#34;main: payload (%d bytes) =&#34;</span>, plen);
+    <span style=color:#ff79c6>for</span> (size_t i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> plen; <span style=color:#ff79c6>++</span>i) {
+      printf(<span style=color:#f1fa8c>&#34; %02X&#34;</span>, packed[i]);
+    }
+    printf(<span style=color:#f1fa8c>&#34;</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+    <span style=color:#ff79c6>if</span> ((ret <span style=color:#ff79c6>=</span> bp35a1_sendto(client, <span style=color:#bd93f9>1</span>, addr, EL_PORT, <span style=color:#8be9fd;font-style:italic>true</span>, plen, packed)) <span style=color:#ff79c6>&lt;</span>
+        <span style=color:#bd93f9>0</span>) {
+      printf(<span style=color:#f1fa8c>&#34;main: failed to send UDP packet (%d)</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>, ret);
+      bp35a1_close(client);
+      <span style=color:#ff79c6>break</span>;
+    }
+    context_begin_transaction(ctx, tid, handle_measured_inst_energy);
+    nanosleep(<span style=color:#ff79c6>&amp;</span>fetch_interval, <span style=color:#8be9fd;font-style:italic>NULL</span>);
+  }
+</code></pre></div><p>リクエストが成功したら次のようなレスポンスが返ってくる。若干時間がかかるので、タイムアウトを仕込む場合は長めにした方が良いかもしれない。</p>
+<table>
+<thead>
+<tr>
+<th>名前</th>
+<th>値</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TID</code></td>
+<td>任意の16bit整数</td>
+<td>リクエスト時に入れた値が入っている。</td>
+</tr>
+<tr>
+<td><code>SEOJ</code></td>
+<td><code>{0x02, 0x88, 0x01}</code></td>
+<td>低圧スマート電力量メータを表すオブジェクト。</td>
+</tr>
+<tr>
+<td><code>DEOJ</code></td>
+<td><code>{0x05, 0xFF, 0x01}</code></td>
+<td>HEMSコントローラを表すオブジェクト。</td>
+</tr>
+<tr>
+<td><code>ESV</code></td>
+<td><code>0x72</code></td>
+<td>プロパティ値読み出し応答。</td>
+</tr>
+<tr>
+<td><code>OPC</code></td>
+<td><code>1</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>EPC1</code></td>
+<td><code>0xE7</code></td>
+<td>瞬時電力計測値。</td>
+</tr>
+<tr>
+<td><code>PDC1</code></td>
+<td><code>4</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>EDT1</code></td>
+<td>signed 32bit integer</td>
+<td>W単位の計測値。</td>
+</tr>
+</tbody>
+</table>
+<p>トランザクションIDでリクエストとレスポンスを紐付けられるので、<code>Context</code>の中にトランザクションIDと関数の組をリストとして保持し、リクエスト時にそのリストにIDと関数を追加しておき、レスポンス受信時にそのリストからトランザクションIDを探し、見つかったらそれと組になっている関数を呼び出す、という形で処理している（上のコードで<code>context_begin_transaction</code>を呼んでるところが登録処理）。</p>
+<p>簡単にコードを示しておくと、まずトランザクションはこんな感じの構造体になっている。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>typedef</span> <span style=color:#50fa7b>void</span> (<span style=color:#ff79c6>*</span>TransactionHandlerFunc)(ELFrame <span style=color:#ff79c6>*</span>);
+
+<span style=color:#ff79c6>typedef</span> <span style=color:#ff79c6>struct</span> {
+  <span style=color:#8be9fd>uint16_t</span> tid;
+  TransactionHandlerFunc f;
+} TransactionHandler;
+</code></pre></div><p>レスポンスを受信したら<code>context_done_transaction</code>を呼び出す。リクエストする時にどんなリクエストかは分かっているので<code>TransactionHandlerFunc</code>として対応するレスポンスハンドラを登録しておく。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>context_done_transaction</span>(Context <span style=color:#ff79c6>*</span>ctx, ELFrame <span style=color:#ff79c6>*</span>frame) {
+  <span style=color:#ff79c6>if</span> (thlist_is_empty(ctx<span style=color:#ff79c6>-&gt;</span>handlers)) {
+    <span style=color:#ff79c6>return</span>;
+  }
+
+  TransactionHandler <span style=color:#ff79c6>*</span>th <span style=color:#ff79c6>=</span> thlist_get(ctx<span style=color:#ff79c6>-&gt;</span>handlers, frame<span style=color:#ff79c6>-&gt;</span>tid);
+  <span style=color:#ff79c6>if</span> (th <span style=color:#ff79c6>!=</span> <span style=color:#8be9fd;font-style:italic>NULL</span>) {
+    printf(<span style=color:#f1fa8c>&#34;context(done_transaction): found transaction %d</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>, frame<span style=color:#ff79c6>-&gt;</span>tid);
+    th<span style=color:#ff79c6>-&gt;</span>f(frame);
+    thlist_remove(ctx<span style=color:#ff79c6>-&gt;</span>handlers, frame<span style=color:#ff79c6>-&gt;</span>tid);
+    free(th);
+  } <span style=color:#ff79c6>else</span> {
+    printf(<span style=color:#f1fa8c>&#34;context(done_transaction): transaction %d not found</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>, frame<span style=color:#ff79c6>-&gt;</span>tid);
+  }
+}
+</code></pre></div><p>今回の場合は瞬間電力計測値のレスポンスを処理するハンドラを登録しておく。こんな感じ。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>handle_measured_inst_energy</span>(ELFrame <span style=color:#ff79c6>*</span>frame) {
+  <span style=color:#ff79c6>if</span> (frame<span style=color:#ff79c6>-&gt;</span>ehd2 <span style=color:#ff79c6>!=</span> DEFINED_FORM) {
+    printf(<span style=color:#f1fa8c>&#34;handle_measured_inst_energy: EDATA is not fixed form</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+    <span style=color:#ff79c6>return</span>;
+  }
+  ELDefiendData <span style=color:#ff79c6>*</span>edata <span style=color:#ff79c6>=</span> frame<span style=color:#ff79c6>-&gt;</span>edata.defined;
+  <span style=color:#ff79c6>if</span> (edata<span style=color:#ff79c6>-&gt;</span>esv <span style=color:#ff79c6>!=</span> ESV_GET_RES) {
+    printf(<span style=color:#f1fa8c>&#34;handle_measured_inst_energy: ESV is %02X, not Get_Res</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>,
+           edata<span style=color:#ff79c6>-&gt;</span>esv);
+    <span style=color:#ff79c6>return</span>;
+  }
+  <span style=color:#ff79c6>if</span> (edata<span style=color:#ff79c6>-&gt;</span>opc <span style=color:#ff79c6>==</span> <span style=color:#bd93f9>0</span>) {
+    printf(<span style=color:#f1fa8c>&#34;handle_measured_inst_energy: there is no properties</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>);
+    <span style=color:#ff79c6>return</span>;
+  }
+  <span style=color:#ff79c6>for</span> (<span style=color:#8be9fd>int</span> i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> edata<span style=color:#ff79c6>-&gt;</span>opc; <span style=color:#ff79c6>++</span>i) {
+    ELProperty <span style=color:#ff79c6>*</span>prop <span style=color:#ff79c6>=</span> edata<span style=color:#ff79c6>-&gt;</span>properties[i];
+    <span style=color:#ff79c6>if</span> (prop<span style=color:#ff79c6>-&gt;</span>epc <span style=color:#ff79c6>==</span> ELHPC_MEASURED_INST_EN) {
+      <span style=color:#8be9fd>int32_t</span> w <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>0</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>24</span> <span style=color:#ff79c6>|</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>1</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>16</span> <span style=color:#ff79c6>|</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>2</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>8</span> <span style=color:#ff79c6>|</span>
+                  prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>3</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>0</span>;
+      printf(<span style=color:#f1fa8c>&#34;handle_measured_inst_energy: %d W (%08X)</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>, w, w);
+    }
+  }
+}
+</code></pre></div><p>大雑把に実装の要点を紹介した。他の諸々も実装して動かすと以下のような出力が得られる。</p>
+<pre tabindex=0><code>main: making frame with tid=31594
+main: sending request
+main: payload (14 bytes) = 10 81 7B 6A 05 FF 01 02 88 01 62 01 E7 00
+event: sending UDP packet succeeded
+received UDP packet
+  Sender = FE80:0000:0000:0000:0001:0203:0405:0607
+  Payload (18 bytes) = 10 81 7B 6A 02 88 01 05 FF 01 72 01 E7 04 00 00 02 63
+FRAME: ehd2=81, tid=31594
+  CONTENT:
+    SEOJ    = 02 88 01
+    DEOJ    = 05 FF 01
+    Service = 72
+    # Props = 1
+    Property 0:
+      EPC: E7
+      PDT: 00 00 02 63 
+context(done_transaction): found transaction 31594
+handle_measured_inst_energy: 611 W (00000263)
+</code></pre><h4 id=積算電力消費量の通知>積算電力消費量の通知</h4>
+<p>また、これとは別に、接続が確立した状態では毎時0分と30分にスマートメーター側から積算の電力消費量が「通知」として送られてくる（つまりリクエストしなくても来る）。この情報は次のようなECHONET Liteフレームに乗っている。</p>
+<table>
+<thead>
+<tr>
+<th>名前</th>
+<th>値</th>
+<th>意味</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TID</code></td>
+<td>任意の16bit整数</td>
+<td>規格で定められていない。</td>
+</tr>
+<tr>
+<td><code>SEOJ</code></td>
+<td><code>{0x02, 0x88, 0x01}</code></td>
+<td>低圧スマート電力量メータを表すオブジェクト。</td>
+</tr>
+<tr>
+<td><code>DEOJ</code></td>
+<td><code>{0x05, 0xFF, 0x01}</code></td>
+<td>HEMSコントローラを表すオブジェクト。</td>
+</tr>
+<tr>
+<td><code>ESV</code></td>
+<td><code>0x73</code></td>
+<td>プロパティ値通知。</td>
+</tr>
+<tr>
+<td><code>OPC</code></td>
+<td><code>1</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>EPC1</code></td>
+<td><code>0xEA</code></td>
+<td>定時積算電力量計測値（正方向） 。</td>
+</tr>
+<tr>
+<td><code>PDC1</code></td>
+<td><code>11</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>EDT1</code></td>
+<td>（後述）</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><code>PDC</code>が示す通りこの通知の値は11byteあり、計測日時と計測値が入っている。</p>
+<table>
+<thead>
+<tr>
+<th>オフセット</th>
+<th>長さ</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>2</td>
+<td>年</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>月</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1</td>
+<td>日</td>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>時</td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>分</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1</td>
+<td>秒</td>
+</tr>
+<tr>
+<td>7</td>
+<td>4</td>
+<td>計測値</td>
+</tr>
+</tbody>
+</table>
+<p>これも読むだけ。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#ff79c6>static</span> <span style=color:#8be9fd>void</span> <span style=color:#50fa7b>handle_notification</span>(ELFrame <span style=color:#ff79c6>*</span>frame) {
+  ELDefiendData <span style=color:#ff79c6>*</span>edata <span style=color:#ff79c6>=</span> frame<span style=color:#ff79c6>-&gt;</span>edata.defined;
+  <span style=color:#ff79c6>if</span> (edata<span style=color:#ff79c6>-&gt;</span>esv <span style=color:#ff79c6>!=</span> ESV_INF) {
+    printf(<span style=color:#f1fa8c>&#34;handle_notification: ESV is %02X, not INF</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>, edata<span style=color:#ff79c6>-&gt;</span>esv);
+    <span style=color:#ff79c6>return</span>;
+  }
+  <span style=color:#ff79c6>for</span> (<span style=color:#8be9fd>int</span> i <span style=color:#ff79c6>=</span> <span style=color:#bd93f9>0</span>; i <span style=color:#ff79c6>&lt;</span> edata<span style=color:#ff79c6>-&gt;</span>opc; <span style=color:#ff79c6>++</span>i) {
+    ELProperty <span style=color:#ff79c6>*</span>prop <span style=color:#ff79c6>=</span> edata<span style=color:#ff79c6>-&gt;</span>properties[i];
+    <span style=color:#ff79c6>if</span> (prop<span style=color:#ff79c6>-&gt;</span>epc <span style=color:#ff79c6>==</span> ELHPC_FIXED_CUMULATIVE_AMT) {
+      <span style=color:#8be9fd>uint16_t</span> year <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>0</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>8</span> <span style=color:#ff79c6>|</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>1</span>];
+      <span style=color:#8be9fd>uint8_t</span> month <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>2</span>];
+      <span style=color:#8be9fd>uint8_t</span> day <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>3</span>];
+      <span style=color:#8be9fd>uint8_t</span> hour <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>4</span>];
+      <span style=color:#8be9fd>uint8_t</span> min <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>5</span>];
+      <span style=color:#8be9fd>uint8_t</span> sec <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>6</span>];
+      <span style=color:#8be9fd>uint32_t</span> kwh <span style=color:#ff79c6>=</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>7</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>24</span> <span style=color:#ff79c6>|</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>8</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>16</span> <span style=color:#ff79c6>|</span>
+                     prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>9</span>] <span style=color:#ff79c6>&lt;&lt;</span> <span style=color:#bd93f9>8</span> <span style=color:#ff79c6>|</span> prop<span style=color:#ff79c6>-&gt;</span>edt[<span style=color:#bd93f9>10</span>];
+      printf(<span style=color:#f1fa8c>&#34;handle_notification: %04d-%02d-%02d %02d:%02d:%02d: %d kWh &#34;</span>
+             <span style=color:#f1fa8c>&#34;(%04X) normal</span><span style=color:#f1fa8c>\n</span><span style=color:#f1fa8c>&#34;</span>,
+             year, month, day, hour, min, sec, kwh, kwh);
+    } <span style=color:#ff79c6>else</span> <span style=color:#ff79c6>if</span> (prop<span style=color:#ff79c6>-&gt;</span>epc <span style=color:#ff79c6>==</span> ELHPC_FIXED_CUMULATIVE_AMT_REV) {
+      <span style=color:#6272a4>// ...
+</span><span style=color:#6272a4></span>    }
+  }
+}
+</code></pre></div><p>ただ、本来はこれで得られた値を実使用量に変換するために<code>EPC = 0xE1</code> でリクエストして得られる係数を掛ける必要がある。<code>0xE1</code>でリクエストして<code>0x00</code>が返ってきたら係数は<code>1</code>なので通知された値がそのまま実使用量(kWh)を表すが、例えば<code>0x01</code>が来た場合は係数<code>0.1</code>を掛けた値が実際の値になる。詳しくはオブジェクト詳細規定を参照してほしい。</p>
+<p>ちなみにこれは『正方向』の計測値で、対応していれば<code>EPC = 0xEB</code>となっている『逆方向』の計測値も送られてくるが、太陽光発電等で売電をしていないなら無視してよいと思う（たぶん。上のコードでは無視している）。</p>
+<h4 id=タイムアウトについて>タイムアウトについて</h4>
+<p>アプリケーション通信インターフェース仕様書で、コントローラは要求を送ってから次の時間は応答を待つべきとされている。</p>
+<table>
+<thead>
+<tr>
+<th>条件</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OPC >= 2</code>、もしくは<code>EPC</code>が次のいずれか: <code>0xE2</code>, <code>0xE4</code>, <code>0xEC</code></td>
+<td>60 sec.</td>
+</tr>
+<tr>
+<td>上記に該当しない</td>
+<td>20 sec.</td>
+</tr>
+</tbody>
+</table>
+<p>今回のコードでは<code>EPC = 0xE7</code>の要求を60秒に1回なので結果的にこの応答待ち時間を満たしている。そもそもタイムアウトとか実装してないしね。</p>
+<p>仮にタイムアウトからのリクエスト再送をする場合には、トランザクションIDを使い回してはいけないと定められている点には注意。</p>
+<h2 id=まとめ>まとめ</h2>
+<p>RaspberryPiがないのでとりあえず手元にあるもので〜ということでSpresenseでやってみたが、それにしたって大人しくArduino SDK使った方が良かったんちゃうか感が満載である。あとSpresenseの強みであるマルチコアとかGNSSとかハイレゾ対応とかは一切活用していないので、本当にあえてSpresenseを使う理由もあんまりないのがちょっと悲しい。</p>
+<p>今回はUART通信が上手くいかないという想定外の障害に見舞われたが、それを除くとしんどいのはたぶんイベント駆動っぽい処理な気がする。特にPANのスキャンはマシン・リーダブルな形で渡してくれないのでしんどい。</p>
+<p>とはいえNuttXの勉強になったとか（今後役に立つのかは置いておくとして）、久々にC/C++を書いて昔の感覚をちょっと思い出したとか（今後役に立つのかは以下略）、色々と学ぶことはあった。Spresense SDKで開発するだとかBルート受信アプリを書く一助になれば幸いである。</p>
+</div>
+</div>
+</div>
+<script src=https://aquarite.info/js/ui.js></script>
+<script src=https://aquarite.info/js/menus.js></script>
+</body>
+</html>
