@@ -1,6 +1,6 @@
 ---
 title: "About"
-date: 2021-09-25T18:21:10+09:00
+date: 2022-01-13T00:46:30+09:00
 draft: false
 ---
 
@@ -32,8 +32,11 @@ draft: false
 
 ### CTF
 
+* 2021-12-18,19 Trend Micro CTF 2021 Virtual Final -> 5th
+* 2021-12-11,12 SECCON CTF 2021 -> 25th
 * 2021-09-18,19 Trend Micro CTF 2021 Qualifiers -> 9th
 
 ### 出版部
 
+* コミックマーケット99 @ 2021-12-31: BLEの通信を覗いてみよう
 * 出版システムのサーバー周りのお守り
