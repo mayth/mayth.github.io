@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=description content>
-<meta name=generator content="Hugo 0.91.2">
+<meta name=generator content="Hugo 0.92.0">
 <title>SpresenseとBP35A1でスマートメーターと通信する &#183; Hello, (forgotten) world ☂</title>
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
 <link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
@@ -863,6 +863,30 @@ handle_measured_inst_energy: 611 W (00000263)
 }
 </code></pre></div><p>ただ、本来はこれで得られた値を実使用量に変換するために<code>EPC = 0xE1</code> でリクエストして得られる係数を掛ける必要がある。<code>0xE1</code>でリクエストして<code>0x00</code>が返ってきたら係数は<code>1</code>なので通知された値がそのまま実使用量(kWh)を表すが、例えば<code>0x01</code>が来た場合は係数<code>0.1</code>を掛けた値が実際の値になる。詳しくはオブジェクト詳細規定を参照してほしい。</p>
 <p>ちなみにこれは『正方向』の計測値で、対応していれば<code>EPC = 0xEB</code>となっている『逆方向』の計測値も送られてくるが、太陽光発電等で売電をしていないなら無視してよいと思う（たぶん。上のコードでは無視している）。</p>
+<h4 id=インスタンスリスト通知>インスタンスリスト通知</h4>
+<p>通信をよく見ていると、セッション確立直後に送信元・先もいずれのEOJも<code>0E F0 01</code>で、<code>EPC = 0xD5</code>であるような通知が来ていることに気が付く。これはインスタンスリスト通知で、接続先のノードが持っているインスタンスの一覧を送ってきている。一応状態変化が起きたときも飛んでくるが、少なくともスマートメーターとの通信でそれは考えにくいので想定しなくてよいだろう。</p>
+<table>
+<thead>
+<tr>
+<th>オフセット</th>
+<th>長さ</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>インスタンスの数</td>
+</tr>
+<tr>
+<td>1+3n</td>
+<td>3</td>
+<td>n番目のインスタンスのEOJ</td>
+</tr>
+</tbody>
+</table>
+<p>要するに先頭に個数が入っていて残りは3バイトのEOJがその個数分だけ並んでいるだけである。このリストの中に<code>02 88 01</code>が入っていれば、それがお目当てのスマートメーターで間違いないと言えるだろう。</p>
 <h4 id=タイムアウトについて>タイムアウトについて</h4>
 <p>アプリケーション通信インターフェース仕様書で、コントローラは要求を送ってから次の時間は応答を待つべきとされている。</p>
 <table>
