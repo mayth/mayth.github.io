@@ -18,6 +18,8 @@ tags:
 
 そういうわけでBP35A1と一式を集め、「さて余っていたRaspberry Piがあったはず……」と探してみたが引っ越しのタイミングで行方不明となってしまっていた。そこで最近久しぶりに触っていたSpresenseを代わりに使ってみることにした。
 
+(2022-01-13 21:20追記) 実際に動かせたコードをGitHub上に公開したので、適宜参照してほしい。 [mayth/spresense_broute](https://github.com/mayth/spresense_broute)
+
 ## 用意したもの
 
 | 品名               | 説明                                                                                                           |
