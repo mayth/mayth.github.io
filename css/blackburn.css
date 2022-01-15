@@ -87,3 +87,14 @@ i {
 .pagination a {
   color: #265778;
 }
+
+.note {
+  font-size: 80%;
+  width: 80%;
+  padding: 0 1em;
+  background: #eee;
+}
+
+.note .note-header {
+  font-weight: bolder;
+}
