@@ -17,7 +17,9 @@ tags:
 元々 `tech.aquarite.info` はOctopressで生成したものをGitHub Pagesに乗っけていて、 `aquarite.info` は手書きのHTMLを契約しているVPSでホストしていた。まず手書きで全部管理するのが超絶しんどい、ぶっちゃけ分ける理由があんまりない、などの理由でこれらを統合することにした。
 これと同時に、Octopressはとうに更新が止まっていること、Octopressのリポジトリをcloneしてきてそこに手を加えるスタイルがやっぱり気持ち悪いといった理由でOctopressから別のstatic site generatorに移ろうと考えていた。で、色々と調べてみたがHugoにした。
 
-（※ Octopress 3.0なるものがあって、そちらではこの「リポジトリをcloneしてくる」というスタイルではなくなってるっぽい。ただリリースが2015年1月ということは、整理前のブログを作った当初存在していない。あとそちらも最終コミットが6年前になっていてメンテナンス状況が不明である）
+{{< note >}}
+Octopress 3.0なるものがあって、そちらではこの「リポジトリをcloneしてくる」というスタイルではなくなってるっぽい。ただリリースが2015年1月ということは、整理前のブログを作った当初存在していない。あとそちらも最終コミットが6年前になっていてメンテナンス状況が不明である。
+{{< /note >}}
 
 Hugoを選んだ理由には前の記事に書いた通り `urandom.team` の方で使ってたから、というのが大きい。別に新しいものを使うモチベーションがあんまなかったともいう。ちなみに、あっちも実のところこちらのサイト整理前と同様にブログはHugoでapex domainの方は手書きという感じになっている。正直アレも統一したい。
 
@@ -104,9 +106,9 @@ new: aquarite.info/blog/:year/:month/:slug
 
 で、`aliases`の方は何かというと見ての通りエイリアスである。エイリアスで指定されたパスにアクセスされると、それが設定されている元の記事にリダイレクトされる。サイトを生成してみると、エイリアスに設定されたパスに次のような内容の`index.html`が置かれている。`<meta http-equiv="refresh">`を使ってリダイレクトさせる内容である。
 
-```html
+{{< highlight html >}}
 <!DOCTYPE html><html><head><title>https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/</title><link rel="canonical" href="https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/"/><meta name="robots" content="noindex"><meta charset="utf-8" /><meta http-equiv="refresh" content="0; url=https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/" /></head></html>
-```
+{{< /highlight >}}
 
 これは古いURLでアクセスされることを考慮したもので、いやこのブログそんなにアクセスないだろ、とは思いつつもURLの永続性維持は命より重い[要出典]のでエイリアスも設定してある。
 
