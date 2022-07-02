@@ -1,174 +1,31 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content>
-<meta name=generator content="Hugo 0.92.0">
-<title>Octopress -> Hugoお引っ越し記録 &#183; Hello, (forgotten) world ☂</title>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
-<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
-<link rel=preconnect href=https://fonts.gstatic.com>
-<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
-<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
-</head>
-<body>
-<div id=layout>
-<a href=#menu id=menuLink class=menu-link>
-<span></span>
-</a>
-<div id=menu>
-<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
-<div class=pure-menu>
-<ul class=pure-menu-list>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
-</li>
-</ul>
-</div>
-<div class="pure-menu social">
-<ul class=pure-menu-list>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
-</li>
-</ul>
-</div>
-<div>
-<div class=small-print>
-<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
-</div>
-<div class=small-print>
-<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
-<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
-</div>
-</div>
-</div>
-<div id=main>
-<div class=header>
-<h1>Octopress -> Hugoお引っ越し記録</h1>
-<h2></h2>
-</div>
-<div class=content>
-<p><a href=https://aquarite.info/blog/2021/09/site-migration/>前の記事</a>で引っ越し記録を書くと言って結局4ヶ月ほど放置してしまったけど一応記録。</p>
-<h2 id=背景>背景</h2>
-<p>元々 <code>tech.aquarite.info</code> はOctopressで生成したものをGitHub Pagesに乗っけていて、 <code>aquarite.info</code> は手書きのHTMLを契約しているVPSでホストしていた。まず手書きで全部管理するのが超絶しんどい、ぶっちゃけ分ける理由があんまりない、などの理由でこれらを統合することにした。
-これと同時に、Octopressはとうに更新が止まっていること、Octopressのリポジトリをcloneしてきてそこに手を加えるスタイルがやっぱり気持ち悪いといった理由でOctopressから別のstatic site generatorに移ろうと考えていた。で、色々と調べてみたがHugoにした。</p>
-<div class=note>
-<div class=note-header>Note</div>
-<div class=note-content>Octopress 3.0なるものがあって、そちらではこの「リポジトリをcloneしてくる」というスタイルではなくなってるっぽい。ただリリースが2015年1月ということは、整理前のブログを作った当初存在していない。あとそちらも最終コミットが6年前になっていてメンテナンス状況が不明である。</div>
-</div>
-<p>Hugoを選んだ理由には前の記事に書いた通り <code>urandom.team</code> の方で使ってたから、というのが大きい。別に新しいものを使うモチベーションがあんまなかったともいう。ちなみに、あっちも実のところこちらのサイト整理前と同様にブログはHugoでapex domainの方は手書きという感じになっている。正直アレも統一したい。</p>
-<h2 id=記事のお引っ越し>記事のお引っ越し</h2>
-<p>Octopressを使ってるときは前述の通りOctopressそれ自体のリポジトリをcloneしてきて、さらにそのmasterを<code>source</code>ブランチに変更していた。では<code>mayth/mayth.github.io</code>の<code>master</code>ブランチはどうなっているかというと、GitHub Pagesとして公開される内容になっている。なので用事があるのは<code>source</code>ブランチということになる。</p>
-<p>先にHugoの方で初期設定を済ませておく。一旦GitHub Pagesのリポジトリ(<code>mayth/mayth.github.io</code>)をディレクトリごとコピーして、新しい方は<code>mayth.github.io.new</code>みたいな名前にする。これはリポジトリを作るとかではなくてあくまでローカルのディレクトリの話。</p>
-<p>Octopressでは記事は<code>source/_posts/</code>以下に格納されていて、各記事はMarkdownで書かれている。HugoでもMarkdownを使うので、まずはこれをそのままコピーしてくる。Hugoでの記事は<code>content/posts/</code>以下に格納する。</p>
-<pre tabindex=0><code>$ cp mayth.github.io/source/_posts/*.markdown mayth.github.io.new/content/posts/
-</code></pre><p>記事のMarkdownの先頭にFront MatterというYAMLで書かれたヘッダみたいなものがあって、OctopressもHugoもこれを解釈する。まずはこのヘッダの内容を調整する。例えば"DatabaseRewinder with Rails 4.2 & PostgreSQL"という記事だと、元は次のような内容だった。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ff79c6>layout</span>: post
-<span style=color:#ff79c6>title</span>: <span style=color:#f1fa8c>&#34;DatabaseRewinder with Rails 4.2 &amp; PostgreSQL&#34;</span>
-<span style=color:#ff79c6>date</span>: 2015-03-12 18:49:02 +0900
-<span style=color:#ff79c6>comments</span>: <span style=color:#ff79c6>true</span>
-<span style=color:#ff79c6>categories</span>:
-  - Ruby on Rails
-  - PostgreSQL
-</code></pre></div><p>これが色々弄った結果次のようになった。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#ff79c6>title</span>: <span style=color:#f1fa8c>&#34;DatabaseRewinder with Rails 4.2 &amp; PostgreSQL&#34;</span>
-<span style=color:#ff79c6>date</span>: 2015-03-12 18:49:02 +0900
-<span style=color:#ff79c6>author</span>: Mei Akizuru
-<span style=color:#ff79c6>slug</span>: database-rewinder-with-rails-4-2
-<span style=color:#ff79c6>tags</span>:
-  - Ruby on Rails
-  - PostgreSQL
-<span style=color:#ff79c6>aliases</span>:
-    - /blog/2015/03/12/database-rewinder-with-rails-4-2/
-</code></pre></div><p>差分はこんな感じ。</p>
-<ul>
-<li>消えたもの
-<ul>
-<li><code>layout</code></li>
-<li><code>comments</code></li>
-<li><code>categories</code></li>
-</ul>
-</li>
-<li>増えたもの
-<ul>
-<li><code>author</code></li>
-<li><code>slug</code></li>
-<li><code>tags</code></li>
-<li><code>aliases</code></li>
-</ul>
-</li>
-<li>変わってないもの
-<ul>
-<li><code>title</code></li>
-<li><code>date</code></li>
-</ul>
-</li>
-</ul>
-<p>まぁ概ね変わったとみてよいだろう。</p>
-<p><code>author</code>はひとりしかいないので全ファイルに機械的に追記、<code>comments</code>は一律消去、<code>categories</code>は<code>tags</code>になっただけなのでこれは単純なリネームでよい（「タグ」と「カテゴリ」という意味的には本当はおかしな話だが）。問題は<code>slug</code>と<code>aliases</code>である。</p>
-<p>まずサイト整理にあたって、次のようにURLを変更することにした。</p>
-<pre tabindex=0><code>old: tech.aquarite.info/blog/:year/:month/:day/:slug
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.101.0"><title>Octopress -> Hugoお引っ越し記録 &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]--><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon></head><body><div id=layout><a href=#menu id=menuLink class=menu-link><span></span></a><div id=menu><a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a><div class=pure-menu><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/><i class='fa fa-home fa-fw'></i>Home</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/about/><i class='fa fa-user fa-fw'></i>About</a></li></ul></div><div class="pure-menu social"><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a></li></ul></div><div><div class=small-print><small>&copy; 2021 Mei Akizuru. All rights reserved.</small></div><div class=small-print><small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small></div></div></div><div id=main><div class=header><h1>Octopress -> Hugoお引っ越し記録</h1><h2></h2></div><div class=content><p><a href=https://aquarite.info/blog/2021/09/site-migration/>前の記事</a>で引っ越し記録を書くと言って結局4ヶ月ほど放置してしまったけど一応記録。</p><h2 id=背景>背景</h2><p>元々 <code>tech.aquarite.info</code> はOctopressで生成したものをGitHub Pagesに乗っけていて、 <code>aquarite.info</code> は手書きのHTMLを契約しているVPSでホストしていた。まず手書きで全部管理するのが超絶しんどい、ぶっちゃけ分ける理由があんまりない、などの理由でこれらを統合することにした。
+これと同時に、Octopressはとうに更新が止まっていること、Octopressのリポジトリをcloneしてきてそこに手を加えるスタイルがやっぱり気持ち悪いといった理由でOctopressから別のstatic site generatorに移ろうと考えていた。で、色々と調べてみたがHugoにした。</p><div class=note><div class=note-header>Note</div><div class=note-content>Octopress 3.0なるものがあって、そちらではこの「リポジトリをcloneしてくる」というスタイルではなくなってるっぽい。ただリリースが2015年1月ということは、整理前のブログを作った当初存在していない。あとそちらも最終コミットが6年前になっていてメンテナンス状況が不明である。</div></div><p>Hugoを選んだ理由には前の記事に書いた通り <code>urandom.team</code> の方で使ってたから、というのが大きい。別に新しいものを使うモチベーションがあんまなかったともいう。ちなみに、あっちも実のところこちらのサイト整理前と同様にブログはHugoでapex domainの方は手書きという感じになっている。正直アレも統一したい。</p><h2 id=記事のお引っ越し>記事のお引っ越し</h2><p>Octopressを使ってるときは前述の通りOctopressそれ自体のリポジトリをcloneしてきて、さらにそのmasterを<code>source</code>ブランチに変更していた。では<code>mayth/mayth.github.io</code>の<code>master</code>ブランチはどうなっているかというと、GitHub Pagesとして公開される内容になっている。なので用事があるのは<code>source</code>ブランチということになる。</p><p>先にHugoの方で初期設定を済ませておく。一旦GitHub Pagesのリポジトリ(<code>mayth/mayth.github.io</code>)をディレクトリごとコピーして、新しい方は<code>mayth.github.io.new</code>みたいな名前にする。これはリポジトリを作るとかではなくてあくまでローカルのディレクトリの話。</p><p>Octopressでは記事は<code>source/_posts/</code>以下に格納されていて、各記事はMarkdownで書かれている。HugoでもMarkdownを使うので、まずはこれをそのままコピーしてくる。Hugoでの記事は<code>content/posts/</code>以下に格納する。</p><pre tabindex=0><code>$ cp mayth.github.io/source/_posts/*.markdown mayth.github.io.new/content/posts/
+</code></pre><p>記事のMarkdownの先頭にFront MatterというYAMLで書かれたヘッダみたいなものがあって、OctopressもHugoもこれを解釈する。まずはこのヘッダの内容を調整する。例えば"DatabaseRewinder with Rails 4.2 & PostgreSQL"という記事だと、元は次のような内容だった。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>layout</span>: post
+</span></span><span style=display:flex><span><span style=color:#ff79c6>title</span>: <span style=color:#f1fa8c>&#34;DatabaseRewinder with Rails 4.2 &amp; PostgreSQL&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>date</span>: 2015-03-12 18:49:02 +0900
+</span></span><span style=display:flex><span><span style=color:#ff79c6>comments</span>: <span style=color:#ff79c6>true</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>categories</span>:
+</span></span><span style=display:flex><span>  - Ruby on Rails
+</span></span><span style=display:flex><span>  - PostgreSQL
+</span></span></code></pre></div><p>これが色々弄った結果次のようになった。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>title</span>: <span style=color:#f1fa8c>&#34;DatabaseRewinder with Rails 4.2 &amp; PostgreSQL&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>date</span>: 2015-03-12 18:49:02 +0900
+</span></span><span style=display:flex><span><span style=color:#ff79c6>author</span>: Mei Akizuru
+</span></span><span style=display:flex><span><span style=color:#ff79c6>slug</span>: database-rewinder-with-rails-4-2
+</span></span><span style=display:flex><span><span style=color:#ff79c6>tags</span>:
+</span></span><span style=display:flex><span>  - Ruby on Rails
+</span></span><span style=display:flex><span>  - PostgreSQL
+</span></span><span style=display:flex><span><span style=color:#ff79c6>aliases</span>:
+</span></span><span style=display:flex><span>    - /blog/2015/03/12/database-rewinder-with-rails-4-2/
+</span></span></code></pre></div><p>差分はこんな感じ。</p><ul><li>消えたもの<ul><li><code>layout</code></li><li><code>comments</code></li><li><code>categories</code></li></ul></li><li>増えたもの<ul><li><code>author</code></li><li><code>slug</code></li><li><code>tags</code></li><li><code>aliases</code></li></ul></li><li>変わってないもの<ul><li><code>title</code></li><li><code>date</code></li></ul></li></ul><p>まぁ概ね変わったとみてよいだろう。</p><p><code>author</code>はひとりしかいないので全ファイルに機械的に追記、<code>comments</code>は一律消去、<code>categories</code>は<code>tags</code>になっただけなのでこれは単純なリネームでよい（「タグ」と「カテゴリ」という意味的には本当はおかしな話だが）。問題は<code>slug</code>と<code>aliases</code>である。</p><p>まずサイト整理にあたって、次のようにURLを変更することにした。</p><pre tabindex=0><code>old: tech.aquarite.info/blog/:year/:month/:day/:slug
 new: aquarite.info/blog/:year/:month/:slug
-</code></pre><p>要するに記事のパスから<code>:day</code>、日付を消した。この設定自体はHugoの<code>config.toml</code>に次のように設定すればできる。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>[permalinks]
-  posts = <span style=color:#f1fa8c>&#39;/blog/:year/:month/:slug&#39;</span>
-</code></pre></div><p>ただ、この状態でサイト生成してみると、古い記事のリンクが<code>/blog/2015/03/2015-03-12-database-rewinder-with-rails-4-2</code>みたいになってしまう。これはOctopressとHugoで"slug"として認識する部分が違うことによる。どちらもファイル名を基準にしているのだが、Octopressはファイル名を<code>[year]-[month]-[day]-[slug].markdown</code>というように解釈する。つまり前半の日付部分は日付部分として取り除く。一方でHugoは拡張子を除いたファイル名全体をslugだとみなす。そういうわけで、上のpermalinksの設定だけではパスに日付部分と別にslugの一部として日付が出てくるわけだ（その辺のHugoの仕様は<a href=https://gohugo.io/content-management/organization/>Content Organization</a>に書いてある）。</p>
-<p>それでは冗長なので、Hugoでは明示的にslugを指定することになる。ただファイル名からいちいちコピペしてくるのはあまりにつらいので、適当なRubyのスクリプトを書いた（実際には後述の内容も含めたスクリプト）。スクリプト自体はもう手元にないが、確か</p>
-<ol>
-<li>globであるディレクトリの下のMarkdownファイルを取得</li>
-<li>各ファイルの名前に対して<code>/\d{4}-\d{2}-\d{2}-(.+?).markdown</code>みたいな正規表現でマッチさせてslugを取得</li>
-<li>取得したslugを適当な行数に差し込んで保存</li>
-</ol>
-<p>みたいな流れだったと思う。シェルスクリプトとかsedでやる気力はなかった。</p>
-<p>で、<code>aliases</code>の方は何かというと見ての通りエイリアスである。エイリアスで指定されたパスにアクセスされると、それが設定されている元の記事にリダイレクトされる。サイトを生成してみると、エイリアスに設定されたパスに次のような内容の<code>index.html</code>が置かれている。<code>&lt;meta http-equiv="refresh"></code>を使ってリダイレクトさせる内容である。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=color:#ff79c6>&lt;!DOCTYPE html&gt;</span>&lt;<span style=color:#ff79c6>html</span>&gt;&lt;<span style=color:#ff79c6>head</span>&gt;&lt;<span style=color:#ff79c6>title</span>&gt;https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/&lt;/<span style=color:#ff79c6>title</span>&gt;&lt;<span style=color:#ff79c6>link</span> <span style=color:#50fa7b>rel</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;canonical&#34;</span> <span style=color:#50fa7b>href</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/&#34;</span>/&gt;&lt;<span style=color:#ff79c6>meta</span> <span style=color:#50fa7b>name</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;robots&#34;</span> <span style=color:#50fa7b>content</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;noindex&#34;</span>&gt;&lt;<span style=color:#ff79c6>meta</span> <span style=color:#50fa7b>charset</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;utf-8&#34;</span> /&gt;&lt;<span style=color:#ff79c6>meta</span> <span style=color:#50fa7b>http-equiv</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;refresh&#34;</span> <span style=color:#50fa7b>content</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;0; url=https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/&#34;</span> /&gt;&lt;/<span style=color:#ff79c6>head</span>&gt;&lt;/<span style=color:#ff79c6>html</span>&gt;</code></pre></div>
-<p>これは古いURLでアクセスされることを考慮したもので、いやこのブログそんなにアクセスないだろ、とは思いつつもURLの永続性維持は命より重い[要出典]のでエイリアスも設定してある。</p>
-<p>古いURLのパス部分もファイル名から分かるので、先ほどと同様に適当なRubyのスクリプトを書いた。ファイル一覧を取ってきて正規表現でファイル名から日付とslugを取得するところまでは同じで、<code>slug</code>の代わりに<code>aliases</code>を追加する。</p>
-<h2 id=設定の微調整>設定の微調整</h2>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>[markup]
-  [markup.goldmark]
-    [markup.goldmark.renderer]
-      unsafe = <span style=color:#ff79c6>true</span>
-</code></pre></div><p>これを入れておかないと生のHTMLが解釈されない。HTMLを直接書いている箇所としてはTwitterからのツイート埋め込みがあった。</p>
-<p>組み込みshortcodeの<code>tweet</code>を使えば簡単に埋め込めるし上記のような設定は不要なのだが、埋め込んだツイートが消えている場合、エラーを吐いてレンダリングを中止してしまう（レンダリング時にTwitterにリクエストを投げてblockquoteの中に入れるツイート本文を取得してるんだと思う）。これについては次のような設定をしておくと回避できる。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml>ignoreErrors = [<span style=color:#f1fa8c>&#34;error-remote-getjson&#34;</span>]
-</code></pre></div><p>これでとりあえずモノは出てくるようになるが、今度はツイートの埋め込みがそもそも無かったことにされてしまう。そうするとある日突然虚空に向かって言及する記事みたいになりかねないので、HTMLの埋め込みを許可した上で記事を書いた時点で引用してくるという運用にしている。この場合、ツイートが存在しなくても少なくともツイート本文は残るので、意味不明な言及になったりはしない。</p>
-<h2 id=静的ページの作成>静的ページの作成</h2>
-<p>Static site generatorなんだから全部静的だろうってそうではなく、ここのAboutみたいな独立したページの話。</p>
-<p>Octopressの時にはそれっぽいページは作ってなかったが、今回は元々静的なサイトだった<code>aquarite.info</code>を統合した関係で作成した。</p>
-<p>といっても特に何か設定が必要なわけではなく、単に<code>content/</code>以下に例えば<code>foo.md</code>という名前でMarkdownファイルを置いておくと<code>/foo</code>でアクセスできるようになっている。今回の場合は<code>content/about.md</code>としている。これで<code>aquarite.info/about/</code>で見られるようになる。</p>
-<h2 id=自動デプロイ>自動デプロイ</h2>
-<p>これまでは手動で実施していた。この頃まだGitHub Actionsなるものはない。</p>
-<ol>
-<li>手元でOctopressのビルドを走らせる</li>
-<li>生成されたファイルを<code>master</code>ブランチにコミットしてpush</li>
-<li><code>source</code>にも変更をコミットしてpush</li>
-</ol>
-<p>ブランチ切り替えて云々とかが面倒過ぎるので、変更（したソース）をpushしたらGitHub Actionsでビルドして公開されるようにした。</p>
-<p>こちらも特に難しいことはない。公式の説明(<a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/>Host on GitHub</a>)にある定義をそのまま持ってきて<code>.github/workflows/gh-pages.yaml</code>として保存してpushする。</p>
-<h2 id=まとめ>まとめ</h2>
-<ul>
-<li>Octopress -> HugoはどっちもMarkdownを使うので移行はそんなに難しくない</li>
-<li>GitHub Actionsは楽</li>
-<li>こんなことより記事を書く方が重要なのでは？</li>
-</ul>
-</div>
-</div>
-</div>
-<script src=https://aquarite.info/js/ui.js></script>
+</code></pre><p>要するに記事のパスから<code>:day</code>、日付を消した。この設定自体はHugoの<code>config.toml</code>に次のように設定すればできる。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[permalinks]
+</span></span><span style=display:flex><span>  posts = <span style=color:#f1fa8c>&#39;/blog/:year/:month/:slug&#39;</span>
+</span></span></code></pre></div><p>ただ、この状態でサイト生成してみると、古い記事のリンクが<code>/blog/2015/03/2015-03-12-database-rewinder-with-rails-4-2</code>みたいになってしまう。これはOctopressとHugoで"slug"として認識する部分が違うことによる。どちらもファイル名を基準にしているのだが、Octopressはファイル名を<code>[year]-[month]-[day]-[slug].markdown</code>というように解釈する。つまり前半の日付部分は日付部分として取り除く。一方でHugoは拡張子を除いたファイル名全体をslugだとみなす。そういうわけで、上のpermalinksの設定だけではパスに日付部分と別にslugの一部として日付が出てくるわけだ（その辺のHugoの仕様は<a href=https://gohugo.io/content-management/organization/>Content Organization</a>に書いてある）。</p><p>それでは冗長なので、Hugoでは明示的にslugを指定することになる。ただファイル名からいちいちコピペしてくるのはあまりにつらいので、適当なRubyのスクリプトを書いた（実際には後述の内容も含めたスクリプト）。スクリプト自体はもう手元にないが、確か</p><ol><li>globであるディレクトリの下のMarkdownファイルを取得</li><li>各ファイルの名前に対して<code>/\d{4}-\d{2}-\d{2}-(.+?).markdown</code>みたいな正規表現でマッチさせてslugを取得</li><li>取得したslugを適当な行数に差し込んで保存</li></ol><p>みたいな流れだったと思う。シェルスクリプトとかsedでやる気力はなかった。</p><p>で、<code>aliases</code>の方は何かというと見ての通りエイリアスである。エイリアスで指定されたパスにアクセスされると、それが設定されている元の記事にリダイレクトされる。サイトを生成してみると、エイリアスに設定されたパスに次のような内容の<code>index.html</code>が置かれている。<code>&lt;meta http-equiv="refresh"></code>を使ってリダイレクトさせる内容である。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-html data-lang=html><span style=display:flex><span><span style=color:#ff79c6>&lt;!DOCTYPE html&gt;</span>&lt;<span style=color:#ff79c6>html</span>&gt;&lt;<span style=color:#ff79c6>head</span>&gt;&lt;<span style=color:#ff79c6>title</span>&gt;https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/&lt;/<span style=color:#ff79c6>title</span>&gt;&lt;<span style=color:#ff79c6>link</span> <span style=color:#50fa7b>rel</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;canonical&#34;</span> <span style=color:#50fa7b>href</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/&#34;</span>/&gt;&lt;<span style=color:#ff79c6>meta</span> <span style=color:#50fa7b>name</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;robots&#34;</span> <span style=color:#50fa7b>content</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;noindex&#34;</span>&gt;&lt;<span style=color:#ff79c6>meta</span> <span style=color:#50fa7b>charset</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;utf-8&#34;</span> /&gt;&lt;<span style=color:#ff79c6>meta</span> <span style=color:#50fa7b>http-equiv</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;refresh&#34;</span> <span style=color:#50fa7b>content</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;0; url=https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/&#34;</span> /&gt;&lt;/<span style=color:#ff79c6>head</span>&gt;&lt;/<span style=color:#ff79c6>html</span>&gt;</span></span></code></pre></div><p>これは古いURLでアクセスされることを考慮したもので、いやこのブログそんなにアクセスないだろ、とは思いつつもURLの永続性維持は命より重い[要出典]のでエイリアスも設定してある。</p><p>古いURLのパス部分もファイル名から分かるので、先ほどと同様に適当なRubyのスクリプトを書いた。ファイル一覧を取ってきて正規表現でファイル名から日付とslugを取得するところまでは同じで、<code>slug</code>の代わりに<code>aliases</code>を追加する。</p><h2 id=設定の微調整>設定の微調整</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[markup]
+</span></span><span style=display:flex><span>  [markup.goldmark]
+</span></span><span style=display:flex><span>    [markup.goldmark.renderer]
+</span></span><span style=display:flex><span>      unsafe = <span style=color:#ff79c6>true</span>
+</span></span></code></pre></div><p>これを入れておかないと生のHTMLが解釈されない。HTMLを直接書いている箇所としてはTwitterからのツイート埋め込みがあった。</p><p>組み込みshortcodeの<code>tweet</code>を使えば簡単に埋め込めるし上記のような設定は不要なのだが、埋め込んだツイートが消えている場合、エラーを吐いてレンダリングを中止してしまう（レンダリング時にTwitterにリクエストを投げてblockquoteの中に入れるツイート本文を取得してるんだと思う）。これについては次のような設定をしておくと回避できる。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>ignoreErrors = [<span style=color:#f1fa8c>&#34;error-remote-getjson&#34;</span>]
+</span></span></code></pre></div><p>これでとりあえずモノは出てくるようになるが、今度はツイートの埋め込みがそもそも無かったことにされてしまう。そうするとある日突然虚空に向かって言及する記事みたいになりかねないので、HTMLの埋め込みを許可した上で記事を書いた時点で引用してくるという運用にしている。この場合、ツイートが存在しなくても少なくともツイート本文は残るので、意味不明な言及になったりはしない。</p><h2 id=静的ページの作成>静的ページの作成</h2><p>Static site generatorなんだから全部静的だろうってそうではなく、ここのAboutみたいな独立したページの話。</p><p>Octopressの時にはそれっぽいページは作ってなかったが、今回は元々静的なサイトだった<code>aquarite.info</code>を統合した関係で作成した。</p><p>といっても特に何か設定が必要なわけではなく、単に<code>content/</code>以下に例えば<code>foo.md</code>という名前でMarkdownファイルを置いておくと<code>/foo</code>でアクセスできるようになっている。今回の場合は<code>content/about.md</code>としている。これで<code>aquarite.info/about/</code>で見られるようになる。</p><h2 id=自動デプロイ>自動デプロイ</h2><p>これまでは手動で実施していた。この頃まだGitHub Actionsなるものはない。</p><ol><li>手元でOctopressのビルドを走らせる</li><li>生成されたファイルを<code>master</code>ブランチにコミットしてpush</li><li><code>source</code>にも変更をコミットしてpush</li></ol><p>ブランチ切り替えて云々とかが面倒過ぎるので、変更（したソース）をpushしたらGitHub Actionsでビルドして公開されるようにした。</p><p>こちらも特に難しいことはない。公式の説明(<a href=https://gohugo.io/hosting-and-deployment/hosting-on-github/>Host on GitHub</a>)にある定義をそのまま持ってきて<code>.github/workflows/gh-pages.yaml</code>として保存してpushする。</p><h2 id=まとめ>まとめ</h2><ul><li>Octopress -> HugoはどっちもMarkdownを使うので移行はそんなに難しくない</li><li>GitHub Actionsは楽</li><li>こんなことより記事を書く方が重要なのでは？</li></ul></div></div></div><script src=https://aquarite.info/js/ui.js></script>
 <script src=https://aquarite.info/js/menus.js></script>
-<script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-</body>
-</html>
+<script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>

@@ -1,306 +1,47 @@
-<!doctype html><html lang=en>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=description content>
-<meta name=generator content="Hugo 0.92.0">
-<title>CTF &#183; Hello, (forgotten) world ☂</title>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!-->
-<link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]-->
-<link rel=stylesheet href=https://aquarite.info/css/blackburn.css>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css>
-<link rel=preconnect href=https://fonts.gstatic.com>
-<link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css>
-<link rel=alternate type=application/rss+xml title="Hello, (forgotten) world ☂" href=https://aquarite.info/tags/ctf/index.xml>
-<link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon>
-</head>
-<body>
-<div id=layout>
-<a href=#menu id=menuLink class=menu-link>
-<span></span>
-</a>
-<div id=menu>
-<a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a>
-<div class=pure-menu>
-<ul class=pure-menu-list>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://aquarite.info/><i class="fa fa-home fa-fw"></i>Home</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://aquarite.info/about/><i class="fa fa-user fa-fw"></i>About</a>
-</li>
-</ul>
-</div>
-<div class="pure-menu social">
-<ul class=pure-menu-list>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://aquarite.info/tags/ctf/index.xml><i class="fas fa-rss fa-fw"></i>RSS</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a>
-</li>
-<li class=pure-menu-item>
-<a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a>
-</li>
-</ul>
-</div>
-<div>
-<div class=small-print>
-<small>&copy; 2021 Mei Akizuru. All rights reserved.</small>
-</div>
-<div class=small-print>
-<small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
-<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small>
-</div>
-</div>
-</div>
-<div id=main>
-<div class=header>
-<h1>CTF</h1>
-</div>
-<div class=content>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/12/seccon2014-online-winter/>SECCON 2014 Online Qualification (December) write-up</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>07 Dec 2014, 22:11</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.101.0"><title>CTF &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]--><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel=alternate type=application/rss+xml title="Hello, (forgotten) world ☂" href=https://aquarite.info/tags/ctf/index.xml><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon></head><body><div id=layout><a href=#menu id=menuLink class=menu-link><span></span></a><div id=menu><a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a><div class=pure-menu><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/><i class='fa fa-home fa-fw'></i>Home</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/about/><i class='fa fa-user fa-fw'></i>About</a></li></ul></div><div class="pure-menu social"><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/tags/ctf/index.xml><i class="fas fa-rss fa-fw"></i>RSS</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a></li></ul></div><div><div class=small-print><small>&copy; 2021 Mei Akizuru. All rights reserved.</small></div><div class=small-print><small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small></div></div></div><div id=main><div class=header><h1>CTF</h1></div><div class=content><article><header><h2><a href=https://aquarite.info/blog/2014/12/seccon2014-online-winter/>SECCON 2014 Online Qualification (December) write-up</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>07 Dec 2014, 22:11</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon>SECCON</a>
-</div>
-</div>
-</header>
-<p>
-Welcome to SECCON (Start 100) The answer is &ldquo;SECCON{20141206}&rdquo;. 答えは、「SECCON{20141206}」です。 驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/12/seccon2014-online-winter/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/11/tkbctf4-amida/>tkbctf4 [misc 400] amida</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>24 Nov 2014, 06:11</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon>SECCON</a></div></div></header><p>Welcome to SECCON (Start 100) The answer is &ldquo;SECCON{20141206}&rdquo;. 答えは、「SECCON{20141206}」です。 驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。</p><footer><a href=https://aquarite.info/blog/2014/12/seccon2014-online-winter/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/11/tkbctf4-amida/>tkbctf4 [misc 400] amida</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>24 Nov 2014, 06:11</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf4>tkbctf4</a>
-</div>
-</div>
-</header>
-<p>
-Cheer of CPUに続きましてmisc 400、amidaでございます。 この問題は私と@yuscarletによる作成です。 問題 203.178.132.117:42719 Ghost Leg - Wikipedia, the free encyclopedia 現在問題
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/11/tkbctf4-amida/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/>tkbctf4 [bin300] Cheer of CPU</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>24 Nov 2014, 04:16</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf4>tkbctf4</a></div></div></header><p>Cheer of CPUに続きましてmisc 400、amidaでございます。 この問題は私と@yuscarletによる作成です。 問題 203.178.132.117:42719 Ghost Leg - Wikipedia, the free encyclopedia 現在問題</p><footer><a href=https://aquarite.info/blog/2014/11/tkbctf4-amida/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/>tkbctf4 [bin300] Cheer of CPU</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>24 Nov 2014, 04:16</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf4>tkbctf4</a>
-</div>
-</div>
-</header>
-<p>
-tkbctf4が終了してからずいぶんと時間が経ちましたが皆様いかがお過ごしでしょうか。今更ではありますが[bin300] Cheer of CPUの解説とい
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/09/csawctf2014-forensics/>CSAW CTF 2014 Quals Forensics</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>23 Sep 2014, 03:07</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf4>tkbctf4</a></div></div></header><p>tkbctf4が終了してからずいぶんと時間が経ちましたが皆様いかがお過ごしでしょうか。今更ではありますが[bin300] Cheer of CPUの解説とい</p><footer><a href=https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/09/csawctf2014-forensics/>CSAW CTF 2014 Quals Forensics</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>23 Sep 2014, 03:07</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/csaw-ctf>CSAW CTF</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a>
-</div>
-</div>
-</header>
-<p>
-CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/09/csawctf2014-forensics/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/09/csawctf2014-trivia/>CSAW CTF 2014 Quals Trivia</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>22 Sep 2014, 20:18</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a></div></div></header><p>CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3</p><footer><a href=https://aquarite.info/blog/2014/09/csawctf2014-forensics/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/09/csawctf2014-trivia/>CSAW CTF 2014 Quals Trivia</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>22 Sep 2014, 20:18</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/csaw-ctf>CSAW CTF</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a>
-</div>
-</div>
-</header>
-<p>
-CSAW CTF 2014 Qualsに参加してました。日本時間で20日07:00から22日07:00までの48時間。都内某所に泊まり込みでした。そんな感じでWr
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/09/csawctf2014-trivia/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/>SECCON 2014 オンライン予選 その他諸々</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>20 Jul 2014, 19:24</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a></div></div></header><p>CSAW CTF 2014 Qualsに参加してました。日本時間で20日07:00から22日07:00までの48時間。都内某所に泊まり込みでした。そんな感じでWr</p><footer><a href=https://aquarite.info/blog/2014/09/csawctf2014-trivia/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/>SECCON 2014 オンライン予選 その他諸々</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>20 Jul 2014, 19:24</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon>SECCON</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon2014>SECCON2014</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a>
-</div>
-</div>
-</header>
-<p>
-2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。 個別に書いたのは次の2つ。 あみだくじ Print it この2つとここで書かれて
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/07/seccon2014-online-printit/>SECCON 2014 オンライン予選 【Print it!】</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>20 Jul 2014, 18:53</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a></div></div></header><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。 個別に書いたのは次の2つ。 あみだくじ Print it この2つとここで書かれて</p><footer><a href=https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/07/seccon2014-online-printit/>SECCON 2014 オンライン予選 【Print it!】</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>20 Jul 2014, 18:53</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon>SECCON</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon2014>SECCON2014</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a>
-</div>
-</div>
-</header>
-<p>
-2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。 問題概要 謎のファイルが降ってきます。
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/07/seccon2014-online-printit/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/07/seccon2014-online-amida/>SECCON 2014 オンライン予選 【あみだくじ】</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>20 Jul 2014, 00:29</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a></div></div></header><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。次は「Print it!」。 問題概要 謎のファイルが降ってきます。</p><footer><a href=https://aquarite.info/blog/2014/07/seccon2014-online-printit/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/07/seccon2014-online-amida/>SECCON 2014 オンライン予選 【あみだくじ】</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>20 Jul 2014, 00:29</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon>SECCON</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/seccon2014>SECCON2014</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a>
-</div>
-</div>
-</header>
-<p>
-2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。今回は「あみだくじ」。 問題概要 問題は64bit ELF形式の実行
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/07/seccon2014-online-amida/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/06/miocat-at-coinslt0/>miocatのその後、あるいはcoinsLT #0で発表した話</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>20 Jun 2014, 11:09</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/write-up>Write-up</a></div></div></header><p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選のWrite-upです。今回は「あみだくじ」。 問題概要 問題は64bit ELF形式の実行</p><footer><a href=https://aquarite.info/blog/2014/07/seccon2014-online-amida/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/06/miocat-at-coinslt0/>miocatのその後、あるいはcoinsLT #0で発表した話</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>20 Jun 2014, 11:09</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/coinslt>coinsLT</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/miocat>miocat</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf3>tkbctf3</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/mono>Mono</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/.net>.NET</a>
-</div>
-</div>
-</header>
-<p>
-情報科学類1年が企画したcoinsLT #0（ATNDの方が情報量が多いのだが、一応Webページも存在している）で発表した。タイトルがクソ長い
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/06/miocat-at-coinslt0/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-<article>
-<header>
-<h2><a href=https://aquarite.info/blog/2014/05/tkbctf3-miocat/>tkbctf3 miocat</a></h2>
-<div class=post-meta>
-<div>
-<i class="fa fa-calendar fa-fw"></i>
-<time>07 May 2014, 13:26</time>
-</div>
-<div>
-<i class="fa fa-tags fa-fw"></i>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/.net>.NET</a></div></div></header><p>情報科学類1年が企画したcoinsLT #0（ATNDの方が情報量が多いのだが、一応Webページも存在している）で発表した。タイトルがクソ長い</p><footer><a href=https://aquarite.info/blog/2014/06/miocat-at-coinslt0/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article><article><header><h2><a href=https://aquarite.info/blog/2014/05/tkbctf3-miocat/>tkbctf3 miocat</a></h2><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
+<time>07 May 2014, 13:26</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/ctf>CTF</a>&nbsp;/
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf>tkbctf</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf3>tkbctf3</a>
-</div>
-</div>
-</header>
-<p>
-miocat（みお・きゃっと）はとある伝説の脱ヲタエンジニアが書き上げた伝説のプログラムに着想を得てっていうのはどうでもいいとして、実際のと
-</p>
-<footer>
-<a href=https://aquarite.info/blog/2014/05/tkbctf3-miocat/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a>
-</footer>
-</article>
-</div>
-</div>
-</div>
-<script src=https://aquarite.info/js/ui.js></script>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/tkbctf3>tkbctf3</a></div></div></header><p>miocat（みお・きゃっと）はとある伝説の脱ヲタエンジニアが書き上げた伝説のプログラムに着想を得てっていうのはどうでもいいとして、実際のと</p><footer><a href=https://aquarite.info/blog/2014/05/tkbctf3-miocat/>Read more<i class="fa fa-angle-double-right fa-fw"></i></a></footer></article></div></div></div><script src=https://aquarite.info/js/ui.js></script>
 <script src=https://aquarite.info/js/menus.js></script>
-<script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script>
-</body>
-</html>
+<script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>

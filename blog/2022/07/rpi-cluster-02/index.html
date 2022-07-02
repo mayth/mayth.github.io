@@ -1,0 +1,108 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.101.0"><title>Raspberry PiでKubernetesクラスタを組む（その2: サーバー監視編） &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]--><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon></head><body><div id=layout><a href=#menu id=menuLink class=menu-link><span></span></a><div id=menu><a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a><div class=pure-menu><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/><i class='fa fa-home fa-fw'></i>Home</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/about/><i class='fa fa-user fa-fw'></i>About</a></li></ul></div><div class="pure-menu social"><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://twitter.com/maytheplic rel=me target=_blank><i class="fab fa-twitter-square fa-fw"></i>Twitter</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://github.com/mayth rel=me target=_blank><i class="fab fa-github-square fa-fw"></i>GitHub</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://steamcommunity.com/id/maythorzy rel=me target=_blank><i class="fab fa-steam-square fa-fw"></i>Steam</a></li></ul></div><div><div class=small-print><small>&copy; 2021 Mei Akizuru. All rights reserved.</small></div><div class=small-print><small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
+<small>Theme&nbsp;<a href=https://github.com/yoshiharuyamashita/blackburn target=_blank>Blackburn</a></small></div></div></div><div id=main><div class=header><h1>Raspberry PiでKubernetesクラスタを組む（その2: サーバー監視編）</h1><h2></h2></div><div class=content><h2 id=監視体制の準備>監視体制の準備</h2><p>サーバー運用といえばまず監視である（？）。Kubernetesクラスタを立ち上げる前に、まずRaspberry Piの監視体制を組んでみることにした。</p><p>構成については『<a href=https://qiita.com/reireias/items/40af82cbcd6fc92ad44e>ラズパイk8s用の監視システム(Node Exporter + Prometheus + InfluxDB + Grafana)</a>』を参考にした。ダッシュボードはインターネットからアクセスしたいが、インターネットからLANへのアクセスは可能な限りしたくないということで、InfluxDBとGrafanaは元から契約していたVPS上に構築することにした。</p><p>参考記事の公開が2020年なのだが、それからInfluxDB 2.0がリリースされたようで、<strong>ここでPrometheusのRemote Write APIのサポートが削除されている</strong>。代わりにTelegrafにPrometheus write parserが実装されているので、今回は"Prometheus → Telegraf → InfluxDB → Grafana"という構成を取ることにする。</p><h3 id=docker-composeで監視コンポーネントを動かす準備>Docker Composeで監視コンポーネントを動かす準備</h3><p>VPS上ではDockerが動かせる状態になっているので、Composeを使うことにした。次のような<code>docker-compose.yml</code>を用意した。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>version</span>: <span style=color:#f1fa8c>&#39;3&#39;</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>influxdb</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>image</span>: influxdb:2.2
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>expose</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#bd93f9>8086</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>volumes</span>:
+</span></span><span style=display:flex><span>      - influxdb2:/var/lib/influxdb2
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>networks</span>:
+</span></span><span style=display:flex><span>      - influxdb
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>telegraf</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>image</span>: telegraf:1.22
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>expose</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#bd93f9>8080</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>volumes</span>:
+</span></span><span style=display:flex><span>      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>networks</span>:
+</span></span><span style=display:flex><span>      - influxdb
+</span></span><span style=display:flex><span>      - telegraf
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>grafana</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>image</span>: grafana/grafana
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>expose</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#bd93f9>3000</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>volumes</span>:
+</span></span><span style=display:flex><span>      - grafana-storage:/var/lib/grafana
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>networks</span>:
+</span></span><span style=display:flex><span>      - grafana
+</span></span><span style=display:flex><span>      - telegraf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>volumes</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>influxdb2</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>external</span>: <span style=color:#ff79c6>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>grafana-storage</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>external</span>: <span style=color:#ff79c6>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>networks</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>influxdb</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>external</span>: <span style=color:#ff79c6>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>grafana</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>external</span>: <span style=color:#ff79c6>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>telegraf</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>external</span>: <span style=color:#ff79c6>true</span>
+</span></span></code></pre></div><p>ボリュームやネットワークはexternalにしてあるので先に作っておく。</p><pre tabindex=0><code>$ docker volume create influxdb2
+$ docker volume create grafana-storage
+$ docker network create influxdb
+$ docker network create grafana
+$ docker network create telegraf
+</code></pre><h3 id=telegrafの設定>Telegrafの設定</h3><p>Telegrafだけは設定ファイルを作っておく必要がある。</p><p>前述の通りInfluxDB 2.0でPrometheus Remote Write APIのサポートがなくなってしまったが、InfluxDataが<a href=https://www.influxdata.com/blog/prometheus-remote-write-support-with-influxdb-2-0/>Prometheus Remote Write Support with InfluxDB 2.0</a>という記事を公開している。この記事にある通り、次の3つのプラグインを使ってPrometheus Remote Writeに対応する。</p><ul><li>HTTP Listener v2 Input Plugin</li><li>Prometheus Remote Write Parser</li><li>InfluxDB v2 Output Plugin</li></ul><p>ちなみにプラグインといっても同梱されているものなので、設定さえ書いておけば使える状態になっている。</p><p>HTTP Listener v2 Input Pluginが入力を担当する。Prometheus Remote WriteはHTTPでAPIを呼び出すので、その受け口となるプラグインである。その中身を解釈するのがPrometheus Remote Write Parserである。そして解釈されたデータをInfluxDBに送るのがInfluxDB v2 Output Plugin、という構成になっている。</p><p><code>docker-compose.yml</code>と同じディレクトリに以下の内容の<code>telegraf.conf</code>を作る。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-toml data-lang=toml><span style=display:flex><span>[[inputs.http_listener_v2]]
+</span></span><span style=display:flex><span>  service_address = <span style=color:#f1fa8c>&#34;:8080&#34;</span>
+</span></span><span style=display:flex><span>  paths = [<span style=color:#f1fa8c>&#34;/telegraf&#34;</span>]
+</span></span><span style=display:flex><span>  data_format = <span style=color:#f1fa8c>&#34;prometheusremotewrite&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[[outputs.influxdb_v2]]
+</span></span><span style=display:flex><span>  urls = [<span style=color:#f1fa8c>&#34;http://influxdb:8086&#34;</span>]
+</span></span><span style=display:flex><span>  token = <span style=color:#f1fa8c>&#34;$INFLUX_TOKEN&#34;</span>
+</span></span><span style=display:flex><span>  organization = <span style=color:#f1fa8c>&#34;$INFLUX_ORG&#34;</span>
+</span></span><span style=display:flex><span>  bucket = <span style=color:#f1fa8c>&#34;$INFLUX_BUCKET&#34;</span>
+</span></span></code></pre></div><p>まずHTTP Listener v2 Input Pluginの設定だが、<code>service_address</code>にプラグインが待ち受けるポートを指定する。<code>docker-compose.yml</code>で<code>expose</code>に指定したポート番号と一致させる。パスは今回<code>/telegraf</code>としているが、これは任意に決めてよい。<code>data_format = prometheusremotewrite</code>とすることでPrometheus Remote Write Parserが有効になる。</p><p>次にInfluxDB v2 Output Pluginの設定である。<code>urls</code>には<code>docker-compose.yml</code>のサービス名でInfluxDBのインスタンスを指定する（同一のComposeプロジェクト内で同じネットワークに属するのでサービス名で名前解決ができる）。<code>organization</code>, <code>bucket</code>については後ほどInfluxDBの初期設定で作成する値を指定しておく。また、<code>token</code>についても初期設定後にInfluxDBのUIから作成するので仮置きする（とりあえず指定がおかしくてもリクエストに失敗するだけで起動はするはず）。</p><h3 id=https-portalの設定と起動>https-portalの設定と起動</h3><p>他のアプリケーションで<a href=https://github.com/SteveLTN/https-portal>https-portal</a>を使っているので、これを流用することにした。そのため、ポートはホストにバインドせず単にexposeするだけにしている。<code>networks</code>に指定したネットワークでhttps-portalのコンテナと接続する。また、DNS設定で適当なサブドメインをInfluxDBとGrafanaにアクセスするために割り当てる。以上の準備をした上で、https-portal側のdocker-compose.ymlを抜粋するとこんな感じになる。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>web</span>:
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>image</span>: steveltn/https-portal
+</span></span><span style=display:flex><span>    <span style=color:#6272a4># ...</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>networks</span>:
+</span></span><span style=display:flex><span>      - influxdb
+</span></span><span style=display:flex><span>      - grafana
+</span></span><span style=display:flex><span>      - telegraf
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>environment</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>DOMAINS</span>: influxdb.example.com -&gt; http://influxdbgrafana_influxdb_1:8086, grafana.example.com -&gt; http://influxdbgrafana_grafana_1:3000, telegraf.example.com -&gt; http://influxdbgrafana_telegraf_1:8080
+</span></span></code></pre></div><p>これでhttps-portalを再起動する。</p><h3 id=influxdbの設定>InfluxDBの設定</h3><p>https-portalが正常に起動した後、ブラウザからInfluxDBにアクセスすると初期設定が始まる。最近はCTログからドメインを特定するらしく、どこにも公開してないのにあっという間に<strong>いろいろな楽しいリクエスト</strong>が飛んでくるようになるので、早めに初期設定しておこう。もしくは一時的にポートをホストにバインドしてローカルからアクセスして初期設定をするとか、<code>docker exec</code>でCLIからやってもよいと思う。Docker Hubの<a href=https://hub.docker.com/_/influxdb>influxdb</a>のページも参考になるだろう。</p><p>初期設定した後にリロードするとダッシュボードが表示される。最初に"Data"が選択されていると思うが、この右端に"API Tokens"というタブがある。このタブを選択して"Generate API Token"をクリックして"Read/Write API Token"を選択、後は書き込み対象のバケットを選択するとAPIトークンが生成される。トークン一覧から今作成したトークンをクリックすればAPIトークンの値を確認できるので、この値を<code>telegraf.conf</code>に転記する。</p><h3 id=prometheusの準備>Prometheusの準備</h3><p>全ノードにnode_exporterをインストール、マスターノードにのみprometheusをインストールする。また、Raspberry Pi特有のメトリクスを公開してくれる<a href=https://github.com/fahlke/raspberrypi_exporter>raspberrypi_exporter</a>も導入する。</p><pre tabindex=0><code>$ sudo apt install prometheus-node-exporter
+$ sudo apt install prometheus
+$ curl -fsSL &#34;https://raw.githubusercontent.com/fahlke/raspberrypi_exporter/master/installer.sh&#34; | sudo bash
+</code></pre><p><code>/etc/prometheus/prometheus.yml</code>が設定ファイルである。まずサンプルが入っているので、適当に弄っていく。</p><ul><li><code>scrape_interval</code>が15秒になってたりするが、そんなに細かく取得してくれなくてよいのでデフォルトとされる1分に戻す。</li><li><code>evaulation_interval</code>も同様</li><li><code>external_labels</code>で<code>monitor=mykube</code>といった感じで適当な名前を振っておく</li><li><code>static_configs</code>以下<ul><li>prometheusそのものをscrapeする設定が入っているが、<code>localhost:9090</code>ではなくてノード名(<code>kube-0.local</code>)で指定する</li><li>node_exporterからscrapeする設定を書く</li></ul></li><li><code>metric_relabel_configs</code>で、<code>node_name</code>にノード名を付与する<ul><li><code>instance</code>から適当に抜き出すだけだが、気持ちと見た目の問題が大きい</li><li>ちなみに<code>metric_*</code>じゃない<code>relabel_configs</code>だと動かなかった（これで何日も潰した）</li></ul></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#ff79c6>global</span>:
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>scrape_interval</span>:     1m
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>evaluation_interval</span>: 1m
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#ff79c6>external_labels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#ff79c6>monitor</span>: <span style=color:#f1fa8c>&#39;mykube&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>scrape_configs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ff79c6>job_name</span>: <span style=color:#f1fa8c>&#39;prometheus&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>static_configs</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ff79c6>targets</span>: [<span style=color:#f1fa8c>&#39;kube-0.local:9090&#39;</span>]
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>metric_relabel_configs</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ff79c6>source_labels</span>: [<span style=color:#f1fa8c>&#34;instance&#34;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>regex</span>: <span style=color:#f1fa8c>&#39;([^:]+):.+&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>replacement</span>: $1
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>target_label</span>: node_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  - <span style=color:#ff79c6>job_name</span>: node
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>static_configs</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ff79c6>targets</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f1fa8c>&#39;kube-0.local:9100&#39;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#f1fa8c>&#39;kube-1.local:9100&#39;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#f1fa8c>&#39;kube-2.local:9100&#39;</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>metric_relabel_configs</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ff79c6>source_labels</span>: [<span style=color:#f1fa8c>&#34;instance&#34;</span>]
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>regex</span>: <span style=color:#f1fa8c>&#39;([^:]+):.+&#39;</span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>replacement</span>: $1
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>target_label</span>: node_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>remote_write</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ff79c6>url</span>: <span style=color:#f1fa8c>&#34;https://telegraf.example.com/telegraf&#34;</span>
+</span></span></code></pre></div><p>設定が済んだらreloadさせる。</p><pre tabindex=0><code>$ sudo systemctl reload prometheus
+</code></pre><p>raspberrypi_exporterは定期的にシェルスクリプトを実行して <code>/var/lib/node_exporter/textfile_collector/raspberrypi-metrics.prom</code> にPrometheusのフォーマットで値を書き出すようになっている。これをnode_exporterのTextfile collectorを通して公開する。そのためにはnode_exporterにオプションを渡す必要があるので、<code>/etc/default/prometheus-node-exporter</code>を修正する。</p><pre tabindex=0><code>ARGS=&#34;--collector.textfile.directory=/var/lib/node_exporter/textfile_collector&#34;
+</code></pre><p>node_exporterも再起動する。</p><pre tabindex=0><code>$ sudo systemctl restart prometheus-node-exporter
+</code></pre><p>しばらく待ってからInfluxDBのUIを見て、<code>node_name</code>でフィルタをかける。ノード名(<code>.local:9100</code>が入ってない名前)でフィルタして、<code>_field</code>で大量の項目が出てきたら成功している。適当なフィールドを選んで"Submit"すればグラフが表示される。このスクリーンショットは3台のロードアベレージを表示させたところである。</p><div class=pure-g><div class=pure-u><div style="padding:0 .2em"><img class=pure-img-responsive src=https://aquarite.info/images/20220604_influxdb_graph.png alt="InfluxDB Graph"></div></div></div><h3 id=grafanaの設定>Grafanaの設定</h3><p>https-portalの設定を済ませてブラウザからアクセスする。初期ユーザー・パスワードは <code>admin:admin</code> と分かりやすいので、こちらも起動したらとりあえずログインしてパスワードを設定しておく。</p><p>左下の歯車 (Configuration) から"Data Sources"を選ぶ。&ldquo;Add data source"のページで対応データソースの一覧が出るので、InfluxDBを選択する。今回はクエリ言語に"Flux"を選択した。URLにInfluxDBのURLを指定するが、今回はコンテナ内通信で完結できるので <code>http://influxdbgrafana_influxdb_1:8086</code> のようにコンテナ名を指定すればよい。</p><p>Fluxを選択した場合は認証にトークンを使うことができる。Telegrafからの送信設定のときと同様にトークンを作成して、&ldquo;InfluxDB Details"のTokenの項目に入力する。Organizationも埋めたら"Save & Test"を押して、&ldquo;1 buckets found"の表示が出れば設定完了である。</p><p>Grafanaからクエリができるかを確認してみよう。サイドバーの"Explore"を選ぶと、適当なクエリを入力してその場で結果を確認できるページに移る。Fluxについては公式の<a href=https://docs.influxdata.com/flux/v0.x/get-started/>Get started with Flux</a>などを参照してもらうとして、試しにCPU温度をクエリしてみた結果が次の通り。</p><div class=pure-g><div class=pure-u><div style="padding:0 .2em"><img class=pure-img-responsive src=https://aquarite.info/images/20220702_grafana_rpitemp.png alt="Raspberry Pi Temperature Graph by Grafana"></div></div></div><p>アラート設定とかは何もしてないけど、とりあえず状態を見られるようになったので今回はここまで。</p></div></div></div><script src=https://aquarite.info/js/ui.js></script>
+<script src=https://aquarite.info/js/menus.js></script>
+<script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>
