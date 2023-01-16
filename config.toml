@@ -7,6 +7,7 @@ copyright = "&copy; 2021 Mei Akizuru. All rights reserved."
 canonifyurls = true
 paginate = 10
 hasCJKLanguage = true
+summaryLength = 140
 
 ignoreErrors = ["error-remote-getjson"]
 
