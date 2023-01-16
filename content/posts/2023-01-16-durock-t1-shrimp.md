@@ -6,7 +6,6 @@ slug: k8-pro-durock-t1-shrimp
 tags:
     - gadget
     - keyboard
-draft: true
 ---
 
 ## 背景
