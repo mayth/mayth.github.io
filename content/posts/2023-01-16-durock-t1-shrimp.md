@@ -6,6 +6,8 @@ slug: k8-pro-durock-t1-shrimp
 tags:
     - gadget
     - keyboard
+images:
+    - /images/2023-01-16-durock-t1-shrimp-switch-installed.jpg
 ---
 
 ## 背景
