@@ -1,1 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>C/C++ on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/c/c++/</link><description>Recent content in C/C++ on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Thu, 06 Feb 2014 08:56:44 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/c/c++/index.xml" rel="self" type="application/rss+xml"/><item><title>MacのSublime Text 3でもclang使って整形とか補完とかしたい</title><link>https://aquarite.info/blog/2014/02/clang-format-on-mac/</link><pubDate>Thu, 06 Feb 2014 08:56:44 +0900</pubDate><guid>https://aquarite.info/blog/2014/02/clang-format-on-mac/</guid><description>clang-formatによるコード整形 MacのCommand Line Toolsにはclang-formatがない。clang-formatというのはその名前の通り、ソースコードをclangに静的解析させて自動で整形しようというツール。 対応しているコーディングスタイルは次の5つ。 LLVM Google Chromium</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>C/C++ on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/c/c++/</link><description>Recent content in C/C++ on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Thu, 06 Feb 2014 08:56:44 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/c/c++/index.xml" rel="self" type="application/rss+xml"/><item><title>MacのSublime Text 3でもclang使って整形とか補完とかしたい</title><link>https://aquarite.info/blog/2014/02/clang-format-on-mac/</link><pubDate>Thu, 06 Feb 2014 08:56:44 +0900</pubDate><guid>https://aquarite.info/blog/2014/02/clang-format-on-mac/</guid><description>&lt;h1 id="clang-formatによるコード整形">clang-formatによるコード整形&lt;/h1>
+&lt;p>MacのCommand Line Toolsには&lt;code>clang-format&lt;/code>がない。&lt;code>clang-format&lt;/code>というのはその名前の通り、ソースコードをclangに静的解析させて自動で整形しようというツール。&lt;/p>
+&lt;p>対応しているコーディングスタイルは次の5つ。&lt;/p>
+&lt;ul>
+&lt;li>LLVM&lt;/li>
+&lt;li>Google&lt;/li>
+&lt;li>Chromium&lt;/li>
+&lt;li>Mozilla&lt;/li>
+&lt;li>WebKit&lt;/li>
+&lt;/ul>
+&lt;p>また、全く独自のコーディングスタイルを設定することもできるし、あるいはこれらのコーディングスタイルを元に一部を自分好みに変更した設定も可能である。かなり自由。&lt;/p></description></item></channel></rss>
