@@ -5,7 +5,6 @@ author = 'Mei Akizuru'
 theme = 'blackburn'
 copyright = "&copy; 2021 Mei Akizuru. All rights reserved."
 canonifyurls = true
-paginate = 10
 hasCJKLanguage = true
 summaryLength = 140
 
@@ -54,3 +53,6 @@ ignoreErrors = ["error-remote-getjson"]
   twitter = "maytheplic"
   github = "mayth"
   steam = "maythorzy"
+
+[pagination]
+  pagerSize = 10
