@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SECCON on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/seccon/</link><description>Recent content in SECCON on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Sun, 07 Dec 2014 22:11:39 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/seccon/index.xml" rel="self" type="application/rss+xml"/><item><title>SECCON 2014 Online Qualification (December) write-up</title><link>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</link><pubDate>Sun, 07 Dec 2014 22:11:39 +0900</pubDate><guid>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</guid><description>&lt;h1 id="welcome-to-seccon-start-100">Welcome to SECCON (Start 100)&lt;/h1>
 &lt;blockquote>
 &lt;p>The answer is &amp;ldquo;SECCON{20141206}&amp;rdquo;.&lt;/p>
-&lt;p>答えは、「SECCON{20141206}」です。&lt;/p>
-&lt;/blockquote>
+&lt;p>答えは、「SECCON{20141206}」です。&lt;/p>&lt;/blockquote>
 &lt;p>驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。&lt;/p>
 &lt;p>Answer: &lt;code>SECCON{20141206}&lt;/code>&lt;/p>
 &lt;h1 id="jspuzzle-web-100">jspuzzle (Web 100)&lt;/h1>
 &lt;blockquote>
 &lt;p>jspuzzle.zip&lt;/p>
-&lt;p>You need to fill in all blanks!&lt;/p>
-&lt;/blockquote>
+&lt;p>You need to fill in all blanks!&lt;/p>&lt;/blockquote>
 &lt;p>&lt;code>jspuzzle.zip&lt;/code>を展開すると&lt;code>q.html&lt;/code>と&lt;code>sha1.js&lt;/code>がある。&lt;code>sha1.js&lt;/code>はJavaScriptでSHA-1のハッシュ値を計算するライブラリの模様。本体は&lt;code>q.html&lt;/code>。&lt;/p></description></item><item><title>SECCON 2014 オンライン予選 その他諸々</title><link>https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/</link><pubDate>Sun, 20 Jul 2014 19:24:34 +0900</pubDate><guid>https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/</guid><description>&lt;p>2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。&lt;/p>
 &lt;p>個別に書いたのは次の2つ。&lt;/p>
 &lt;ul>

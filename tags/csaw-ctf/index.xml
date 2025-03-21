@@ -4,8 +4,7 @@
 &lt;blockquote>
 &lt;p>dumpsters are cool, but cores are cooler&lt;/p>
 &lt;p>Written by marc&lt;/p>
-&lt;p>firefox.mem.zip&lt;/p>
-&lt;/blockquote>
+&lt;p>firefox.mem.zip&lt;/p>&lt;/blockquote>
 &lt;h2 id="解答">解答&lt;/h2>
 &lt;p>Answer: cd69b4957f06cd818d7bf3d61980e291&lt;/p>
 &lt;p>与えられるのは&amp;rsquo;firefox.mem.zip&amp;rsquo;で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。&lt;/p></description></item><item><title>CSAW CTF 2014 Quals Trivia</title><link>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</link><pubDate>Mon, 22 Sep 2014 20:18:08 +0900</pubDate><guid>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</guid><description>&lt;p>CSAW CTF 2014 Qualsに参加してました。日本時間で20日07:00から22日07:00までの48時間。都内某所に泊まり込みでした。そんな感じでWrite-upでございます。この記事はTrivia。&lt;/p>

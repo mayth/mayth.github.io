@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Hello, (forgotten) world ☂</title><link>https://aquarite.info/posts/</link><description>Recent content in Posts on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Tue, 31 Dec 2024 22:01:42 +0900</lastBuildDate><atom:link href="https://aquarite.info/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>2024年のまとめ（？）</title><link>https://aquarite.info/blog/2024/12/2024-wrapup/</link><pubDate>Tue, 31 Dec 2024 22:01:42 +0900</pubDate><guid>https://aquarite.info/blog/2024/12/2024-wrapup/</guid><description>&lt;p>まとめる程のこともそんなないんですが、なんか書いとけ的なノリでちょっと振り返って書いてみます。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Hello, (forgotten) world ☂</title><link>https://aquarite.info/posts/</link><description>Recent content in Posts on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Fri, 21 Mar 2025 01:02:32 +0900</lastBuildDate><atom:link href="https://aquarite.info/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>新しいサーバーを組んだ</title><link>https://aquarite.info/blog/2025/03/build-new-server/</link><pubDate>Fri, 21 Mar 2025 01:02:32 +0900</pubDate><guid>https://aquarite.info/blog/2025/03/build-new-server/</guid><description>&lt;h2 id="経緯">経緯&lt;/h2>
+&lt;p>ただurandomの面々と飯を食った後にフラッと秋葉原のヨドバシに寄ったところ、そこにRyzen 7 9800X3Dが置いてあったのが全ての発端でした。&lt;/p>
+&lt;p>どこにもないと言われつつなんか普通にポンと置かれていて、うわ、どうしよ、いやでも椅子が欲しいしな……などと悩んでその場は買わずに帰ったんですが、翌日「いややっぱ欲しいな」と思い、あともうそこで行ってなければ諦めがつくと思って行ってみたらまだあったんですね。即座に店員さんに声を掛けて購入しました。その後秋葉原のパーツショップを一巡りしてマザーやメモリを調達して帰宅しました（ちなみに後日やっぱSSDも折角だしアップグレードしよ、と思ってSN850XとSN7100を購入）。&lt;/p></description></item><item><title>2024年のまとめ（？）</title><link>https://aquarite.info/blog/2024/12/2024-wrapup/</link><pubDate>Tue, 31 Dec 2024 22:01:42 +0900</pubDate><guid>https://aquarite.info/blog/2024/12/2024-wrapup/</guid><description>&lt;p>まとめる程のこともそんなないんですが、なんか書いとけ的なノリでちょっと振り返って書いてみます。&lt;/p>
 &lt;h2 id="urandom">urandom&lt;/h2>
 &lt;p>例によってCTFはSECCONにしか出てないです（urandomとしては）。SECCON CTFがQRコードを煮たり焼いたりする（※煮てはない、多分）インターネットクイズ大会だったのも今は昔、すっかりガチのCTFになって久しいですが、そうなってくると普段から真面目に取り組んでないとまぁ解けないですね。昨今はとりあえずChatGPTなりなんなりに放り投げたら何とかなるという風潮もありますが、何もわからんままLLMにぶん投げても何もわからん回答が返ってくるだけなので依然として人間側がきちんと理解する必要があります。毎度のことながら、些細な違和感だったり、題意を何となく察したりみたいなとこは案外行けてて、問題はそこから正解に持ち込むだけの知識量とか気合いなような気がします。&lt;/p></description></item><item><title>Raspberry Pi 5 w/ Argon ONE V3 &amp; NVMe SSD</title><link>https://aquarite.info/blog/2024/07/rpi5-argon-one-v3-nvme-ssd/</link><pubDate>Tue, 16 Jul 2024 21:50:00 +0900</pubDate><guid>https://aquarite.info/blog/2024/07/rpi5-argon-one-v3-nvme-ssd/</guid><description>&lt;h2 id="概要">概要&lt;/h2>
 &lt;p>Raspberry Pi 5が（3月くらいに）届いてたので適当にセットアップした記録。——を書いて力尽きていたのを7月に入って続きを書き始めた記事です。&lt;/p>
@@ -53,22 +55,19 @@
 &lt;p>それと同時に &lt;code>aquarite.info&lt;/code> で公開していた殺風景なプロフィールページ（的なもの）も特に書くことないのにドメイン占有してるのもな、と思ってブログと統一することにしました。あの辺に書いてあった内容は&lt;a href="https://aquarite.info/about/">About&lt;/a>に書いてあります、たぶん。あのページはあのページで古式ゆかしい手書きのHTMLで、Static Site Generatorでは感じられない人の温もりみたいなものがあったとは思うのですが、シンプルに面倒なので。そもそも人の温もりも何もキーボードでタイプしとるだけやろがい、という話です。&lt;/p></description></item><item><title>DatabaseRewinder with Rails 4.2 &amp; PostgreSQL</title><link>https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/</link><pubDate>Thu, 12 Mar 2015 18:49:02 +0900</pubDate><guid>https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/</guid><description>&lt;p>Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか&lt;code>disable_referential_integrity&lt;/code>を使っている限り起こると思う。&lt;/p></description></item><item><title>SECCON 2014 Online Qualification (December) write-up</title><link>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</link><pubDate>Sun, 07 Dec 2014 22:11:39 +0900</pubDate><guid>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</guid><description>&lt;h1 id="welcome-to-seccon-start-100">Welcome to SECCON (Start 100)&lt;/h1>
 &lt;blockquote>
 &lt;p>The answer is &amp;ldquo;SECCON{20141206}&amp;rdquo;.&lt;/p>
-&lt;p>答えは、「SECCON{20141206}」です。&lt;/p>
-&lt;/blockquote>
+&lt;p>答えは、「SECCON{20141206}」です。&lt;/p>&lt;/blockquote>
 &lt;p>驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。&lt;/p>
 &lt;p>Answer: &lt;code>SECCON{20141206}&lt;/code>&lt;/p>
 &lt;h1 id="jspuzzle-web-100">jspuzzle (Web 100)&lt;/h1>
 &lt;blockquote>
 &lt;p>jspuzzle.zip&lt;/p>
-&lt;p>You need to fill in all blanks!&lt;/p>
-&lt;/blockquote>
+&lt;p>You need to fill in all blanks!&lt;/p>&lt;/blockquote>
 &lt;p>&lt;code>jspuzzle.zip&lt;/code>を展開すると&lt;code>q.html&lt;/code>と&lt;code>sha1.js&lt;/code>がある。&lt;code>sha1.js&lt;/code>はJavaScriptでSHA-1のハッシュ値を計算するライブラリの模様。本体は&lt;code>q.html&lt;/code>。&lt;/p></description></item><item><title>tkbctf4 [misc 400] amida</title><link>https://aquarite.info/blog/2014/11/tkbctf4-amida/</link><pubDate>Mon, 24 Nov 2014 06:11:50 +0900</pubDate><guid>https://aquarite.info/blog/2014/11/tkbctf4-amida/</guid><description>&lt;p>&lt;a href="https://aquarite.info/blog/2014/11/24/tkbctf4-cheerofcpu/">Cheer of CPU&lt;/a>に続きましてmisc 400、amidaでございます。&lt;/p>
 &lt;p>この問題は私と@yuscarletによる作成です。&lt;/p>
 &lt;h1 id="問題">問題&lt;/h1>
 &lt;blockquote>
 &lt;p>&lt;code>203.178.132.117:42719&lt;/code>&lt;/p>
-&lt;p>&lt;a href="http://en.wikipedia.org/wiki/Ghost_Leg">Ghost Leg - Wikipedia, the free encyclopedia&lt;/a>&lt;/p>
-&lt;/blockquote>
+&lt;p>&lt;a href="http://en.wikipedia.org/wiki/Ghost_Leg">Ghost Leg - Wikipedia, the free encyclopedia&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;p>現在問題文中のサーバーは停止しています。こちらもソースコードはgithubで公開されていますので、試したい方はどうぞ。&lt;a href="https://github.com/tkbctf/tkbctf4/tree/master/misc400_amida">tkbctf4/misc400_amida at master · tkbctf/tkbctf4&lt;/a>&lt;/p>
 &lt;p>なお実際の問題は&lt;a href="https://github.com/mayth/fafrotskies">fafrotskies&lt;/a>というCPUを100%持っていく素敵な自作サーバーと連携して動作していました。&lt;/p>
 &lt;p>問題中に英語版Wikipediaの&amp;quot;Ghost Leg&amp;quot;の記事にリンクが張ってありますが、「あみだくじ」って英語では&amp;quot;Ghost Leg&amp;quot;というそうです。&lt;/p></description></item><item><title>tkbctf4 [bin300] Cheer of CPU</title><link>https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/</link><pubDate>Mon, 24 Nov 2014 04:16:38 +0900</pubDate><guid>https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/</guid><description>&lt;p>tkbctf4が終了してからずいぶんと時間が経ちましたが皆様いかがお過ごしでしょうか。今更ではありますが[bin300] Cheer of CPUの解説というか、そんなようなものを書いてみようかと。&lt;/p>
@@ -82,8 +81,7 @@
 &lt;blockquote>
 &lt;p>dumpsters are cool, but cores are cooler&lt;/p>
 &lt;p>Written by marc&lt;/p>
-&lt;p>firefox.mem.zip&lt;/p>
-&lt;/blockquote>
+&lt;p>firefox.mem.zip&lt;/p>&lt;/blockquote>
 &lt;h2 id="解答">解答&lt;/h2>
 &lt;p>Answer: cd69b4957f06cd818d7bf3d61980e291&lt;/p>
 &lt;p>与えられるのは&amp;rsquo;firefox.mem.zip&amp;rsquo;で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。&lt;/p></description></item><item><title>CSAW CTF 2014 Quals Trivia</title><link>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</link><pubDate>Mon, 22 Sep 2014 20:18:08 +0900</pubDate><guid>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</guid><description>&lt;p>CSAW CTF 2014 Qualsに参加してました。日本時間で20日07:00から22日07:00までの48時間。都内某所に泊まり込みでした。そんな感じでWrite-upでございます。この記事はTrivia。&lt;/p>
