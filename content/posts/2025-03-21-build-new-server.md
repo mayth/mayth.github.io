@@ -1,7 +1,7 @@
 ---
 title: "新しいサーバーを組んだ"
 date: 2025-03-21T01:02:32+09:00
-draft: true
+draft: false
 author: Mei Akizuru
 slug: build-new-server
 tags:
