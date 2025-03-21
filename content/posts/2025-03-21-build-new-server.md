@@ -3,7 +3,7 @@ title: "新しいサーバーを組んだ"
 date: 2025-03-21T01:02:32+09:00
 draft: true
 author: Mei Akizuru
-slug: 2024-wrapup
+slug: build-new-server
 tags:
     - tech
     - Home-build PC
