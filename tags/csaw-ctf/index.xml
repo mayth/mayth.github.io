@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CSAW CTF on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/csaw-ctf/</link><description>Recent content in CSAW CTF on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Tue, 23 Sep 2014 03:07:38 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/csaw-ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>CSAW CTF 2014 Quals Forensics</title><link>https://aquarite.info/blog/2014/09/csawctf2014-forensics/</link><pubDate>Tue, 23 Sep 2014 03:07:38 +0900</pubDate><guid>https://aquarite.info/blog/2014/09/csawctf2014-forensics/</guid><description>&lt;p>CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3問です。&lt;/p>
-&lt;h1 id="100-dumpster-diving">[100] dumpster diving&lt;/h1>
-&lt;h2 id="問題文">問題文&lt;/h2>
-&lt;blockquote>
-&lt;p>dumpsters are cool, but cores are cooler&lt;/p>
-&lt;p>Written by marc&lt;/p>
-&lt;p>firefox.mem.zip&lt;/p>&lt;/blockquote>
-&lt;h2 id="解答">解答&lt;/h2>
-&lt;p>Answer: cd69b4957f06cd818d7bf3d61980e291&lt;/p>
-&lt;p>与えられるのは&amp;rsquo;firefox.mem.zip&amp;rsquo;で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。&lt;/p></description></item><item><title>CSAW CTF 2014 Quals Trivia</title><link>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</link><pubDate>Mon, 22 Sep 2014 20:18:08 +0900</pubDate><guid>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</guid><description>&lt;p>CSAW CTF 2014 Qualsに参加してました。日本時間で20日07:00から22日07:00までの48時間。都内某所に泊まり込みでした。そんな感じでWrite-upでございます。この記事はTrivia。&lt;/p>
-&lt;p>Triviaは全て10点で全6問。うち私が解答したのは3問でした。&lt;/p>
-&lt;h1 id="shameless-plug">Shameless plug&lt;/h1>
-&lt;h2 id="問題文">問題文&lt;/h2>
-&lt;p>This is the name of the new USENIX workshop that featured papers on CTFs being used for education.&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CSAW CTF on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/csaw-ctf/</link><description>Recent content in CSAW CTF on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Tue, 23 Sep 2014 03:07:38 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/csaw-ctf/index.xml" rel="self" type="application/rss+xml"/><item><title>CSAW CTF 2014 Quals Forensics</title><link>https://aquarite.info/blog/2014/09/csawctf2014-forensics/</link><pubDate>Tue, 23 Sep 2014 03:07:38 +0900</pubDate><guid>https://aquarite.info/blog/2014/09/csawctf2014-forensics/</guid><description>&lt;p&gt;CSAW CTF 2014 Quals、Forensicsのwrite-upです。私が解いたのはForensicsの4問中、200点のObscurityを除いた3問です。&lt;/p&gt;
+&lt;h1 id="100-dumpster-diving"&gt;[100] dumpster diving&lt;/h1&gt;
+&lt;h2 id="問題文"&gt;問題文&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;dumpsters are cool, but cores are cooler&lt;/p&gt;
+&lt;p&gt;Written by marc&lt;/p&gt;
+&lt;p&gt;firefox.mem.zip&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h2 id="解答"&gt;解答&lt;/h2&gt;
+&lt;p&gt;Answer: cd69b4957f06cd818d7bf3d61980e291&lt;/p&gt;
+&lt;p&gt;与えられるのは&amp;rsquo;firefox.mem.zip&amp;rsquo;で、コアダンプです。私が取りかかった時点で既に他のメンバーからbinwalkしてみたらSQLiteのなんかが見えていると報告がありました。Firefoxのコアダンプであれば何か見えててもおかしくないですね。&lt;/p&gt;</description></item><item><title>CSAW CTF 2014 Quals Trivia</title><link>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</link><pubDate>Mon, 22 Sep 2014 20:18:08 +0900</pubDate><guid>https://aquarite.info/blog/2014/09/csawctf2014-trivia/</guid><description>&lt;p&gt;CSAW CTF 2014 Qualsに参加してました。日本時間で20日07:00から22日07:00までの48時間。都内某所に泊まり込みでした。そんな感じでWrite-upでございます。この記事はTrivia。&lt;/p&gt;
+&lt;p&gt;Triviaは全て10点で全6問。うち私が解答したのは3問でした。&lt;/p&gt;
+&lt;h1 id="shameless-plug"&gt;Shameless plug&lt;/h1&gt;
+&lt;h2 id="問題文"&gt;問題文&lt;/h2&gt;
+&lt;p&gt;This is the name of the new USENIX workshop that featured papers on CTFs being used for education.&lt;/p&gt;</description></item></channel></rss>

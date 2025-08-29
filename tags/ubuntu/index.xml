@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/ubuntu/</link><description>Recent content in Ubuntu on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Sat, 22 Apr 2023 13:01:50 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Stable DiffusionをUbuntu 22.04, Radeon RX 6600 XTで動かす</title><link>https://aquarite.info/blog/2023/04/stable-diffusion-on-lilnux-with-radeon/</link><pubDate>Sat, 22 Apr 2023 13:01:50 +0900</pubDate><guid>https://aquarite.info/blog/2023/04/stable-diffusion-on-lilnux-with-radeon/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
-&lt;p>ミドルレンジとはいえせっかくディスクリートのGPU積んでるのに何もしてない（ゲームはしてる）のはもったいない、ということでひとつ試しにStable Diffusionを動かしてみることにした。&lt;/p>
-&lt;h2 id="環境">環境&lt;/h2>
-&lt;table>
- &lt;thead>
- &lt;tr>
- &lt;th>&lt;/th>
- &lt;th>&lt;/th>
- &lt;/tr>
- &lt;/thead>
- &lt;tbody>
- &lt;tr>
- &lt;td>&lt;strong>CPU&lt;/strong>&lt;/td>
- &lt;td>Intel Core i5-12600KF (6+4C/16T)&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>&lt;strong>メモリ&lt;/strong>&lt;/td>
- &lt;td>crucial DDR4-3200 32GB (16GBx2)&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>&lt;strong>GPU&lt;/strong>&lt;/td>
- &lt;td>Radeon RX 6600 XT (ASRock AMD Radeon RX 6600 XT Challenger D 8GB OC)&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>&lt;strong>SSD&lt;/strong>&lt;/td>
- &lt;td>WD My Passport 1TB&lt;/td>
- &lt;/tr>
- &lt;/tbody>
-&lt;/table>
-&lt;p>ソフトウェア類は以下の通り。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/ubuntu/</link><description>Recent content in Ubuntu on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Sat, 22 Apr 2023 13:01:50 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Stable DiffusionをUbuntu 22.04, Radeon RX 6600 XTで動かす</title><link>https://aquarite.info/blog/2023/04/stable-diffusion-on-lilnux-with-radeon/</link><pubDate>Sat, 22 Apr 2023 13:01:50 +0900</pubDate><guid>https://aquarite.info/blog/2023/04/stable-diffusion-on-lilnux-with-radeon/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;p&gt;ミドルレンジとはいえせっかくディスクリートのGPU積んでるのに何もしてない（ゲームはしてる）のはもったいない、ということでひとつ試しにStable Diffusionを動かしてみることにした。&lt;/p&gt;
+&lt;h2 id="環境"&gt;環境&lt;/h2&gt;
+&lt;table&gt;
+ &lt;thead&gt;
+ &lt;tr&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;th&gt;&lt;/th&gt;
+ &lt;/tr&gt;
+ &lt;/thead&gt;
+ &lt;tbody&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;CPU&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Intel Core i5-12600KF (6+4C/16T)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;メモリ&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;crucial DDR4-3200 32GB (16GBx2)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;GPU&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;Radeon RX 6600 XT (ASRock AMD Radeon RX 6600 XT Challenger D 8GB OC)&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+ &lt;td&gt;&lt;strong&gt;SSD&lt;/strong&gt;&lt;/td&gt;
+ &lt;td&gt;WD My Passport 1TB&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ソフトウェア類は以下の通り。&lt;/p&gt;</description></item></channel></rss>
