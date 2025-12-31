@@ -1,4 +1,4 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.149.0"><title>Raspberry Pi Zero 2 WでPiKVMを作る &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]--><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon><meta property="og:url" content="https://aquarite.info/blog/2025/08/pikvm-diy-v2-zero2/"><meta property="og:site_name" content="Hello, (forgotten) world ☂"><meta property="og:title" content="Raspberry Pi Zero 2 WでPiKVMを作る"><meta property="og:description" content='背景 新しいサーバーを組んだで組んだサーバーは基本的にはヘッドレス運用しているわけですが、たまにUEFIセットアップを触りたいときとかにいちいちメインモニターのケーブルを引き回してこないといけないのが地味に不便でした。
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.153.5"><title>Raspberry Pi Zero 2 WでPiKVMを作る &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css><!--[if lte IE 8]><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css><!--<![endif]--><!--[if lte IE 8]><link rel=stylesheet href=https://aquarite.info/css/side-menu-old-ie.css><![endif]--><!--[if gt IE 8]><!--><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><!--<![endif]--><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon><meta property="og:url" content="https://aquarite.info/blog/2025/08/pikvm-diy-v2-zero2/"><meta property="og:site_name" content="Hello, (forgotten) world ☂"><meta property="og:title" content="Raspberry Pi Zero 2 WでPiKVMを作る"><meta property="og:description" content='背景 新しいサーバーを組んだで組んだサーバーは基本的にはヘッドレス運用しているわけですが、たまにUEFIセットアップを触りたいときとかにいちいちメインモニターのケーブルを引き回してこないといけないのが地味に不便でした。
 （※なぜかUEFIの設定が飛んでマザーボードが†1677万色†で光り始めた場合などに「お前は光らなくてもいいんだぞ」と教え込む必要があります。あちらの記事に記載の通り、どういうわけかモバイルモニターだと表示できないんですよねぇ……）
 そこでお手頃にリモートKVMを実現できるPiKVMを試してみました。
 材料 Raspberry Pi 4を使う場合と異なり電源を分離する必要はないので、Type-CのY字ケーブルとか"Power Splitter"なる謎基板は必要ありません。microUSBケーブルとHDMIケーブルだけは元々家に転がっていたものを使っていて、microSDXCはあきばお〜の並行輸入品、それ以外はすべて秋葉原の千石電商で揃えています。'><meta property="og:locale" content="ja_jp"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-08-29T19:22:00+09:00"><meta property="article:modified_time" content="2025-08-29T19:22:00+09:00"><meta property="article:tag" content="Tech"><meta property="article:tag" content="Raspberry Pi"><meta property="og:image" content="https://aquarite.info/images/cover.png"></head><body><div id=layout><a href=#menu id=menuLink class=menu-link><span></span></a><div id=menu><a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a><div class=pure-menu><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/><i class='fa fa-home fa-fw'></i>Home</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/about/><i class='fa fa-user fa-fw'></i>About</a></li></ul></div><div class="pure-menu social"><ul class=pure-menu-list></ul></div><div><div class=small-print><small>&copy; 2021 Mei Akizuru. All rights reserved.</small></div><div class=small-print><small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
@@ -9,7 +9,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a> bcm2708-rpi-cm.dtb       bcm2710-rpi-3-b-plus.dtb   bcm2711-rpi-400.dtb        bcm2835-rpi-b-plus.dtb   bcm2836-rpi-2-b.dtb        bootcode.bin               fixup4db.dat   kernel7.img           start4db.elf
 </span></span></span><span style=display:flex><span><span style=color:#44475a> bcm2708-rpi-zero-w.dtb   bcm2710-rpi-3-b.dtb        bcm2711-rpi-cm4-io.dtb     bcm2835-rpi-b-rev2.dtb   bcm2837-rpi-3-a-plus.dtb   cmdline.txt                fixup4x.dat    overlays              start4x.elf
 </span></span></span><span style=display:flex><span><span style=color:#44475a> bcm2708-rpi-zero.dtb     bcm2710-rpi-cm3.dtb        bcm2711-rpi-cm4.dtb        bcm2835-rpi-b.dtb        bcm2837-rpi-3-b-plus.dtb   config.txt                 fixup_cd.dat   pikvm.txt             start_cd.elf
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span>$ cat pikvm.txt
 </span></span><span style=display:flex><span><span style=color:#44475a>FIRST_BOOT=1
 </span></span></span></code></pre></div><p>この<code>FIRST_BOOT=1</code>は残しておいて、次の内容を追記します。保存したらカードを取り出します。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>FIRST_BOOT</span><span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>
@@ -21,19 +21,19 @@
 </span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>WIFI_GW</span><span style=color:#ff79c6>=</span>192.168.0.1
 </span></span></code></pre></div><p>設定している内容は次の通りです。</p><ul><li>接続先のWiFiの設定（SSIDとパスワード）</li><li>WiFiの規制ドメイン設定（Zero2だと2.4GHzしか繋がらないんであんま関係無いかもだけど一応）</li><li>WiFi I/FのIPアドレス、DNS、デフォルトゲートウェイの設定（これを省くとDHCPで自動設定されるが、自動設定されたIPアドレスを知る手段がない）<ul><li>今回は<code>192.168.0.100</code>にしたとして説明</li></ul></li></ul><p>DHCPを使ったとしても、セットアップの時だけ画面とキーボード繋いでみるなりARP探ってみるなりポートスキャンするなりでやりようはありますが、まぁ面倒なので固定しちゃった方が楽でしょう。……ところでOLED買ってなかったかって？　セットアップ中はまだ有効化されてないので使えません。</p><h2 id=物理配線>物理配線</h2><p>HDMI-CSIアダプタを接続します。今回買ったアダプタにはカメラケーブルが付属していましたが、ZeroでないRaspberry Pi用なので使えません（一瞬カメラケーブルを別に買ったのは余計だったかと思って若干焦った）。Raspberry Pi Zero 2側は黒い部分を水平に引き出してから差し込んで戻す、アダプタ側は黒い部分を上に持ち上げてから差し込んで戻します。</p><p>（ところでこのカメラケーブル、明らかに15cmもいらないなと思ってたらスイッチサイエンスに<a href=https://ssci.to/8939>短めのRaspberry Pi Zero用カメラケーブル</a>なるものがありました。Amazonにも似たような商品が出品されているようです。しかし、「公式ケースに付属しているものと同じ」ということはこの家のどこかにも転がっている気がする……）</p><p>CSIケーブルを繋いだところでケースに入れました（入れるというか挟み込むタイプなので入れる感はありませんが）。その後OLEDを接続します。PiOLEDはI2C接続で、GPIOポートのうちmicroSDカードスロット寄りの2x3=6本を占有します。</p><p>USBは公式のハンドブックにも記載がありますが、ケーブルに一工夫が必要です。Zero 2には2つのmicroB端子がありますが、CSIコネクタ寄りにある方が"PWR"で、その隣が"USB"となっています（Zero 2の基板にも記載があります）。で、説明によればこの2つは電源線を共有しているので、&ldquo;USB"の方から電源供給されてしまうと困った事態になります。そこで、&ldquo;USB"に繋ぐ方のUSBケーブルのホスト側(Type-A)端子のうち、電源ピン(VBUS)の部分にテープを貼って絶縁します。樹脂部分を下にしたときの一番右のピンですが、ハンドブックの写真や、ピンアサインを検索して確認してください。</p><p>ちなみにZero 2くらいの電力だとホストPCからの供給でも普通に動きそうなものですが、その場合ホストの電源が落ちているとPiKVMも落ちてしまい、UEFIセットアップに入るのが現実的でなくなります。</p><p>HDMIケーブルは普通にアダプタの端子とPCの出力端子を接続します。</p><p>最後に"PWR"のポートに電源アダプタのmicroBケーブルを接続し、コンセントにアダプタを接続します。これでZero 2の電源が入りますが、初回起動時はセットアップ処理で少し起動に時間がかかるので、終わるまで電源を落とさないようにします。</p><h2 id=初期設定>初期設定</h2><p>今回は<code>pikvm.txt</code>でIPアドレスを固定したので、特にPiKVMを探す必要はなく<code>https://192.168.0.100</code>にブラウザからアクセスすればOKです。証明書の警告が出ますが続行します。PiKVMのログイン画面が出るので、<code>admin:admin</code>（2FAは省略）でログインします。</p><p>まずはパスワードを変更します。</p><ol><li>rootになる（デフォルトのrootパスワードは<code>root</code>）</li><li>ファイルシステムを読み書きモードで再マウント</li><li>rootパスワードを変更</li><li>管理画面のadminアカウントのパスワードを変更</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span>[kvmd-webterm@pikvm ~]$ su -
 </span></span><span style=display:flex><span><span style=color:#44475a>Password:
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>[root@pikvm ~]# rw
+</span></span></span><span style=display:flex><span>[root@pikvm ~]# rw
 </span></span><span style=display:flex><span><span style=color:#44475a>+ mount -o remount,rw /
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ mount -o remount,rw /boot
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ set +x
 </span></span></span><span style=display:flex><span><span style=color:#44475a>=== PiKVM is in Read-Write mode ===
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>[root@pikvm ~]# passwd root
+</span></span></span><span style=display:flex><span>[root@pikvm ~]# passwd root
 </span></span><span style=display:flex><span><span style=color:#44475a>New password:
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Retype new password:
 </span></span></span><span style=display:flex><span><span style=color:#44475a>passwd: password updated successfully
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>[root@pikvm ~]# kvmd-htpasswd <span style=color:#8be9fd;font-style:italic>set</span> admin
+</span></span></span><span style=display:flex><span>[root@pikvm ~]# kvmd-htpasswd <span style=color:#8be9fd;font-style:italic>set</span> admin
 </span></span><span style=display:flex><span><span style=color:#44475a>Password:
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Repeat:
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span># Note: Users logged in with this username will stay logged in.
 </span></span><span style=display:flex><span># To invalidate their cookies you need to restart kvmd &amp; kvmd-nginx:
 </span></span><span style=display:flex><span>#    systemctl restart kvmd kvmd-nginx
@@ -46,7 +46,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ mount -o remount,ro /boot
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ set +x
 </span></span></span><span style=display:flex><span><span style=color:#44475a>=== PiKVM is in Read-Only mode ===
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>[root@pikvm ~]# <span style=color:#8be9fd;font-style:italic>exit</span>
+</span></span></span><span style=display:flex><span>[root@pikvm ~]# <span style=color:#8be9fd;font-style:italic>exit</span>
 </span></span><span style=display:flex><span><span style=color:#44475a>logout
 </span></span></span></code></pre></div><p>PiKVMのOSのrootパスワードと、PiKVMの管理UIのadminアカウントのパスワードは連動していないので、個別に変更が必要です。</p><p>PiKVM OSの特徴的な点として、ファイルシステムがデフォルトで読み取り専用(<code>ro</code>)モードになっている点があります。そのため、パスワード変更やOSの設定変更など、ファイルシステムに書き込む必要がある場合には明示的に読み書き(<code>rw</code>)モードで再マウントしなくてはなりません。root状態で<code>rw</code>とすれば読み書きモードになり、<code>ro</code>とすれば読み取り専用モードに戻ります。</p><p>Terminalでは<code>exit</code>を叩いてもすぐに再接続されるので、ブラウザの戻るボタンで最初の画面に戻ります。</p><h2 id=リモートkvmの動作確認>リモートKVMの動作確認</h2><p>ログイン後の画面で"KVM"を選択すればリモートKVMとして使えます。&ldquo;KVM"を選んでからサーバーの電源を入れるとUEFIのスプラッシュスクリーンから見ることができます。ヤッター！　当然ここでDeleteを連打すればセットアップにも入れます。</p><p>Ubuntuが入っているサーバーなので、ログインした後にディスプレイの設定を見てみるとこんな感じでした。デフォルトだと1280x720@60Hzに設定されています。PiKVM V2 DIYの場合は1920x1080@50Hzが最大になりますが、この設定だとたまに画面にノイズが走っていました。デフォルトの1280x720@60Hzで運用する方が良いでしょう。</p><div class=pure-g><div class=pure-u><div style="padding:0 .2em"><img class=pure-img-responsive src=https://aquarite.info/images/2025-08-28-pikvm-ubuntu-display-setting.jpg alt="Ubuntu Display Settings"></div></div></div><p>あと再起動するとKVMの画面が戻ってきませんでした。たまたまなのか、別の問題があるのかは確認してません。</p><h2 id=osのメンテナンス>OSのメンテナンス</h2><p>PiKVM OSそれ自体のメンテナンスもしましょう。というわけでまずはアップデートが推奨されています。rootでログインしてアップデートをかけます。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-console data-lang=console><span style=display:flex><span>[root@pikvm ~]# pikvm-update
 </span></span><span style=display:flex><span><span style=color:#44475a>+ trap on_error ERR
@@ -82,7 +82,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
 </span></span></span><span style=display:flex><span><span style=color:#44475a>      An unexpected error occurred during the update.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Please note that the filesystem now remain in Read-Write mode.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>       A reboot is necessary to make it Read-Only again.
@@ -94,7 +94,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
 </span></span></span><span style=display:flex><span><span style=color:#44475a>      An unexpected error occurred during the update.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Please note that the filesystem now remain in Read-Write mode.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>       A reboot is necessary to make it Read-Only again.
@@ -132,7 +132,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>F3 write 9.0
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Copyright (C) 2010 Digirati Internet LTDA.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>This is free software; see the source for copying conditions.
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>Free space: 59.45 GB
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Creating file 1.h2w ... OK!
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Creating file 2.h2w ... OK!
@@ -141,20 +141,20 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Creating file 60.h2w ... OK!
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Free space: 256.00 KB
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Average writing speed: 69.76 MB/s
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>arm64 ~ via 💎 v3.3.5 via 🆂 took 14m33s884ms
 </span></span></span><span style=display:flex><span><span style=color:#44475a>❯ f3read /Volumes/NO\ NAME
 </span></span></span><span style=display:flex><span><span style=color:#44475a>F3 read 9.0
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Copyright (C) 2010 Digirati Internet LTDA.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>This is free software; see the source for copying conditions.
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>                  SECTORS      ok/corrupted/changed/overwritten
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Validating file 1.h2w ... 2097152/        0/      0/      0
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Validating file 2.h2w ... 2097152/        0/      0/      0
 </span></span></span><span style=display:flex><span><span style=color:#44475a>...
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Validating file 59.h2w ... 2097152/        0/      0/      0
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Validating file 60.h2w ...  932772/        0/      0/      0
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>  Data OK: 59.44 GB (124664740 sectors)
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Data LOST: 0.00 Byte (0 sectors)
 </span></span></span><span style=display:flex><span><span style=color:#44475a>	       Corrupted: 0.00 Byte (0 sectors)
@@ -190,13 +190,13 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ pacman --noconfirm --ask=4 --overwrite &#39;\*&#39; -S pikvm-os-updater
 </span></span></span><span style=display:flex><span><span style=color:#44475a>resolving dependencies...
 </span></span></span><span style=display:flex><span><span style=color:#44475a>looking for conflicting packages...
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>Packages (1) pikvm-os-updater-0.30-1
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>Total Download Size:   0.00 MiB
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Total Installed Size:  0.00 MiB
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Net Upgrade Size:      0.00 MiB
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>:: Proceed with installation? [Y/n]
 </span></span></span><span style=display:flex><span><span style=color:#44475a>:: Retrieving packages...
 </span></span></span><span style=display:flex><span><span style=color:#44475a> pikvm-os-updater-0.30-1-any                                                                                                             4.3 KiB  5.22 KiB/s 00:01 [####################################################################################################] 100%
@@ -220,9 +220,9 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ set +x
 </span></span></span><span style=display:flex><span><span style=color:#44475a>=== PiKVM is in Read-Write mode ===
 </span></span></span><span style=display:flex><span><span style=color:#44475a>+ pacman -Syy
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>...
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>(210/210) upgrading wireless-regdb                                                                                                                                 [####################################################################################################] 100%
 </span></span></span><span style=display:flex><span><span style=color:#44475a>:: Running post-transaction hooks...
 </span></span></span><span style=display:flex><span><span style=color:#44475a>( 1/18) Creating system user accounts...
@@ -265,7 +265,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>      Reboot required. We will make it after 30 seconds.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>            Press Ctrl+C if you don&#39;t want this.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span>
+</span></span></span><span style=display:flex><span>
 </span></span><span style=display:flex><span><span style=color:#44475a>==============================================================
 </span></span></span><span style=display:flex><span><span style=color:#44475a>Please note that the filesystem now remain in Read-Write mode.
 </span></span></span><span style=display:flex><span><span style=color:#44475a>       A reboot is necessary to make it Read-Only again.
@@ -288,7 +288,7 @@
 </span></span></span><span style=display:flex><span><span style=color:#44475a>System clock synchronized: yes
 </span></span></span><span style=display:flex><span><span style=color:#44475a>              NTP service: active
 </span></span></span><span style=display:flex><span><span style=color:#44475a>          RTC in local TZ: no
-</span></span></span><span style=display:flex><span><span style=color:#44475a></span># timedatectl show-timesync
+</span></span></span><span style=display:flex><span># timedatectl show-timesync
 </span></span><span style=display:flex><span><span style=color:#44475a>LinkNTPServers=2404:1a8:1102::b 2404:1a8:1102::a
 </span></span></span><span style=display:flex><span><span style=color:#44475a>SystemNTPServers=ntp.nict.jp
 </span></span></span><span style=display:flex><span><span style=color:#44475a>FallbackNTPServers=0.arch.pool.ntp.org 1.arch.pool.ntp.org 2.arch.pool.ntp.org 3.arch.pool.ntp.org

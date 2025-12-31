@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SECCON on Hello, (forgotten) world ☂</title><link>https://aquarite.info/tags/seccon/</link><description>Recent content in SECCON on Hello, (forgotten) world ☂</description><generator>Hugo</generator><language>ja-jp</language><copyright>&amp;copy; 2021 Mei Akizuru. All rights reserved.</copyright><lastBuildDate>Sun, 07 Dec 2014 22:11:39 +0900</lastBuildDate><atom:link href="https://aquarite.info/tags/seccon/index.xml" rel="self" type="application/rss+xml"/><item><title>SECCON 2014 Online Qualification (December) write-up</title><link>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</link><pubDate>Sun, 07 Dec 2014 22:11:39 +0900</pubDate><guid>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</guid><description>&lt;h1 id="welcome-to-seccon-start-100"&gt;Welcome to SECCON (Start 100)&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;The answer is &amp;ldquo;SECCON{20141206}&amp;rdquo;.&lt;/p&gt;
-&lt;p&gt;答えは、「SECCON{20141206}」です。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;答えは、「SECCON{20141206}」です。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;驚くべきことに問題ページに答えが書かれている。なんと楽な問題なのだろう。&lt;/p&gt;
 &lt;p&gt;Answer: &lt;code&gt;SECCON{20141206}&lt;/code&gt;&lt;/p&gt;
 &lt;h1 id="jspuzzle-web-100"&gt;jspuzzle (Web 100)&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;jspuzzle.zip&lt;/p&gt;
-&lt;p&gt;You need to fill in all blanks!&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;You need to fill in all blanks!&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;&lt;code&gt;jspuzzle.zip&lt;/code&gt;を展開すると&lt;code&gt;q.html&lt;/code&gt;と&lt;code&gt;sha1.js&lt;/code&gt;がある。&lt;code&gt;sha1.js&lt;/code&gt;はJavaScriptでSHA-1のハッシュ値を計算するライブラリの模様。本体は&lt;code&gt;q.html&lt;/code&gt;。&lt;/p&gt;</description></item><item><title>SECCON 2014 オンライン予選 その他諸々</title><link>https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/</link><pubDate>Sun, 20 Jul 2014 19:24:34 +0900</pubDate><guid>https://aquarite.info/blog/2014/07/seccon2014-online-preliminary/</guid><description>&lt;p&gt;2014-07-19 09:00 - 21:00に行われたSECCON 2014 オンライン予選について、その他諸々。&lt;/p&gt;
 &lt;p&gt;個別に書いたのは次の2つ。&lt;/p&gt;
 &lt;ul&gt;

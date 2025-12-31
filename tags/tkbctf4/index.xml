@@ -3,7 +3,8 @@
 &lt;h1 id="問題"&gt;問題&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;203.178.132.117:42719&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Ghost_Leg"&gt;Ghost Leg - Wikipedia, the free encyclopedia&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Ghost_Leg"&gt;Ghost Leg - Wikipedia, the free encyclopedia&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;現在問題文中のサーバーは停止しています。こちらもソースコードはgithubで公開されていますので、試したい方はどうぞ。&lt;a href="https://github.com/tkbctf/tkbctf4/tree/master/misc400_amida"&gt;tkbctf4/misc400_amida at master · tkbctf/tkbctf4&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;なお実際の問題は&lt;a href="https://github.com/mayth/fafrotskies"&gt;fafrotskies&lt;/a&gt;というCPUを100%持っていく素敵な自作サーバーと連携して動作していました。&lt;/p&gt;
 &lt;p&gt;問題中に英語版Wikipediaの&amp;quot;Ghost Leg&amp;quot;の記事にリンクが張ってありますが、「あみだくじ」って英語では&amp;quot;Ghost Leg&amp;quot;というそうです。&lt;/p&gt;</description></item><item><title>tkbctf4 [bin300] Cheer of CPU</title><link>https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/</link><pubDate>Mon, 24 Nov 2014 04:16:38 +0900</pubDate><guid>https://aquarite.info/blog/2014/11/tkbctf4-cheerofcpu/</guid><description>&lt;p&gt;tkbctf4が終了してからずいぶんと時間が経ちましたが皆様いかがお過ごしでしょうか。今更ではありますが[bin300] Cheer of CPUの解説というか、そんなようなものを書いてみようかと。&lt;/p&gt;
