@@ -74,19 +74,52 @@
 &lt;/li&gt;
 &lt;li&gt;喋る言語・使う言語
 &lt;ul&gt;
+&lt;li&gt;よく使うもの
+&lt;ul&gt;
 &lt;li&gt;日本語&lt;/li&gt;
 &lt;li&gt;Scala&lt;/li&gt;
 &lt;li&gt;Go&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;多少扱えるもの
+&lt;ul&gt;
 &lt;li&gt;Ruby&lt;/li&gt;
+&lt;li&gt;Python&lt;/li&gt;
+&lt;li&gt;Java&lt;/li&gt;
+&lt;li&gt;TypeScript&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;何も分からない、雰囲気で使っている
+&lt;ul&gt;
+&lt;li&gt;英語&lt;/li&gt;
+&lt;li&gt;C/C++&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;やってること
 &lt;ul&gt;
-&lt;li&gt;ソフトウェアエンジニアのようななにか&lt;/li&gt;
+&lt;li&gt;ソフトウェアエンジニアのようななにか
+&lt;ul&gt;
+&lt;li&gt;主にバックエンド、サーバーサイド領域&lt;/li&gt;
+&lt;li&gt;APIサーバーの構築、CI周りの盆栽などを経験&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;CTF何にも分からない人&lt;/li&gt;
-&lt;li&gt;プロデューサー（放クラ・園田智代子、三村かな子）&lt;/li&gt;
-&lt;li&gt;指揮官（高雄推し）、ドクター、教授&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;趣味じゃないよこっちが本業だよ
+&lt;ul&gt;
+&lt;li&gt;姫崎莉波&lt;/li&gt;
+&lt;li&gt;放クラ・園田智代子&lt;/li&gt;
+&lt;li&gt;三村かな子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;趣味
+&lt;ul&gt;
+&lt;li&gt;指揮官（高雄推し）、ドクター&lt;/li&gt;
 &lt;li&gt;音ゲー（DDR、オンゲキ、etc.）&lt;/li&gt;
+&lt;li&gt;お車ゲー（主にGT7、たまにForzaやWRC）&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;小傘ちゃん
@@ -103,12 +136,7 @@
 &lt;li&gt;2021-12-11,12 SECCON CTF 2021 -&amp;gt; 25th&lt;/li&gt;
 &lt;li&gt;2021-09-18,19 Trend Micro CTF 2021 Qualifiers -&amp;gt; 9th&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="出版部"&gt;出版部&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;コミックマーケット101 @ 2022-12-31: urandom vol.10 urandom出版システム2022&lt;/li&gt;
-&lt;li&gt;コミックマーケット99 @ 2021-12-31: urandom vol.8 BLEの通信を覗いてみよう&lt;/li&gt;
-&lt;li&gt;出版システムのサーバー周りのお守り&lt;/li&gt;
-&lt;/ul&gt;</description></item><item><title>SpresenseとBP35A1でスマートメーターと通信する</title><link>https://aquarite.info/blog/2022/01/spresense-broute/</link><pubDate>Sat, 08 Jan 2022 02:40:00 +0900</pubDate><guid>https://aquarite.info/blog/2022/01/spresense-broute/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
+&lt;p&gt;CTF以外の競技履歴&lt;/p&gt;</description></item><item><title>SpresenseとBP35A1でスマートメーターと通信する</title><link>https://aquarite.info/blog/2022/01/spresense-broute/</link><pubDate>Sat, 08 Jan 2022 02:40:00 +0900</pubDate><guid>https://aquarite.info/blog/2022/01/spresense-broute/</guid><description>&lt;h2 id="背景"&gt;背景&lt;/h2&gt;
 &lt;p&gt;結構前にスマートメーターに切り替わり、このタイミングで電力消費量なんかを取れないかと調べてみてBルートサービスなるものがあることを知った。&lt;/p&gt;
 &lt;p&gt;スマートメーターとWi-SUNなる規格で通信して情報を取得できるが、このモジュールがなかなか高価で尻込みしていた。しかし、最近どうもブレーカーが落ちる頻度が上がってきた感じがあったので、電力使用量をモニタリングしてみようと思ったものである。&lt;/p&gt;</description></item><item><title>OctopressからHugoへの切り替えついでにサイト整理しました</title><link>https://aquarite.info/blog/2021/09/site-migration/</link><pubDate>Sun, 26 Sep 2021 03:22:39 +0900</pubDate><guid>https://aquarite.info/blog/2021/09/site-migration/</guid><description>&lt;p&gt;最終更新は6年前と完全放置だった &lt;code&gt;tech.aquarite.info&lt;/code&gt; ですが、Octopressもすっかり動きがなくなってしまったので、いい機会だと思いHugoに切り替えました。何がいい機会なのかは自分でもよく分かりませんが、urandomの方でも使っているので多少は慣れたツールであるというのが選定理由です。&lt;/p&gt;
 &lt;p&gt;それと同時に &lt;code&gt;aquarite.info&lt;/code&gt; で公開していた殺風景なプロフィールページ（的なもの）も特に書くことないのにドメイン占有してるのもな、と思ってブログと統一することにしました。あの辺に書いてあった内容は&lt;a href="https://aquarite.info/about/"&gt;About&lt;/a&gt;に書いてあります、たぶん。あのページはあのページで古式ゆかしい手書きのHTMLで、Static Site Generatorでは感じられない人の温もりみたいなものがあったとは思うのですが、シンプルに面倒なので。そもそも人の温もりも何もキーボードでタイプしとるだけやろがい、という話です。&lt;/p&gt;</description></item><item><title>DatabaseRewinder with Rails 4.2 &amp; PostgreSQL</title><link>https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/</link><pubDate>Thu, 12 Mar 2015 18:49:02 +0900</pubDate><guid>https://aquarite.info/blog/2015/03/database-rewinder-with-rails-4-2/</guid><description>&lt;p&gt;Rails 4.2で新規プロジェクトを作ってPostgreSQLを使ったときにDatabaseRewinderが使えなかった話。私が使っていたのがDatabaseRewinderだったという話でたぶんDatabaseCleanerでも同じ現象は起こると思う。というか&lt;code&gt;disable_referential_integrity&lt;/code&gt;を使っている限り起こると思う。&lt;/p&gt;</description></item><item><title>SECCON 2014 Online Qualification (December) write-up</title><link>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</link><pubDate>Sun, 07 Dec 2014 22:11:39 +0900</pubDate><guid>https://aquarite.info/blog/2014/12/seccon2014-online-winter/</guid><description>&lt;h1 id="welcome-to-seccon-start-100"&gt;Welcome to SECCON (Start 100)&lt;/h1&gt;
