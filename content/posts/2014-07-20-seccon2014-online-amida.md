@@ -59,8 +59,8 @@ ans: `c4693af1761200417d5645bd084e28f0f2b426bf`
 
 ## コード
 
-{{< gist mayth f162efa8dc06cd05e5e3 >}}
+<script src="https://gist.github.com/mayth/f162efa8dc06cd05e5e3.js"></script>
 
 ## 問題例
 
-{{< gist mayth 56bde157140dd52e260c >}}
+<script src="https://gist.github.com/mayth/56bde157140dd52e260c.js"></script>
