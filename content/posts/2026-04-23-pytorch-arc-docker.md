@@ -1,7 +1,6 @@
 ---
 title: "PyTorch with Intel Arc in Docker"
 date: 2026-04-23T23:50:00+09:00
-draft: true
 author: Mei Akizuru
 slug: pytorch-arc-docker
 tags:
