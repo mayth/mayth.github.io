@@ -98,3 +98,7 @@ i {
 .note .note-header {
   font-weight: bolder;
 }
+
+.highlight pre {
+  overflow: auto;
+}
