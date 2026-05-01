@@ -1,349 +1,349 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.161.1"><title>Raspberry PiでKubernetesクラスタを組む（その3: k8sクラスタ構築編） &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/3.0.0/pure-min.css crossorigin=anonymous integrity="sha512-X2yGIVwg8zeG8N4xfsidr9MqIfIE8Yz1It+w2rhUJMqxUwvbVqC5OPcyRlPKYOw/bsdJut91//NO9rSbQZIPRQ=="><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/3.0.0/grids-responsive-min.css crossorigin=anonymous integrity="sha512-CCCLMVkN2BjfasRRbOIGDKhZa7gdWD93ttxHs0Z2UJB+jSqGPTcM4tibmV3GLxO2YkToFwsI36ivMvHw1KX+pg=="><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon><meta property="og:url" content="https://aquarite.info/blog/2025/04/rpi-cluster-01/"><meta property="og:site_name" content="Hello, (forgotten) world ☂"><meta property="og:title" content="Raspberry PiでKubernetesクラスタを組む（その3: k8sクラスタ構築編）"><meta property="og:description" content="その2が2022年の夏なのでもう3年近く放置していたRaspberryPiでk8s、なんとなくそろそろ手を付けるかと思ったので再開することにした。
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content><meta name=generator content="Hugo 0.161.1"><title>Raspberry PiでKubernetesクラスタを組む（その3: k8sクラスタ構築編） &#183; Hello, (forgotten) world ☂</title><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/3.0.0/pure-min.css crossorigin=anonymous integrity="sha512-X2yGIVwg8zeG8N4xfsidr9MqIfIE8Yz1It+w2rhUJMqxUwvbVqC5OPcyRlPKYOw/bsdJut91//NO9rSbQZIPRQ=="><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/pure/3.0.0/grids-responsive-min.css crossorigin=anonymous integrity="sha512-CCCLMVkN2BjfasRRbOIGDKhZa7gdWD93ttxHs0Z2UJB+jSqGPTcM4tibmV3GLxO2YkToFwsI36ivMvHw1KX+pg=="><link rel=stylesheet href=https://aquarite.info/css/side-menu.css><link rel=stylesheet href=https://aquarite.info/css/blackburn.css><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css crossorigin=anonymous integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="><link rel=preconnect href=https://fonts.gstatic.com><link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel=stylesheet type=text/css><link rel="shortcut icon" href=https://aquarite.info/img/favicon.ico type=image/x-icon><link rel=stylesheet href=https://aquarite.info//css/custom.css integrity="sha512-FXP1227CzZeYzh0VmzEUa9muHOZzZic6t0AyIG+n7Ffjzh3jBHtB6ERAk8+pVmstPnpfKiN8Lb7uhZHzQKYYAA==" crossorigin=anonymous><meta property="og:url" content="https://aquarite.info/blog/2025/04/rpi-cluster-01/"><meta property="og:site_name" content="Hello, (forgotten) world ☂"><meta property="og:title" content="Raspberry PiでKubernetesクラスタを組む（その3: k8sクラスタ構築編）"><meta property="og:description" content="その2が2022年の夏なのでもう3年近く放置していたRaspberryPiでk8s、なんとなくそろそろ手を付けるかと思ったので再開することにした。
 なんで放置したかというと、kubeadm initは正常に終了するもののapiserverが無限再起動編に突入して正常に稼働しなくて心が折れたというのがある。"><meta property="og:locale" content="ja_jp"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-04-06T18:41:00+09:00"><meta property="article:modified_time" content="2025-04-06T18:41:00+09:00"><meta property="article:tag" content="Tech"><meta property="article:tag" content="Raspberry Pi"><meta property="og:image" content="https://aquarite.info/images/cover.png"></head><body><div id=layout><a href=#menu id=menuLink class=menu-link><span></span></a><div id=menu><a class="pure-menu-heading brand" href=https://aquarite.info/>aquarite.info</a><div class=pure-menu><ul class=pure-menu-list><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/><i class='fa fa-home fa-fw'></i>Home</a></li><li class=pure-menu-item><a class=pure-menu-link href=https://aquarite.info/about/><i class='fa fa-user fa-fw'></i>About</a></li></ul></div><div class="pure-menu social"><ul class=pure-menu-list></ul></div><div><div class=small-print><small>&copy; 2026 Mei Akizuru. All rights reserved.</small></div><div class=small-print><small>Built with&nbsp;<a href=https://gohugo.io/ target=_blank>Hugo</a></small>
 <small>Theme&nbsp;<a href=https://github.com/mayth/blackburn target=_blank>Blackburn</a></small></div></div></div><div id=main><div class=header><h1>Raspberry PiでKubernetesクラスタを組む（その3: k8sクラスタ構築編）</h1><h2></h2></div><div class=content><div class=post-meta><div><i class="fa fa-calendar fa-fw"></i>
 <time>06 Apr 2025, 18:41</time></div><div><i class="fa fa-tags fa-fw"></i>
 <a class=post-taxonomy-tag href=https://aquarite.info/tags/tech>tech</a>&nbsp;/
-<a class=post-taxonomy-tag href=https://aquarite.info/tags/raspberry-pi>Raspberry Pi</a></div></div><p>その2が2022年の夏なのでもう3年近く放置していたRaspberryPiでk8s、なんとなくそろそろ手を付けるかと思ったので再開することにした。</p><p>なんで放置したかというと、<code>kubeadm init</code>は正常に終了するもののapiserverが無限再起動編に突入して正常に稼働しなくて心が折れたというのがある。</p><blockquote class=twitter-tweet><p lang=ja dir=ltr>一生kubeadm initが成功しない、いや成功するんだけどその後apiserverやらschedulerやらが勝手に再起動しまくってて使い物にならない、なんだこれ……</p>&mdash; 秋弦めい☂ (@maytheplic) <a href="https://twitter.com/maytheplic/status/1543970689610563585?ref_src=twsrc%5Etfw">July 4, 2022</a></blockquote><script async src=https://platform.twitter.com/widgets.js></script><p>結局原因を追及できなくてお手上げになったわけだが、それからまぁ3年も経てば何かしら変化があるだろうと思って再挑戦してみる。</p><p>なお、システム構成はほぼ変わらないが、Raspberry Pi OSはベースになるDebianのバージョンが上がってBullseyeからBookwormになっている。</p><h2 id=ネットワーク構成>ネットワーク構成</h2><p>我が家のネットワークは<code>192.168.39.0/24</code>が基本になっている（<code>39</code>は乱数で振っただけ）。デフォルトゲートウェイおよびDNSサーバーは<code>192.168.39.1</code>である。</p><p>各ノードは<code>thistle-[0-2]</code>というホスト名が振られており、<code>thistle-[0-2].intra.aquarite.info</code>で名前解決ができる。なお、これは宅内のDNSサーバーに設定を仕込んであるだけで、当然外部か <code>intra.aquarite.info</code>の名前解決はできない。また、<code>thistle-[0-2]</code>はIPアドレスを固定していて、<code>thistle-0</code>から順に<code>192.168.39.[20-22]</code>となっている。</p><p>Kubernetesのためには<code>10.0.0.0/8</code>を割り当てる。</p><h2 id=システムの準備>システムの準備</h2><p>デフォルトではスワップが有効だが、kubeletはスワップが有効なままでは起動できない。スワップがあっても起動するように設定するか、スワップを無効にすればよい。今回はスワップファイルを削除し、無効にしておく。</p><p>まずは状態を確認する。<code>free</code>コマンドを実行すると、Swapのtotalが<code>511Mi</code>と表示されていることから、スワップが有効であることがわかる。</p><pre tabindex=0><code>$ free -h
-               total        used        free      shared  buff/cache   available
-Mem:           7.6Gi       178Mi       7.3Gi       1.1Mi       249Mi       7.5Gi
-Swap:          511Mi          0B       511Mi
-</code></pre><p>スワップ無効化と、スワップファイルを管理する <code>dphys-swapfile</code> の停止を行う。</p><pre tabindex=0><code>$ sudo swapoff --all
-$ sudo systemctl stop dphys-swapfile.service
-$ sudo systemctl disable dphys-swapfile.service
-</code></pre><p>IPv4のIPフォワードを有効にする。</p><pre tabindex=0><code>$ sudo sysctl -w net.ipv4.ip_forward=1
-</code></pre><p>次にmemory cgroupを有効にする。<code>/boot/firmware/cmdline.txt</code> を開き、行末に <code>cgroup_enable=memory cgroup_memory=1</code> を追記する。</p><pre tabindex=0><code>$ cat /boot/firmware/cmdline.txt
-console=serial0,115200 console=tty1 root=PARTUUID=99a9f0e9-02 rootfstype=ext4 fsck.repair=yes rootwait cgroup_enable=memory cgroup_memory=1
-</code></pre><p>最後に<code>br_netfilter</code>を有効にする。起動時に読み込まれるように<code>/etc/modules-load.d/</code>以下にファイルを作る。</p><pre tabindex=0><code>$ echo br_netfilter | sudo tee /etc/modules-load.d/br_netfilter.conf
-</code></pre><p>ここで一回再起動する。</p><p>なお、cgroupsの状態は <code>/proc/cgroups</code> で確認できる。無効の状態だと、次のように <code>memory</code> の行の <code>enabled</code> が <code>0</code> になっている。</p><pre tabindex=0><code>$ cat /proc/cgroups
-#subsys_name	hierarchy	num_cgroups	enabled
-cpuset	0	38	1
-cpu	0	38	1
-cpuacct	0	38	1
-blkio	0	38	1
-memory	0	38	0
-devices	0	38	1
-freezer	0	38	1
-net_cls	0	38	1
-perf_event	0	38	1
-net_prio	0	38	1
-pids	0	38	1
-</code></pre><p>上記の通り編集して再起動すると、<code>1</code> に変わっている。</p><pre tabindex=0><code>$ cat /proc/cgroups
-#subsys_name	hierarchy	num_cgroups	enabled
-cpuset	0	69	1
-cpu	0	69	1
-cpuacct	0	69	1
-blkio	0	69	1
-memory	0	69	1
-devices	0	69	1
-freezer	0	69	1
-net_cls	0	69	1
-perf_event	0	69	1
-net_prio	0	69	1
-pids	0	69	1
-</code></pre><h2 id=コンテナランタイムの準備>コンテナランタイムの準備</h2><p>今回はCRI-Oを採用する。バージョンはv1.32系を採用することとし、次の通り環境変数を設定しておく。</p><pre tabindex=0><code>KUBERNETES_VERSION=v1.32
-CRIO_VERSION=v1.32
-</code></pre><p><a href=https://github.com/cri-o/packaging/blob/main/README.md#distributions-using-deb-packages>https://github.com/cri-o/packaging/blob/main/README.md#distributions-using-deb-packages</a> に従ってリポジトリの追加とパッケージのインストールを行う。</p><pre tabindex=0><code>$ curl -fsSL https://pkgs.k8s.io/core:/stable:/$KUBERNETES_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-$ echo &#34;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$KUBERNETES_VERSION/deb/ /&#34; | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-
-$ curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/$CRIO_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
-$ echo &#34;deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/$CRIO_VERSION/deb/ /&#34; | sudo tee /etc/apt/sources.list.d/cri-o.list
-
-$ sudo apt update
-$ sudo apt install cri-o kubelet kubeadm kubectl
-$ sudo systemctl enable --now crio.service
-$ sudo systemctl enable --now kubelet
-</code></pre><p><code>kubeadm init</code> でクラスタを初期化する。</p><pre tabindex=0><code>$ sudo kubeadm init --control-plane-endpoint=thistle-0.intra.aquarite.info --pod-network-cidr=10.0.0.0/8
-[init] Using Kubernetes version: v1.32.3
-[preflight] Running pre-flight checks
-	[WARNING SystemVerification]: missing optional cgroups: hugetlb
-[preflight] Pulling images required for setting up a Kubernetes cluster
-[preflight] This might take a minute or two, depending on the speed of your internet connection
-[preflight] You can also perform this action beforehand using &#39;kubeadm config images pull&#39;
-[certs] Using certificateDir folder &#34;/etc/kubernetes/pki&#34;
-[certs] Generating &#34;ca&#34; certificate and key
-[certs] Generating &#34;apiserver&#34; certificate and key
-[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local thistle-0 thistle-0.intra.aquarite.info] and IPs [10.96.0.1 192.168.39.20]
-[certs] Generating &#34;apiserver-kubelet-client&#34; certificate and key
-[certs] Generating &#34;front-proxy-ca&#34; certificate and key
-[certs] Generating &#34;front-proxy-client&#34; certificate and key
-[certs] Generating &#34;etcd/ca&#34; certificate and key
-[certs] Generating &#34;etcd/server&#34; certificate and key
-[certs] etcd/server serving cert is signed for DNS names [localhost thistle-0] and IPs [192.168.39.20 127.0.0.1 ::1]
-[certs] Generating &#34;etcd/peer&#34; certificate and key
-[certs] etcd/peer serving cert is signed for DNS names [localhost thistle-0] and IPs [192.168.39.20 127.0.0.1 ::1]
-[certs] Generating &#34;etcd/healthcheck-client&#34; certificate and key
-[certs] Generating &#34;apiserver-etcd-client&#34; certificate and key
-[certs] Generating &#34;sa&#34; key and public key
-[kubeconfig] Using kubeconfig folder &#34;/etc/kubernetes&#34;
-[kubeconfig] Writing &#34;admin.conf&#34; kubeconfig file
-[kubeconfig] Writing &#34;super-admin.conf&#34; kubeconfig file
-[kubeconfig] Writing &#34;kubelet.conf&#34; kubeconfig file
-[kubeconfig] Writing &#34;controller-manager.conf&#34; kubeconfig file
-[kubeconfig] Writing &#34;scheduler.conf&#34; kubeconfig file
-[etcd] Creating static Pod manifest for local etcd in &#34;/etc/kubernetes/manifests&#34;
-[control-plane] Using manifest folder &#34;/etc/kubernetes/manifests&#34;
-[control-plane] Creating static Pod manifest for &#34;kube-apiserver&#34;
-[control-plane] Creating static Pod manifest for &#34;kube-controller-manager&#34;
-[control-plane] Creating static Pod manifest for &#34;kube-scheduler&#34;
-[kubelet-start] Writing kubelet environment file with flags to file &#34;/var/lib/kubelet/kubeadm-flags.env&#34;
-[kubelet-start] Writing kubelet configuration to file &#34;/var/lib/kubelet/config.yaml&#34;
-[kubelet-start] Starting the kubelet
-[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory &#34;/etc/kubernetes/manifests&#34;
-[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
-[kubelet-check] The kubelet is healthy after 2.001340198s
-[api-check] Waiting for a healthy API server. This can take up to 4m0s
-[api-check] The API server is healthy after 9.003387504s
-[upload-config] Storing the configuration used in ConfigMap &#34;kubeadm-config&#34; in the &#34;kube-system&#34; Namespace
-[kubelet] Creating a ConfigMap &#34;kubelet-config&#34; in namespace kube-system with the configuration for the kubelets in the cluster
-[upload-certs] Skipping phase. Please see --upload-certs
-[mark-control-plane] Marking the node thistle-0 as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
-[mark-control-plane] Marking the node thistle-0 as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
-[bootstrap-token] Using token: ***
-[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
-[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
-[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
-[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
-[bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
-[bootstrap-token] Creating the &#34;cluster-info&#34; ConfigMap in the &#34;kube-public&#34; namespace
-[kubelet-finalize] Updating &#34;/etc/kubernetes/kubelet.conf&#34; to point to a rotatable kubelet client certificate and key
-[addons] Applied essential addon: CoreDNS
-[addons] Applied essential addon: kube-proxy
-
-Your Kubernetes control-plane has initialized successfully!
-
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-Alternatively, if you are the root user, you can run:
-
-  export KUBECONFIG=/etc/kubernetes/admin.conf
-
-You should now deploy a pod network to the cluster.
-Run &#34;kubectl apply -f [podnetwork].yaml&#34; with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-You can now join any number of control-plane nodes by copying certificate authorities
-and service account keys on each node and then running the following as root:
-
-  kubeadm join thistle-0.intra.aquarite.info:6443 --token *** \
-	--discovery-token-ca-cert-hash sha256:*** \
-	--control-plane
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join thistle-0.intra.aquarite.info:6443 --token *** \
-	--discovery-token-ca-cert-hash sha256:***
-</code></pre><p>※ 一応トークンとかハッシュのところは潰している。</p><p>残りの2ノードでメッセージの最後に表示されたコマンドを実行する。</p><pre tabindex=0><code>$ sudo kubeadm join thistle-0.intra.aquarite.info:6443 --token *** \
-        --discovery-token-ca-cert-hash sha256:***
-[preflight] Running pre-flight checks
-	[WARNING SystemVerification]: missing optional cgroups: hugetlb
-[preflight] Reading configuration from the &#34;kubeadm-config&#34; ConfigMap in namespace &#34;kube-system&#34;...
-[preflight] Use &#39;kubeadm init phase upload-config --config your-config.yaml&#39; to re-upload it.
-[kubelet-start] Writing kubelet configuration to file &#34;/var/lib/kubelet/config.yaml&#34;
-[kubelet-start] Writing kubelet environment file with flags to file &#34;/var/lib/kubelet/kubeadm-flags.env&#34;
-[kubelet-start] Starting the kubelet
-[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
-[kubelet-check] The kubelet is healthy after 1.503925623s
-[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap
-
-This node has joined the cluster:
-* Certificate signing request was sent to apiserver and a response was received.
-* The Kubelet was informed of the new secure connection details.
-
-Run &#39;kubectl get nodes&#39; on the control-plane to see this node join the cluster.
-</code></pre><p>コントロールノードでノードの情報を取得する。CNIが入っていないので全てのノードがNotReadyになっている。</p><pre tabindex=0><code> $ kubectl get nodes
-NAME        STATUS     ROLES           AGE     VERSION
-thistle-0   NotReady   control-plane   4m21s   v1.32.3
-thistle-1   NotReady   &lt;none&gt;          2m30s   v1.32.3
-thistle-2   NotReady   &lt;none&gt;          2m21s   v1.32.3
-</code></pre><h2 id=ciliumのインストール失敗>Ciliumのインストール（失敗）</h2><p>まずは公式のスニペットをそのまま実行する。</p><pre tabindex=0><code>CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
-CLI_ARCH=amd64
-if [ &#34;$(uname -m)&#34; = &#34;aarch64&#34; ]; then CLI_ARCH=arm64; fi
-curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
-sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
-rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-</code></pre><p>Cilium CLIを確認する。</p><pre tabindex=0><code>$ which cilium
-/usr/local/bin/cilium
-</code></pre><p>インストールする。この時点での最新版は1.17.2。</p><pre tabindex=0><code>$ cilium install --version 1.17.2
-ℹ️  Using Cilium version 1.17.2
-🔮 Auto-detected cluster name: kubernetes
-🔮 Auto-detected kube-proxy has been installed
-</code></pre><p>ステータスを確認する。<code>--wait</code>を与えると正常な状態になるまでループする。</p><pre tabindex=0><code>$ cilium status --wait
-    /¯¯\
- /¯¯\__/¯¯\    Cilium:             1 errors, 2 warnings
- \__/¯¯\__/    Operator:           OK
- /¯¯\__/¯¯\    Envoy DaemonSet:    1 errors, 1 warnings
- \__/¯¯\__/    Hubble Relay:       disabled
-    \__/       ClusterMesh:        disabled
-
-DaemonSet              cilium                   Desired: 3, Ready: 1/3, Available: 1/3, Unavailable: 2/3
-DaemonSet              cilium-envoy             Desired: 3, Unavailable: 3/3
-Deployment             cilium-operator          Desired: 1, Ready: 1/1, Available: 1/1
-Containers:            cilium                   Pending: 2, Running: 1
-                       cilium-envoy             Pending: 1, Running: 2
-                       cilium-operator          Running: 1
-...
-</code></pre><p>しばらく待てば正常終了するはずが、Envoy DaemonSetでエラーが出て一向に終了しない。一旦Ctrl-Cで止めて、ログを確認してみる。まずはpodの一覧を見る。</p><pre tabindex=0><code>$ kubectl -n kube-system get pods
-NAME                                READY   STATUS             RESTARTS      AGE
-cilium-4kw74                        1/1     Running            0             3m17s
-cilium-envoy-jp7xv                  0/1     CrashLoopBackOff   4 (20s ago)   3m17s
-cilium-envoy-v6rtr                  0/1     CrashLoopBackOff   4 (18s ago)   3m17s
-cilium-envoy-w2fzn                  0/1     CrashLoopBackOff   5 (10s ago)   3m17s
-cilium-nw99x                        1/1     Running            0             3m17s
-cilium-operator-59944f4b8f-t77mw    1/1     Running            0             3m17s
-cilium-pwcfx                        1/1     Running            0             3m17s
-coredns-86c5fccbb-2css6             1/1     Running            0             2m17s
-coredns-86c5fccbb-ztp94             1/1     Running            0             2m17s
-etcd-thistle-0                      1/1     Running            1             9m24s
-kube-apiserver-thistle-0            1/1     Running            1             9m24s
-kube-controller-manager-thistle-0   1/1     Running            1             9m24s
-kube-proxy-ctmwg                    1/1     Running            0             7m29s
-kube-proxy-jzcqj                    1/1     Running            0             7m38s
-kube-proxy-rc25q                    1/1     Running            0             9m21s
-kube-scheduler-thistle-0            1/1     Running            1             9m26s
-</code></pre><p><code>cilium-envoy-*</code> がCrashLoopBackOffになっている。<code>jp7xv</code>のpodのログを見る。</p><pre tabindex=0><code>$ kubectl -n kube-system logs cilium-envoy-jp7xv
-external/com_github_google_tcmalloc/tcmalloc/system-alloc.cc:625] MmapAligned() failed - unable to allocate with tag (hint, size, alignment) - is something limiting address placement? 0x161600000000 1073741824 1073741824 @ 0x557b0bccc4 0x557b0b90e0 0x557b0b89a0 0x557b0981d0 0x557b0b6694 0x557b0b6468 0x557b08d988 0x557afa3c84 0x557afa09a0 0x7f94868614
-external/com_github_google_tcmalloc/tcmalloc/arena.cc:58] FATAL ERROR: Out of memory trying to allocate internal tcmalloc data (bytes, object-size); is something preventing mmap from succeeding (sandbox, VSS limitations)? 131072 632 @ 0x557b0bd034 0x557b098260 0x557b0b6694 0x557b0b6468 0x557b08d988 0x557afa3c84 0x557afa09a0 0x7f94868614
-</code></pre><p>どうもメモリの確保に失敗しているようだ。2行目ではOut of memoryと言っているので、念のためメモリの状態を確認してみるが、メモリには余裕があるので別の原因であろうと思われる。</p><pre tabindex=0><code>$ free -h
-               total        used        free      shared  buff/cache   available
-Mem:           7.6Gi       878Mi       4.3Gi       3.4Mi       2.6Gi       6.8Gi
-Swap:             0B          0B          0B
-</code></pre><p>調べてみると、どうやらEnvoy、というかtcmallocの問題で、Raspberry Pi (ARM64)で動作しないようだ。かなり前のissueではあるが、コメント自体は2024年までついていて状況が改善されてなさそうな雰囲気がある。実際こうして問題を踏んでいるし……。</p><ul><li><a href=https://github.com/envoyproxy/envoy/issues/23339>Envoy 1.17-1.23 unable to start on Raspberry · Issue #23339 · envoyproxy/envoy</a></li><li><a href=https://github.com/cilium/cilium/issues/17467>Cilium fails to launch on ARM64: Binary cilium-envoy cannot be executed · Issue #17467 · cilium/cilium</a></li></ul><p>問題を回避するにはカーネルオプションを変えてビルドし直すかtcmallocをビルドし直す必要があるということで、さすがにヘビー過ぎるというか、今後のメンテナンスが怠すぎるので大人しくFlannelを使うことにした。というわけでCiliumをアンインストール。</p><pre tabindex=0><code>$ cilium uninstall
-</code></pre><h2 id=flannelのインストール>Flannelのインストール</h2><p>Podネットワークの範囲を<code>10.0.0.0/8</code>にしているので少々修正が必要である。まずはYAMLファイルをダウンロードしてくる。</p><pre tabindex=0><code>$ curl -LO &#39;https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml&#39;
-</code></pre><p>このファイルを開いてCIDRの指定を編集する。</p><pre tabindex=0><code>...
-  net-conf.json: |
-    {
-      &#34;Network&#34;: &#34;10.0.0.0/8&#34;,
-      &#34;EnableNFTables&#34;: false,
-      &#34;Backend&#34;: {
-        &#34;Type&#34;: &#34;vxlan&#34;
-      }
-    }
-...
-</code></pre><p>それから<code>kubectl apply</code>を行う。</p><pre tabindex=0><code>$ kubectl apply -f kube-flannel.yml
-namespace/kube-flannel created
-serviceaccount/flannel created
-clusterrole.rbac.authorization.k8s.io/flannel created
-clusterrolebinding.rbac.authorization.k8s.io/flannel created
-configmap/kube-flannel-cfg created
-daemonset.apps/kube-flannel-ds created
-</code></pre><p>ノードの状態を確認すると、全ノードがReadyになっている。</p><pre tabindex=0><code>$ kubectl get nodes
-NAME        STATUS   ROLES           AGE   VERSION
-thistle-0   Ready    control-plane   25m   v1.32.3
-thistle-1   Ready    &lt;none&gt;          23m   v1.32.3
-thistle-2   Ready    &lt;none&gt;          23m   v1.32.3
-</code></pre><p>3年前あんだけ詰まったのは一体なんだったんだろう。</p><h2 id=corednsが上がってこない>CoreDNSが上がってこない</h2><p>Podの状態を確認するとCoreDNSが起動していない。</p><pre tabindex=0><code>$ kubectl -n kube-system get pods
-NAME                                READY   STATUS              RESTARTS   AGE
-coredns-86c5fccbb-2css6             0/1     ContainerCreating   1          6h13m
-coredns-86c5fccbb-ztp94             0/1     ContainerCreating   1          6h13m
-etcd-thistle-0                      1/1     Running             3          6h20m
-kube-apiserver-thistle-0            1/1     Running             3          6h20m
-kube-controller-manager-thistle-0   1/1     Running             3          6h20m
-kube-proxy-ctmwg                    1/1     Running             2          6h19m
-kube-proxy-jzcqj                    1/1     Running             2          6h19m
-kube-proxy-rc25q                    1/1     Running             2          6h20m
-kube-scheduler-thistle-0            1/1     Running             3          6h21m
-</code></pre><p>describeでpodの状態を見てみる。</p><pre tabindex=0><code>$ kubectl -n kube-system describe pods coredns-86c5fccbb-2css6
-Name:                 coredns-86c5fccbb-2css6
-Namespace:            kube-system
-Priority:             2000000000
-Priority Class Name:  system-cluster-critical
-Service Account:      coredns
-Node:                 thistle-0/192.168.39.20
-Start Time:           Tue, 25 Mar 2025 04:58:34 +0900
-Labels:               k8s-app=kube-dns
-                      pod-template-hash=86c5fccbb
-Annotations:          kubectl.kubernetes.io/restartedAt: 2025-03-25T04:58:33+09:00
-Status:               Running
-IP:
-IPs:                  &lt;none&gt;
-Controlled By:        ReplicaSet/coredns-86c5fccbb
-Containers:
-  coredns:
-    Container ID:
-    Image:         registry.k8s.io/coredns/coredns:v1.11.3
-    Image ID:
-    Ports:         53/UDP, 53/TCP, 9153/TCP
-    Host Ports:    0/UDP, 0/TCP, 0/TCP
-    Args:
-      -conf
-      /etc/coredns/Corefile
-    State:          Waiting
-      Reason:       ContainerCreating
-    Last State:     Terminated
-      Reason:       ContainerStatusUnknown
-      Message:      The container could not be located when the pod was deleted.  The container used to be Running
-      Exit Code:    137
-      Started:      Mon, 01 Jan 0001 00:00:00 +0000
-      Finished:     Mon, 01 Jan 0001 00:00:00 +0000
-    Ready:          False
-    Restart Count:  1
-    Limits:
-      memory:  170Mi
-    Requests:
-      cpu:        100m
-      memory:     70Mi
-    Liveness:     http-get http://:8080/health delay=60s timeout=5s period=10s #success=1 #failure=5
-    Readiness:    http-get http://:8181/ready delay=0s timeout=1s period=10s #success=1 #failure=3
-    Environment:  &lt;none&gt;
-    Mounts:
-      /etc/coredns from config-volume (ro)
-      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6whk9 (ro)
-Conditions:
-  Type                        Status
-  PodReadyToStartContainers   False
-  Initialized                 True
-  Ready                       False
-  ContainersReady             False
-  PodScheduled                True
-Volumes:
-  config-volume:
-    Type:      ConfigMap (a volume populated by a ConfigMap)
-    Name:      coredns
-    Optional:  false
-  kube-api-access-6whk9:
-    Type:                    Projected (a volume that contains injected data from multiple sources)
-    TokenExpirationSeconds:  3607
-    ConfigMapName:           kube-root-ca.crt
-    ConfigMapOptional:       &lt;nil&gt;
-    DownwardAPI:             true
-QoS Class:                   Burstable
-Node-Selectors:              kubernetes.io/os=linux
-Tolerations:                 CriticalAddonsOnly op=Exists
-                             node-role.kubernetes.io/control-plane:NoSchedule
-                             node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
-                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
-Events:
-  Type     Reason                  Age                     From     Message
-  ----     ------                  ----                    ----     -------
-  Warning  FailedCreatePodSandBox  9m54s (x281 over 5h5m)  kubelet  (combined from similar events): Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(935b3ad214394f5d3730b1c1a4f7cbe261dd29a0e5cce8ebcc3eaf945ec7eba8): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
-Is the agent running?
-  Warning  FailedCreatePodSandBox  3m8s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(888b9d00c92b667b0e0b6d865ba9b96ff0e1afcee33acc2818e00d5f6ee5d64f): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
-Is the agent running?
-  Warning  FailedCreatePodSandBox  2m4s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(345a1307bba81a94435d8aff9a3d79c67fca3683ad66284d475805c371a4b38c): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
-Is the agent running?
-  Warning  FailedCreatePodSandBox  63s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(2e436ec645ce0fac36945db53eaaee27b1d89680484749ad6e2d72c9371f77c1): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
-Is the agent running?
-  Warning  FailedCreatePodSandBox  2s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(4184bee28309b45aa260c25d2a92f68d6dbac4399ae028b465212cc4a25219ae): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
-Is the agent running?
-</code></pre><p>Eventsを見ると、どうやらCiliumを使おうとして失敗しているように見える。Ciliumは既にアンインストールしたので当然使えないが、なぜそもそも使おうとしてしまうのか？</p><p>というわけで調べてみると同じ事象の記事があった: <a href=https://qiita.com/ishii1648/items/f0b9882834d63534461e>kubernetesでcorednsが起動しない時に確認すること #Calico - Qiita</a></p><p><code>/etc/cni/net.d</code>以下にファイルがあるそうなので、探してみる。</p><pre tabindex=0><code>$ cat /etc/cni/net.d/
-05-cilium.conflist                10-flannel.conflist
-10-crio-bridge.conflist.disabled  .kubernetes-cni-keep
-$
-</code></pre><p><code>05-cilium.conflist</code>がある。これを削除してしばらくすると、Runningになった。</p><pre tabindex=0><code>$ sudo rm /etc/cni/net.d/05-cilium.conflist
-$ kubectl -n kube-system get pods
-NAME                                READY   STATUS              RESTARTS   AGE
-coredns-86c5fccbb-2css6             1/1     Running             2          6h26m
-coredns-86c5fccbb-q226s             0/1     ContainerCreating   0          10m
-etcd-thistle-0                      1/1     Running             4          6h33m
-kube-apiserver-thistle-0            1/1     Running             4          6h33m
-kube-controller-manager-thistle-0   1/1     Running             4          6h33m
-kube-proxy-ctmwg                    1/1     Running             2          6h31m
-kube-proxy-jzcqj                    1/1     Running             2          6h31m
-kube-proxy-rc25q                    1/1     Running             3          6h33m
-kube-scheduler-thistle-0            1/1     Running             4          6h33m
-</code></pre><p>各ノードに<code>05-cilium.conflist</code>があったため、他のノードでも同様に削除すると、残っているContainerCreatingのものも正常化した。</p><p>というわけでk8sクラスタの構築が完了した。本当に3年前のapiserver無限再起動は何だったんだろうね。</p><h4><i class="fas fa-share-alt" aria-hidden=true></i>&nbsp;Share!</h4><ul class=share-buttons><li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="https://plus.google.com/share?url=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a></li></ul><style>ul.share-buttons{list-style:none;padding:0}ul.share-buttons li{display:inline}ul.share-buttons .sr-only{position:absolute;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}</style><div class="prev-next-post pure-g"><div class=pure-u-1-24 style=text-align:left><a href=https://aquarite.info/blog/2025/03/build-new-server/><i class="fa fa-chevron-left"></i></a></div><div class=pure-u-10-24><nav class=prev><a href=https://aquarite.info/blog/2025/03/build-new-server/>新しいサーバーを組んだ</a></nav></div><div class=pure-u-2-24>&nbsp;</div><div class=pure-u-10-24><nav class=next><a href=https://aquarite.info/blog/2025/08/pikvm-diy-v2-zero2/>Raspberry Pi Zero 2 WでPiKVMを作る</a></nav></div><div class=pure-u-1-24 style=text-align:right><a href=https://aquarite.info/blog/2025/08/pikvm-diy-v2-zero2/><i class="fa fa-chevron-right"></i></a></div></div></div></div></div><script src=https://aquarite.info/js/ui.js></script><script src=https://aquarite.info/js/menus.js></script><script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>
+<a class=post-taxonomy-tag href=https://aquarite.info/tags/raspberry-pi>Raspberry Pi</a></div></div><p>その2が2022年の夏なのでもう3年近く放置していたRaspberryPiでk8s、なんとなくそろそろ手を付けるかと思ったので再開することにした。</p><p>なんで放置したかというと、<code>kubeadm init</code>は正常に終了するもののapiserverが無限再起動編に突入して正常に稼働しなくて心が折れたというのがある。</p><blockquote class=twitter-tweet><p lang=ja dir=ltr>一生kubeadm initが成功しない、いや成功するんだけどその後apiserverやらschedulerやらが勝手に再起動しまくってて使い物にならない、なんだこれ……</p>&mdash; 秋弦めい☂ (@maytheplic) <a href="https://twitter.com/maytheplic/status/1543970689610563585?ref_src=twsrc%5Etfw">July 4, 2022</a></blockquote><script async src=https://platform.twitter.com/widgets.js></script><p>結局原因を追及できなくてお手上げになったわけだが、それからまぁ3年も経てば何かしら変化があるだろうと思って再挑戦してみる。</p><p>なお、システム構成はほぼ変わらないが、Raspberry Pi OSはベースになるDebianのバージョンが上がってBullseyeからBookwormになっている。</p><h2 id=ネットワーク構成>ネットワーク構成</h2><p>我が家のネットワークは<code>192.168.39.0/24</code>が基本になっている（<code>39</code>は乱数で振っただけ）。デフォルトゲートウェイおよびDNSサーバーは<code>192.168.39.1</code>である。</p><p>各ノードは<code>thistle-[0-2]</code>というホスト名が振られており、<code>thistle-[0-2].intra.aquarite.info</code>で名前解決ができる。なお、これは宅内のDNSサーバーに設定を仕込んであるだけで、当然外部か <code>intra.aquarite.info</code>の名前解決はできない。また、<code>thistle-[0-2]</code>はIPアドレスを固定していて、<code>thistle-0</code>から順に<code>192.168.39.[20-22]</code>となっている。</p><p>Kubernetesのためには<code>10.0.0.0/8</code>を割り当てる。</p><h2 id=システムの準備>システムの準備</h2><p>デフォルトではスワップが有効だが、kubeletはスワップが有効なままでは起動できない。スワップがあっても起動するように設定するか、スワップを無効にすればよい。今回はスワップファイルを削除し、無効にしておく。</p><p>まずは状態を確認する。<code>free</code>コマンドを実行すると、Swapのtotalが<code>511Mi</code>と表示されていることから、スワップが有効であることがわかる。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ free -h
+</span></span><span style=display:flex><span>               total        used        free      shared  buff/cache   available
+</span></span><span style=display:flex><span>Mem:           7.6Gi       178Mi       7.3Gi       1.1Mi       249Mi       7.5Gi
+</span></span><span style=display:flex><span>Swap:          511Mi          0B       511Mi
+</span></span></code></pre></div><p>スワップ無効化と、スワップファイルを管理する <code>dphys-swapfile</code> の停止を行う。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ sudo swapoff --all
+</span></span><span style=display:flex><span>$ sudo systemctl stop dphys-swapfile.service
+</span></span><span style=display:flex><span>$ sudo systemctl disable dphys-swapfile.service
+</span></span></code></pre></div><p>IPv4のIPフォワードを有効にする。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ sudo sysctl -w net.ipv4.ip_forward<span style=color:#56b6c2>=</span><span style=color:#d19a66>1</span>
+</span></span></code></pre></div><p>次にmemory cgroupを有効にする。<code>/boot/firmware/cmdline.txt</code> を開き、行末に <code>cgroup_enable=memory cgroup_memory=1</code> を追記する。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cat /boot/firmware/cmdline.txt
+</span></span><span style=display:flex><span>console=serial0,115200 console=tty1 root=PARTUUID=99a9f0e9-02 rootfstype=ext4 fsck.repair=yes rootwait cgroup_enable=memory cgroup_memory=1
+</span></span></code></pre></div><p>最後に<code>br_netfilter</code>を有効にする。起動時に読み込まれるように<code>/etc/modules-load.d/</code>以下にファイルを作る。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ <span style=color:#e5c07b>echo</span> br_netfilter | sudo tee /etc/modules-load.d/br_netfilter.conf
+</span></span></code></pre></div><p>ここで一回再起動する。</p><p>なお、cgroupsの状態は <code>/proc/cgroups</code> で確認できる。無効の状態だと、次のように <code>memory</code> の行の <code>enabled</code> が <code>0</code> になっている。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cat /proc/cgroups
+</span></span><span style=display:flex><span>#subsys_name	hierarchy	num_cgroups	enabled
+</span></span><span style=display:flex><span>cpuset	0	38	1
+</span></span><span style=display:flex><span>cpu	0	38	1
+</span></span><span style=display:flex><span>cpuacct	0	38	1
+</span></span><span style=display:flex><span>blkio	0	38	1
+</span></span><span style=display:flex><span>memory	0	38	0
+</span></span><span style=display:flex><span>devices	0	38	1
+</span></span><span style=display:flex><span>freezer	0	38	1
+</span></span><span style=display:flex><span>net_cls	0	38	1
+</span></span><span style=display:flex><span>perf_event	0	38	1
+</span></span><span style=display:flex><span>net_prio	0	38	1
+</span></span><span style=display:flex><span>pids	0	38	1
+</span></span></code></pre></div><p>上記の通り編集して再起動すると、<code>1</code> に変わっている。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cat /proc/cgroups
+</span></span><span style=display:flex><span>#subsys_name	hierarchy	num_cgroups	enabled
+</span></span><span style=display:flex><span>cpuset	0	69	1
+</span></span><span style=display:flex><span>cpu	0	69	1
+</span></span><span style=display:flex><span>cpuacct	0	69	1
+</span></span><span style=display:flex><span>blkio	0	69	1
+</span></span><span style=display:flex><span>memory	0	69	1
+</span></span><span style=display:flex><span>devices	0	69	1
+</span></span><span style=display:flex><span>freezer	0	69	1
+</span></span><span style=display:flex><span>net_cls	0	69	1
+</span></span><span style=display:flex><span>perf_event	0	69	1
+</span></span><span style=display:flex><span>net_prio	0	69	1
+</span></span><span style=display:flex><span>pids	0	69	1
+</span></span></code></pre></div><h2 id=コンテナランタイムの準備>コンテナランタイムの準備</h2><p>今回はCRI-Oを採用する。バージョンはv1.32系を採用することとし、次の通り環境変数を設定しておく。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#e06c75>KUBERNETES_VERSION</span><span style=color:#56b6c2>=</span>v1.32
+</span></span><span style=display:flex><span><span style=color:#e06c75>CRIO_VERSION</span><span style=color:#56b6c2>=</span>v1.32
+</span></span></code></pre></div><p><a href=https://github.com/cri-o/packaging/blob/main/README.md#distributions-using-deb-packages>https://github.com/cri-o/packaging/blob/main/README.md#distributions-using-deb-packages</a> に従ってリポジトリの追加とパッケージのインストールを行う。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ curl -fsSL https://pkgs.k8s.io/core:/stable:/<span style=color:#e06c75>$KUBERNETES_VERSION</span>/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+</span></span><span style=display:flex><span>$ <span style=color:#e5c07b>echo</span> <span style=color:#98c379>&#34;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/</span><span style=color:#e06c75>$KUBERNETES_VERSION</span><span style=color:#98c379>/deb/ /&#34;</span> | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/<span style=color:#e06c75>$CRIO_VERSION</span>/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+</span></span><span style=display:flex><span>$ <span style=color:#e5c07b>echo</span> <span style=color:#98c379>&#34;deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/</span><span style=color:#e06c75>$CRIO_VERSION</span><span style=color:#98c379>/deb/ /&#34;</span> | sudo tee /etc/apt/sources.list.d/cri-o.list
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ sudo apt update
+</span></span><span style=display:flex><span>$ sudo apt install cri-o kubelet kubeadm kubectl
+</span></span><span style=display:flex><span>$ sudo systemctl <span style=color:#e5c07b>enable</span> --now crio.service
+</span></span><span style=display:flex><span>$ sudo systemctl <span style=color:#e5c07b>enable</span> --now kubelet
+</span></span></code></pre></div><p><code>kubeadm init</code> でクラスタを初期化する。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ sudo kubeadm init --control-plane-endpoint<span style=color:#56b6c2>=</span>thistle-0.intra.aquarite.info --pod-network-cidr<span style=color:#56b6c2>=</span>10.0.0.0/8
+</span></span><span style=display:flex><span>[init] Using Kubernetes version: v1.32.3
+</span></span><span style=display:flex><span>[preflight] Running pre-flight checks
+</span></span><span style=display:flex><span>	[WARNING SystemVerification]: missing optional cgroups: hugetlb
+</span></span><span style=display:flex><span>[preflight] Pulling images required for setting up a Kubernetes cluster
+</span></span><span style=display:flex><span>[preflight] This might take a minute or two, depending on the speed of your internet connection
+</span></span><span style=display:flex><span>[preflight] You can also perform this action beforehand using &#39;kubeadm config images pull&#39;
+</span></span><span style=display:flex><span>[certs] Using certificateDir folder &#34;/etc/kubernetes/pki&#34;
+</span></span><span style=display:flex><span>[certs] Generating &#34;ca&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;apiserver&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local thistle-0 thistle-0.intra.aquarite.info] and IPs [10.96.0.1 192.168.39.20]
+</span></span><span style=display:flex><span>[certs] Generating &#34;apiserver-kubelet-client&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;front-proxy-ca&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;front-proxy-client&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;etcd/ca&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;etcd/server&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] etcd/server serving cert is signed for DNS names [localhost thistle-0] and IPs [192.168.39.20 127.0.0.1 ::1]
+</span></span><span style=display:flex><span>[certs] Generating &#34;etcd/peer&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] etcd/peer serving cert is signed for DNS names [localhost thistle-0] and IPs [192.168.39.20 127.0.0.1 ::1]
+</span></span><span style=display:flex><span>[certs] Generating &#34;etcd/healthcheck-client&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;apiserver-etcd-client&#34; certificate and key
+</span></span><span style=display:flex><span>[certs] Generating &#34;sa&#34; key and public key
+</span></span><span style=display:flex><span>[kubeconfig] Using kubeconfig folder &#34;/etc/kubernetes&#34;
+</span></span><span style=display:flex><span>[kubeconfig] Writing &#34;admin.conf&#34; kubeconfig file
+</span></span><span style=display:flex><span>[kubeconfig] Writing &#34;super-admin.conf&#34; kubeconfig file
+</span></span><span style=display:flex><span>[kubeconfig] Writing &#34;kubelet.conf&#34; kubeconfig file
+</span></span><span style=display:flex><span>[kubeconfig] Writing &#34;controller-manager.conf&#34; kubeconfig file
+</span></span><span style=display:flex><span>[kubeconfig] Writing &#34;scheduler.conf&#34; kubeconfig file
+</span></span><span style=display:flex><span>[etcd] Creating static Pod manifest for local etcd in &#34;/etc/kubernetes/manifests&#34;
+</span></span><span style=display:flex><span>[control-plane] Using manifest folder &#34;/etc/kubernetes/manifests&#34;
+</span></span><span style=display:flex><span>[control-plane] Creating static Pod manifest for &#34;kube-apiserver&#34;
+</span></span><span style=display:flex><span>[control-plane] Creating static Pod manifest for &#34;kube-controller-manager&#34;
+</span></span><span style=display:flex><span>[control-plane] Creating static Pod manifest for &#34;kube-scheduler&#34;
+</span></span><span style=display:flex><span>[kubelet-start] Writing kubelet environment file with flags to file &#34;/var/lib/kubelet/kubeadm-flags.env&#34;
+</span></span><span style=display:flex><span>[kubelet-start] Writing kubelet configuration to file &#34;/var/lib/kubelet/config.yaml&#34;
+</span></span><span style=display:flex><span>[kubelet-start] Starting the kubelet
+</span></span><span style=display:flex><span>[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory &#34;/etc/kubernetes/manifests&#34;
+</span></span><span style=display:flex><span>[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+</span></span><span style=display:flex><span>[kubelet-check] The kubelet is healthy after 2.001340198s
+</span></span><span style=display:flex><span>[api-check] Waiting for a healthy API server. This can take up to 4m0s
+</span></span><span style=display:flex><span>[api-check] The API server is healthy after 9.003387504s
+</span></span><span style=display:flex><span>[upload-config] Storing the configuration used in ConfigMap &#34;kubeadm-config&#34; in the &#34;kube-system&#34; Namespace
+</span></span><span style=display:flex><span>[kubelet] Creating a ConfigMap &#34;kubelet-config&#34; in namespace kube-system with the configuration for the kubelets in the cluster
+</span></span><span style=display:flex><span>[upload-certs] Skipping phase. Please see --upload-certs
+</span></span><span style=display:flex><span>[mark-control-plane] Marking the node thistle-0 as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
+</span></span><span style=display:flex><span>[mark-control-plane] Marking the node thistle-0 as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
+</span></span><span style=display:flex><span>[bootstrap-token] Using token: ***
+</span></span><span style=display:flex><span>[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+</span></span><span style=display:flex><span>[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
+</span></span><span style=display:flex><span>[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+</span></span><span style=display:flex><span>[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+</span></span><span style=display:flex><span>[bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+</span></span><span style=display:flex><span>[bootstrap-token] Creating the &#34;cluster-info&#34; ConfigMap in the &#34;kube-public&#34; namespace
+</span></span><span style=display:flex><span>[kubelet-finalize] Updating &#34;/etc/kubernetes/kubelet.conf&#34; to point to a rotatable kubelet client certificate and key
+</span></span><span style=display:flex><span>[addons] Applied essential addon: CoreDNS
+</span></span><span style=display:flex><span>[addons] Applied essential addon: kube-proxy
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Your Kubernetes control-plane has initialized successfully!
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>To start using your cluster, you need to run the following as a regular user:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  mkdir -p $HOME/.kube
+</span></span><span style=display:flex><span>  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style=display:flex><span>  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Alternatively, if you are the root user, you can run:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  export KUBECONFIG=/etc/kubernetes/admin.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>You should now deploy a pod network to the cluster.
+</span></span><span style=display:flex><span>Run &#34;kubectl apply -f [podnetwork].yaml&#34; with one of the options listed at:
+</span></span><span style=display:flex><span>  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>You can now join any number of control-plane nodes by copying certificate authorities
+</span></span><span style=display:flex><span>and service account keys on each node and then running the following as root:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  kubeadm join thistle-0.intra.aquarite.info:6443 --token *** \
+</span></span><span style=display:flex><span>	--discovery-token-ca-cert-hash sha256:*** \
+</span></span><span style=display:flex><span>	--control-plane
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Then you can join any number of worker nodes by running the following on each as root:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>kubeadm join thistle-0.intra.aquarite.info:6443 --token *** \
+</span></span><span style=display:flex><span>	--discovery-token-ca-cert-hash sha256:***
+</span></span></code></pre></div><p>※ 一応トークンとかハッシュのところは潰している。</p><p>残りの2ノードでメッセージの最後に表示されたコマンドを実行する。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ sudo kubeadm join thistle-0.intra.aquarite.info:6443 --token *** <span style=color:#98c379>\
+</span></span></span><span style=display:flex><span>        --discovery-token-ca-cert-hash sha256:***
+</span></span><span style=display:flex><span>[preflight] Running pre-flight checks
+</span></span><span style=display:flex><span>	[WARNING SystemVerification]: missing optional cgroups: hugetlb
+</span></span><span style=display:flex><span>[preflight] Reading configuration from the &#34;kubeadm-config&#34; ConfigMap in namespace &#34;kube-system&#34;...
+</span></span><span style=display:flex><span>[preflight] Use &#39;kubeadm init phase upload-config --config your-config.yaml&#39; to re-upload it.
+</span></span><span style=display:flex><span>[kubelet-start] Writing kubelet configuration to file &#34;/var/lib/kubelet/config.yaml&#34;
+</span></span><span style=display:flex><span>[kubelet-start] Writing kubelet environment file with flags to file &#34;/var/lib/kubelet/kubeadm-flags.env&#34;
+</span></span><span style=display:flex><span>[kubelet-start] Starting the kubelet
+</span></span><span style=display:flex><span>[kubelet-check] Waiting for a healthy kubelet at http://127.0.0.1:10248/healthz. This can take up to 4m0s
+</span></span><span style=display:flex><span>[kubelet-check] The kubelet is healthy after 1.503925623s
+</span></span><span style=display:flex><span>[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>This node has joined the cluster:
+</span></span><span style=display:flex><span>* Certificate signing request was sent to apiserver and a response was received.
+</span></span><span style=display:flex><span>* The Kubelet was informed of the new secure connection details.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Run &#39;kubectl get nodes&#39; on the control-plane to see this node join the cluster.
+</span></span></code></pre></div><p>コントロールノードでノードの情報を取得する。CNIが入っていないので全てのノードがNotReadyになっている。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span> $ kubectl get nodes
+</span></span><span style=display:flex><span>NAME        STATUS     ROLES           AGE     VERSION
+</span></span><span style=display:flex><span>thistle-0   NotReady   control-plane   4m21s   v1.32.3
+</span></span><span style=display:flex><span>thistle-1   NotReady   &lt;none&gt;          2m30s   v1.32.3
+</span></span><span style=display:flex><span>thistle-2   NotReady   &lt;none&gt;          2m21s   v1.32.3
+</span></span></code></pre></div><h2 id=ciliumのインストール失敗>Ciliumのインストール（失敗）</h2><p>まずは公式のスニペットをそのまま実行する。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#e06c75>CILIUM_CLI_VERSION</span><span style=color:#56b6c2>=</span><span style=color:#c678dd>$(</span>curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt<span style=color:#c678dd>)</span>
+</span></span><span style=display:flex><span><span style=color:#e06c75>CLI_ARCH</span><span style=color:#56b6c2>=</span>amd64
+</span></span><span style=display:flex><span><span style=color:#c678dd>if</span> <span style=color:#56b6c2>[</span> <span style=color:#98c379>&#34;</span><span style=color:#c678dd>$(</span>uname -m<span style=color:#c678dd>)</span><span style=color:#98c379>&#34;</span> <span style=color:#56b6c2>=</span> <span style=color:#98c379>&#34;aarch64&#34;</span> <span style=color:#56b6c2>]</span>; <span style=color:#c678dd>then</span> <span style=color:#e06c75>CLI_ARCH</span><span style=color:#56b6c2>=</span>arm64; <span style=color:#c678dd>fi</span>
+</span></span><span style=display:flex><span>curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/<span style=color:#98c379>${</span><span style=color:#e06c75>CILIUM_CLI_VERSION</span><span style=color:#98c379>}</span>/cilium-linux-<span style=color:#98c379>${</span><span style=color:#e06c75>CLI_ARCH</span><span style=color:#98c379>}</span>.tar.gz<span style=color:#56b6c2>{</span>,.sha256sum<span style=color:#56b6c2>}</span>
+</span></span><span style=display:flex><span>sha256sum --check cilium-linux-<span style=color:#98c379>${</span><span style=color:#e06c75>CLI_ARCH</span><span style=color:#98c379>}</span>.tar.gz.sha256sum
+</span></span><span style=display:flex><span>sudo tar xzvfC cilium-linux-<span style=color:#98c379>${</span><span style=color:#e06c75>CLI_ARCH</span><span style=color:#98c379>}</span>.tar.gz /usr/local/bin
+</span></span><span style=display:flex><span>rm cilium-linux-<span style=color:#98c379>${</span><span style=color:#e06c75>CLI_ARCH</span><span style=color:#98c379>}</span>.tar.gz<span style=color:#56b6c2>{</span>,.sha256sum<span style=color:#56b6c2>}</span>
+</span></span></code></pre></div><p>Cilium CLIを確認する。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ which cilium
+</span></span><span style=display:flex><span>/usr/local/bin/cilium
+</span></span></code></pre></div><p>インストールする。この時点での最新版は1.17.2。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cilium install --version 1.17.2
+</span></span><span style=display:flex><span>ℹ️  Using Cilium version 1.17.2
+</span></span><span style=display:flex><span>🔮 Auto-detected cluster name: kubernetes
+</span></span><span style=display:flex><span>🔮 Auto-detected kube-proxy has been installed
+</span></span></code></pre></div><p>ステータスを確認する。<code>--wait</code>を与えると正常な状態になるまでループする。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cilium status --wait
+</span></span><span style=display:flex><span>    /¯¯\
+</span></span><span style=display:flex><span> /¯¯\__/¯¯\    Cilium:             1 errors, 2 warnings
+</span></span><span style=display:flex><span> \__/¯¯\__/    Operator:           OK
+</span></span><span style=display:flex><span> /¯¯\__/¯¯\    Envoy DaemonSet:    1 errors, 1 warnings
+</span></span><span style=display:flex><span> \__/¯¯\__/    Hubble Relay:       disabled
+</span></span><span style=display:flex><span>    \__/       ClusterMesh:        disabled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>DaemonSet              cilium                   Desired: 3, Ready: 1/3, Available: 1/3, Unavailable: 2/3
+</span></span><span style=display:flex><span>DaemonSet              cilium-envoy             Desired: 3, Unavailable: 3/3
+</span></span><span style=display:flex><span>Deployment             cilium-operator          Desired: 1, Ready: 1/1, Available: 1/1
+</span></span><span style=display:flex><span>Containers:            cilium                   Pending: 2, Running: 1
+</span></span><span style=display:flex><span>                       cilium-envoy             Pending: 1, Running: 2
+</span></span><span style=display:flex><span>                       cilium-operator          Running: 1
+</span></span><span style=display:flex><span>...
+</span></span></code></pre></div><p>しばらく待てば正常終了するはずが、Envoy DaemonSetでエラーが出て一向に終了しない。一旦Ctrl-Cで止めて、ログを確認してみる。まずはpodの一覧を見る。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ kubectl -n kube-system get pods
+</span></span><span style=display:flex><span>NAME                                READY   STATUS             RESTARTS      AGE
+</span></span><span style=display:flex><span>cilium-4kw74                        1/1     Running            0             3m17s
+</span></span><span style=display:flex><span>cilium-envoy-jp7xv                  0/1     CrashLoopBackOff   4 (20s ago)   3m17s
+</span></span><span style=display:flex><span>cilium-envoy-v6rtr                  0/1     CrashLoopBackOff   4 (18s ago)   3m17s
+</span></span><span style=display:flex><span>cilium-envoy-w2fzn                  0/1     CrashLoopBackOff   5 (10s ago)   3m17s
+</span></span><span style=display:flex><span>cilium-nw99x                        1/1     Running            0             3m17s
+</span></span><span style=display:flex><span>cilium-operator-59944f4b8f-t77mw    1/1     Running            0             3m17s
+</span></span><span style=display:flex><span>cilium-pwcfx                        1/1     Running            0             3m17s
+</span></span><span style=display:flex><span>coredns-86c5fccbb-2css6             1/1     Running            0             2m17s
+</span></span><span style=display:flex><span>coredns-86c5fccbb-ztp94             1/1     Running            0             2m17s
+</span></span><span style=display:flex><span>etcd-thistle-0                      1/1     Running            1             9m24s
+</span></span><span style=display:flex><span>kube-apiserver-thistle-0            1/1     Running            1             9m24s
+</span></span><span style=display:flex><span>kube-controller-manager-thistle-0   1/1     Running            1             9m24s
+</span></span><span style=display:flex><span>kube-proxy-ctmwg                    1/1     Running            0             7m29s
+</span></span><span style=display:flex><span>kube-proxy-jzcqj                    1/1     Running            0             7m38s
+</span></span><span style=display:flex><span>kube-proxy-rc25q                    1/1     Running            0             9m21s
+</span></span><span style=display:flex><span>kube-scheduler-thistle-0            1/1     Running            1             9m26s
+</span></span></code></pre></div><p><code>cilium-envoy-*</code> がCrashLoopBackOffになっている。<code>jp7xv</code>のpodのログを見る。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ kubectl -n kube-system logs cilium-envoy-jp7xv
+</span></span><span style=display:flex><span>external/com_github_google_tcmalloc/tcmalloc/system-alloc.cc:625] MmapAligned() failed - unable to allocate with tag (hint, size, alignment) - is something limiting address placement? 0x161600000000 1073741824 1073741824 @ 0x557b0bccc4 0x557b0b90e0 0x557b0b89a0 0x557b0981d0 0x557b0b6694 0x557b0b6468 0x557b08d988 0x557afa3c84 0x557afa09a0 0x7f94868614
+</span></span><span style=display:flex><span>external/com_github_google_tcmalloc/tcmalloc/arena.cc:58] FATAL ERROR: Out of memory trying to allocate internal tcmalloc data (bytes, object-size); is something preventing mmap from succeeding (sandbox, VSS limitations)? 131072 632 @ 0x557b0bd034 0x557b098260 0x557b0b6694 0x557b0b6468 0x557b08d988 0x557afa3c84 0x557afa09a0 0x7f94868614
+</span></span></code></pre></div><p>どうもメモリの確保に失敗しているようだ。2行目ではOut of memoryと言っているので、念のためメモリの状態を確認してみるが、メモリには余裕があるので別の原因であろうと思われる。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ free -h
+</span></span><span style=display:flex><span>               total        used        free      shared  buff/cache   available
+</span></span><span style=display:flex><span>Mem:           7.6Gi       878Mi       4.3Gi       3.4Mi       2.6Gi       6.8Gi
+</span></span><span style=display:flex><span>Swap:             0B          0B          0B
+</span></span></code></pre></div><p>調べてみると、どうやらEnvoy、というかtcmallocの問題で、Raspberry Pi (ARM64)で動作しないようだ。かなり前のissueではあるが、コメント自体は2024年までついていて状況が改善されてなさそうな雰囲気がある。実際こうして問題を踏んでいるし……。</p><ul><li><a href=https://github.com/envoyproxy/envoy/issues/23339>Envoy 1.17-1.23 unable to start on Raspberry · Issue #23339 · envoyproxy/envoy</a></li><li><a href=https://github.com/cilium/cilium/issues/17467>Cilium fails to launch on ARM64: Binary cilium-envoy cannot be executed · Issue #17467 · cilium/cilium</a></li></ul><p>問題を回避するにはカーネルオプションを変えてビルドし直すかtcmallocをビルドし直す必要があるということで、さすがにヘビー過ぎるというか、今後のメンテナンスが怠すぎるので大人しくFlannelを使うことにした。というわけでCiliumをアンインストール。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cilium uninstall
+</span></span></code></pre></div><h2 id=flannelのインストール>Flannelのインストール</h2><p>Podネットワークの範囲を<code>10.0.0.0/8</code>にしているので少々修正が必要である。まずはYAMLファイルをダウンロードしてくる。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ curl -LO <span style=color:#98c379>&#39;https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml&#39;</span>
+</span></span></code></pre></div><p>このファイルを開いてCIDRの指定を編集する。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#e06c75>...</span>
+</span></span><span style=display:flex><span>  <span style=color:#e06c75>net-conf.json</span>: |<span style=color:#98c379>
+</span></span></span><span style=display:flex><span><span style=color:#98c379>    {
+</span></span></span><span style=display:flex><span><span style=color:#98c379>      &#34;Network&#34;: &#34;10.0.0.0/8&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#98c379>      &#34;EnableNFTables&#34;: false,
+</span></span></span><span style=display:flex><span><span style=color:#98c379>      &#34;Backend&#34;: {
+</span></span></span><span style=display:flex><span><span style=color:#98c379>        &#34;Type&#34;: &#34;vxlan&#34;
+</span></span></span><span style=display:flex><span><span style=color:#98c379>      }
+</span></span></span><span style=display:flex><span><span style=color:#98c379>    }</span>
+</span></span><span style=display:flex><span><span style=color:#e06c75>...</span>
+</span></span></code></pre></div><p>それから<code>kubectl apply</code>を行う。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ kubectl apply -f kube-flannel.yml
+</span></span><span style=display:flex><span>namespace/kube-flannel created
+</span></span><span style=display:flex><span>serviceaccount/flannel created
+</span></span><span style=display:flex><span>clusterrole.rbac.authorization.k8s.io/flannel created
+</span></span><span style=display:flex><span>clusterrolebinding.rbac.authorization.k8s.io/flannel created
+</span></span><span style=display:flex><span>configmap/kube-flannel-cfg created
+</span></span><span style=display:flex><span>daemonset.apps/kube-flannel-ds created
+</span></span></code></pre></div><p>ノードの状態を確認すると、全ノードがReadyになっている。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ kubectl get nodes
+</span></span><span style=display:flex><span>NAME        STATUS   ROLES           AGE   VERSION
+</span></span><span style=display:flex><span>thistle-0   Ready    control-plane   25m   v1.32.3
+</span></span><span style=display:flex><span>thistle-1   Ready    &lt;none&gt;          23m   v1.32.3
+</span></span><span style=display:flex><span>thistle-2   Ready    &lt;none&gt;          23m   v1.32.3
+</span></span></code></pre></div><p>3年前あんだけ詰まったのは一体なんだったんだろう。</p><h2 id=corednsが上がってこない>CoreDNSが上がってこない</h2><p>Podの状態を確認するとCoreDNSが起動していない。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ kubectl -n kube-system get pods
+</span></span><span style=display:flex><span>NAME                                READY   STATUS              RESTARTS   AGE
+</span></span><span style=display:flex><span>coredns-86c5fccbb-2css6             0/1     ContainerCreating   1          6h13m
+</span></span><span style=display:flex><span>coredns-86c5fccbb-ztp94             0/1     ContainerCreating   1          6h13m
+</span></span><span style=display:flex><span>etcd-thistle-0                      1/1     Running             3          6h20m
+</span></span><span style=display:flex><span>kube-apiserver-thistle-0            1/1     Running             3          6h20m
+</span></span><span style=display:flex><span>kube-controller-manager-thistle-0   1/1     Running             3          6h20m
+</span></span><span style=display:flex><span>kube-proxy-ctmwg                    1/1     Running             2          6h19m
+</span></span><span style=display:flex><span>kube-proxy-jzcqj                    1/1     Running             2          6h19m
+</span></span><span style=display:flex><span>kube-proxy-rc25q                    1/1     Running             2          6h20m
+</span></span><span style=display:flex><span>kube-scheduler-thistle-0            1/1     Running             3          6h21m
+</span></span></code></pre></div><p>describeでpodの状態を見てみる。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ kubectl -n kube-system describe pods coredns-86c5fccbb-2css6
+</span></span><span style=display:flex><span>Name:                 coredns-86c5fccbb-2css6
+</span></span><span style=display:flex><span>Namespace:            kube-system
+</span></span><span style=display:flex><span>Priority:             2000000000
+</span></span><span style=display:flex><span>Priority Class Name:  system-cluster-critical
+</span></span><span style=display:flex><span>Service Account:      coredns
+</span></span><span style=display:flex><span>Node:                 thistle-0/192.168.39.20
+</span></span><span style=display:flex><span>Start Time:           Tue, 25 Mar 2025 04:58:34 +0900
+</span></span><span style=display:flex><span>Labels:               k8s-app=kube-dns
+</span></span><span style=display:flex><span>                      pod-template-hash=86c5fccbb
+</span></span><span style=display:flex><span>Annotations:          kubectl.kubernetes.io/restartedAt: 2025-03-25T04:58:33+09:00
+</span></span><span style=display:flex><span>Status:               Running
+</span></span><span style=display:flex><span>IP:
+</span></span><span style=display:flex><span>IPs:                  &lt;none&gt;
+</span></span><span style=display:flex><span>Controlled By:        ReplicaSet/coredns-86c5fccbb
+</span></span><span style=display:flex><span>Containers:
+</span></span><span style=display:flex><span>  coredns:
+</span></span><span style=display:flex><span>    Container ID:
+</span></span><span style=display:flex><span>    Image:         registry.k8s.io/coredns/coredns:v1.11.3
+</span></span><span style=display:flex><span>    Image ID:
+</span></span><span style=display:flex><span>    Ports:         53/UDP, 53/TCP, 9153/TCP
+</span></span><span style=display:flex><span>    Host Ports:    0/UDP, 0/TCP, 0/TCP
+</span></span><span style=display:flex><span>    Args:
+</span></span><span style=display:flex><span>      -conf
+</span></span><span style=display:flex><span>      /etc/coredns/Corefile
+</span></span><span style=display:flex><span>    State:          Waiting
+</span></span><span style=display:flex><span>      Reason:       ContainerCreating
+</span></span><span style=display:flex><span>    Last State:     Terminated
+</span></span><span style=display:flex><span>      Reason:       ContainerStatusUnknown
+</span></span><span style=display:flex><span>      Message:      The container could not be located when the pod was deleted.  The container used to be Running
+</span></span><span style=display:flex><span>      Exit Code:    137
+</span></span><span style=display:flex><span>      Started:      Mon, 01 Jan 0001 00:00:00 +0000
+</span></span><span style=display:flex><span>      Finished:     Mon, 01 Jan 0001 00:00:00 +0000
+</span></span><span style=display:flex><span>    Ready:          False
+</span></span><span style=display:flex><span>    Restart Count:  1
+</span></span><span style=display:flex><span>    Limits:
+</span></span><span style=display:flex><span>      memory:  170Mi
+</span></span><span style=display:flex><span>    Requests:
+</span></span><span style=display:flex><span>      cpu:        100m
+</span></span><span style=display:flex><span>      memory:     70Mi
+</span></span><span style=display:flex><span>    Liveness:     http-get http://:8080/health delay=60s timeout=5s period=10s #success=1 #failure=5
+</span></span><span style=display:flex><span>    Readiness:    http-get http://:8181/ready delay=0s timeout=1s period=10s #success=1 #failure=3
+</span></span><span style=display:flex><span>    Environment:  &lt;none&gt;
+</span></span><span style=display:flex><span>    Mounts:
+</span></span><span style=display:flex><span>      /etc/coredns from config-volume (ro)
+</span></span><span style=display:flex><span>      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-6whk9 (ro)
+</span></span><span style=display:flex><span>Conditions:
+</span></span><span style=display:flex><span>  Type                        Status
+</span></span><span style=display:flex><span>  PodReadyToStartContainers   False
+</span></span><span style=display:flex><span>  Initialized                 True
+</span></span><span style=display:flex><span>  Ready                       False
+</span></span><span style=display:flex><span>  ContainersReady             False
+</span></span><span style=display:flex><span>  PodScheduled                True
+</span></span><span style=display:flex><span>Volumes:
+</span></span><span style=display:flex><span>  config-volume:
+</span></span><span style=display:flex><span>    Type:      ConfigMap (a volume populated by a ConfigMap)
+</span></span><span style=display:flex><span>    Name:      coredns
+</span></span><span style=display:flex><span>    Optional:  false
+</span></span><span style=display:flex><span>  kube-api-access-6whk9:
+</span></span><span style=display:flex><span>    Type:                    Projected (a volume that contains injected data from multiple sources)
+</span></span><span style=display:flex><span>    TokenExpirationSeconds:  3607
+</span></span><span style=display:flex><span>    ConfigMapName:           kube-root-ca.crt
+</span></span><span style=display:flex><span>    ConfigMapOptional:       &lt;nil&gt;
+</span></span><span style=display:flex><span>    DownwardAPI:             true
+</span></span><span style=display:flex><span>QoS Class:                   Burstable
+</span></span><span style=display:flex><span>Node-Selectors:              kubernetes.io/os=linux
+</span></span><span style=display:flex><span>Tolerations:                 CriticalAddonsOnly op=Exists
+</span></span><span style=display:flex><span>                             node-role.kubernetes.io/control-plane:NoSchedule
+</span></span><span style=display:flex><span>                             node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+</span></span><span style=display:flex><span>                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+</span></span><span style=display:flex><span>Events:
+</span></span><span style=display:flex><span>  Type     Reason                  Age                     From     Message
+</span></span><span style=display:flex><span>  ----     ------                  ----                    ----     -------
+</span></span><span style=display:flex><span>  Warning  FailedCreatePodSandBox  9m54s (x281 over 5h5m)  kubelet  (combined from similar events): Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(935b3ad214394f5d3730b1c1a4f7cbe261dd29a0e5cce8ebcc3eaf945ec7eba8): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
+</span></span><span style=display:flex><span>Is the agent running?
+</span></span><span style=display:flex><span>  Warning  FailedCreatePodSandBox  3m8s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(888b9d00c92b667b0e0b6d865ba9b96ff0e1afcee33acc2818e00d5f6ee5d64f): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
+</span></span><span style=display:flex><span>Is the agent running?
+</span></span><span style=display:flex><span>  Warning  FailedCreatePodSandBox  2m4s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(345a1307bba81a94435d8aff9a3d79c67fca3683ad66284d475805c371a4b38c): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
+</span></span><span style=display:flex><span>Is the agent running?
+</span></span><span style=display:flex><span>  Warning  FailedCreatePodSandBox  63s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(2e436ec645ce0fac36945db53eaaee27b1d89680484749ad6e2d72c9371f77c1): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
+</span></span><span style=display:flex><span>Is the agent running?
+</span></span><span style=display:flex><span>  Warning  FailedCreatePodSandBox  2s  kubelet  Failed to create pod sandbox: rpc error: code = Unknown desc = failed to create pod network sandbox k8s_coredns-86c5fccbb-2css6_kube-system_632c1b51-bec4-4935-a93f-d1191f76e6d6_0(4184bee28309b45aa260c25d2a92f68d6dbac4399ae028b465212cc4a25219ae): error adding pod kube-system_coredns-86c5fccbb-2css6 to CNI network &#34;cilium&#34;: plugin type=&#34;cilium-cni&#34; failed (add): unable to connect to Cilium agent: failed to create cilium agent client after 30.000000 seconds timeout: Get &#34;http://localhost/v1/config&#34;: dial unix /var/run/cilium/cilium.sock: connect: no such file or directory
+</span></span><span style=display:flex><span>Is the agent running?
+</span></span></code></pre></div><p>Eventsを見ると、どうやらCiliumを使おうとして失敗しているように見える。Ciliumは既にアンインストールしたので当然使えないが、なぜそもそも使おうとしてしまうのか？</p><p>というわけで調べてみると同じ事象の記事があった: <a href=https://qiita.com/ishii1648/items/f0b9882834d63534461e>kubernetesでcorednsが起動しない時に確認すること #Calico - Qiita</a></p><p><code>/etc/cni/net.d</code>以下にファイルがあるそうなので、探してみる。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ cat /etc/cni/net.d/
+</span></span><span style=display:flex><span>05-cilium.conflist                10-flannel.conflist
+</span></span><span style=display:flex><span>10-crio-bridge.conflist.disabled  .kubernetes-cni-keep
+</span></span><span style=display:flex><span>$
+</span></span></code></pre></div><p><code>05-cilium.conflist</code>がある。これを削除してしばらくすると、Runningになった。</p><div class=highlight><pre tabindex=0 style=color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-console data-lang=console><span style=display:flex><span>$ sudo rm /etc/cni/net.d/05-cilium.conflist
+</span></span><span style=display:flex><span>$ kubectl -n kube-system get pods
+</span></span><span style=display:flex><span>NAME                                READY   STATUS              RESTARTS   AGE
+</span></span><span style=display:flex><span>coredns-86c5fccbb-2css6             1/1     Running             2          6h26m
+</span></span><span style=display:flex><span>coredns-86c5fccbb-q226s             0/1     ContainerCreating   0          10m
+</span></span><span style=display:flex><span>etcd-thistle-0                      1/1     Running             4          6h33m
+</span></span><span style=display:flex><span>kube-apiserver-thistle-0            1/1     Running             4          6h33m
+</span></span><span style=display:flex><span>kube-controller-manager-thistle-0   1/1     Running             4          6h33m
+</span></span><span style=display:flex><span>kube-proxy-ctmwg                    1/1     Running             2          6h31m
+</span></span><span style=display:flex><span>kube-proxy-jzcqj                    1/1     Running             2          6h31m
+</span></span><span style=display:flex><span>kube-proxy-rc25q                    1/1     Running             3          6h33m
+</span></span><span style=display:flex><span>kube-scheduler-thistle-0            1/1     Running             4          6h33m
+</span></span></code></pre></div><p>各ノードに<code>05-cilium.conflist</code>があったため、他のノードでも同様に削除すると、残っているContainerCreatingのものも正常化した。</p><p>というわけでk8sクラスタの構築が完了した。本当に3年前のapiserver無限再起動は何だったんだろうね。</p><h4><i class="fas fa-share-alt" aria-hidden=true></i>&nbsp;Share!</h4><ul class=share-buttons><li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Share on Facebook"><i class="fab fa-facebook" aria-hidden=true></i><span class=sr-only>Share on Facebook</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title=Tweet><i class="fab fa-twitter" aria-hidden=true></i><span class=sr-only>Tweet</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="https://plus.google.com/share?url=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Share on Google+"><i class="fab fa-google-plus" aria-hidden=true></i><span class=sr-only>Share on Google+</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden=true></i><span class=sr-only>Post to Tumblr</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Pin it"><i class="fab fa-pinterest-p" aria-hidden=true></i><span class=sr-only>Pin it</span></a></li>&nbsp;&nbsp;&nbsp;<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2faquarite.info%2fblog%2f2025%2f04%2frpi-cluster-01%2f" target=_blank title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden=true></i><span class=sr-only>Submit to Reddit</span></a></li></ul><style>ul.share-buttons{list-style:none;padding:0}ul.share-buttons li{display:inline}ul.share-buttons .sr-only{position:absolute;clip:rect(1px 1px 1px 1px);clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}</style><div class="prev-next-post pure-g"><div class=pure-u-1-24 style=text-align:left><a href=https://aquarite.info/blog/2025/03/build-new-server/><i class="fa fa-chevron-left"></i></a></div><div class=pure-u-10-24><nav class=prev><a href=https://aquarite.info/blog/2025/03/build-new-server/>新しいサーバーを組んだ</a></nav></div><div class=pure-u-2-24>&nbsp;</div><div class=pure-u-10-24><nav class=next><a href=https://aquarite.info/blog/2025/08/pikvm-diy-v2-zero2/>Raspberry Pi Zero 2 WでPiKVMを作る</a></nav></div><div class=pure-u-1-24 style=text-align:right><a href=https://aquarite.info/blog/2025/08/pikvm-diy-v2-zero2/><i class="fa fa-chevron-right"></i></a></div></div></div></div></div><script src=https://aquarite.info/js/ui.js></script><script src=https://aquarite.info/js/menus.js></script><script data-goatcounter=https://aquarite.goatcounter.com/count async src=//gc.zgo.at/count.js></script></body></html>
