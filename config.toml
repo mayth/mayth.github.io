@@ -16,7 +16,7 @@ ignoreErrors = ["error-remote-getjson"]
       unsafe = true
 
   [markup.highlight]
-    style = 'dracula'
+    style = 'onedark'
 
 [taxonomies]
   category = 'categories'
@@ -30,6 +30,9 @@ ignoreErrors = ["error-remote-getjson"]
   title = 'Hello, (forgotten) world ☂'
   description = "Hello, (forgotten) world☂ -- Mei Akizuru Personal Website"
   images = ["/images/cover.png"]
+  custom_css = [
+    { url = "/css/custom.css", integrity = "sha512-FXP1227CzZeYzh0VmzEUa9muHOZzZic6t0AyIG+n7Ffjzh3jBHtB6ERAk8+pVmstPnpfKiN8Lb7uhZHzQKYYAA==", crossorigin = "anonymous" },
+  ]
 
 [permalinks]
   posts = '/blog/:year/:month/:slug'
