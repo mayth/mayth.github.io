@@ -1,6 +1,7 @@
 table {
     border-collapse: collapse;
     margin: 0 auto;
+    max-width: 95%;
 }
 
 th {
@@ -9,9 +10,9 @@ th {
 
 td {
     border-bottom: 1px dashed #999;
+    padding: 1px 0.25em;
 }
 
 th,tr:last-child td {
     border-bottom: 2px solid #999;
 }
-

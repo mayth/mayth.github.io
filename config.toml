@@ -31,7 +31,7 @@ ignoreErrors = ["error-remote-getjson"]
   description = "Hello, (forgotten) world☂ -- Mei Akizuru Personal Website"
   images = ["/images/cover.png"]
   custom_css = [
-    { url = "/css/custom.css", integrity = "sha512-FXP1227CzZeYzh0VmzEUa9muHOZzZic6t0AyIG+n7Ffjzh3jBHtB6ERAk8+pVmstPnpfKiN8Lb7uhZHzQKYYAA==", crossorigin = "anonymous" },
+    { url = "/css/custom.css", integrity = "sha512-dFbens+qrN8ZhvPPOEOqsv342LoA8uadWTgOy7JzXQ5Mm6nGTfrzdu91Z+bN4dXynIktoMvfS0cKTQkYGT4lrg==", crossorigin = "anonymous" },
   ]
 
 [permalinks]
